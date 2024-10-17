@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Headroom from "headroom.js";
 import {
   Button,
@@ -8,24 +8,32 @@ import {
   NavItem,
   Nav,
   Container,
+  Row,
+  Col,
 } from "reactstrap";
 
-const DemoNavbar = () => {
-  const navigate = useNavigate(); // Initialize useNavigate
-
-  // Function to handle logout
-  const handleLogout = () => {
-    // Clear JWT token from localStorage
-    localStorage.removeItem("token");
-
-    // Navigate to the login page
-    navigate('/login-page');
-  };
+const LoginNavbar = () => {
+  const [collapseClasses, setCollapseClasses] = useState("");
+  const [collapseOpen, setCollapseOpen] = useState(false);
+  const navigate = useNavigate(); // useNavigate hook for navigation
 
   useEffect(() => {
     const headroom = new Headroom(document.getElementById("navbar-main"));
     headroom.init();
   }, []);
+
+  const onExiting = () => {
+    setCollapseClasses("collapsing-out");
+  };
+
+  const onExited = () => {
+    setCollapseClasses("");
+  };
+
+  const handleSignUp = () => {
+    // Navigate to the register page using useNavigate hook
+    navigate("/register-page");
+  };
 
   return (
     <>
@@ -35,11 +43,11 @@ const DemoNavbar = () => {
           id="navbar-main"
         >
           <Container>
-            <NavbarBrand className="mr-lg-5" to="/" tag={Link}>
+            <NavbarBrand className="mr-lg-5">
               <img
                 alt="..."
                 src={require("assets/img/brand/argon-react-white.png")}
-                style={{ width: '70px', height: 'auto' }}
+                style={{ width: '70px', height: 'auto' }} // Adjust the size here
               />
             </NavbarBrand>
 
@@ -48,12 +56,12 @@ const DemoNavbar = () => {
                 <Button
                   className="btn-neutral btn-icon"
                   color="default"
-                  onClick={handleLogout}  // Trigger logout
+                  onClick={handleSignUp} // Navigate to register page on click
                 >
                   <span className="btn-inner--icon">
-                    <i className="fa fa-sign-out mr-2" />
+                    <i className="fa fa-user-plus mr-2" />
                   </span>
-                  <span className="nav-link-inner--text ml-1">Log Out</span>
+                  <span className="nav-link-inner--text ml-1">Sign Up</span>
                 </Button>
               </NavItem>
             </Nav>
@@ -64,4 +72,4 @@ const DemoNavbar = () => {
   );
 };
 
-export default DemoNavbar;
+export default LoginNavbar;
