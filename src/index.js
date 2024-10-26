@@ -6,13 +6,13 @@ import "assets/vendor/nucleo/css/nucleo.css";
 import "assets/vendor/font-awesome/css/font-awesome.min.css";
 import "assets/scss/argon-design-system-react.scss?v1.1.0";
 
-import Index from "views/Index.js";
-import Login from "views/examples/Login.js";
-import Register from "views/examples/Register.js";
-import AdminIndex from "views/AdminIndex"; // Admin landing page
+import Index from "components/Index/Index";
+import Login from "components/LogIn-SignUp/Login";
+import Register from "components/LogIn-SignUp/Register";
+import AdminIndex from "components/Index/AdminIndex";
 
-import PrivateRoute from "views/PrivateRoute"; // Import the private route component
-import PrivateAdminRoute from "views/PrivateAdminRoute"; // Import the private admin route component
+import PrivateRoute from "components/Private Routes/PrivateRoute";
+import PrivateAdminRoute from "components/Private Routes/PrivateAdminRoute";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 

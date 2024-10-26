@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Container, Row, Col, Form, FormGroup, Input, Label, Button, Table, Alert, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import axios from "axios";
-import DemoNavbar from "components/Navbars/DemoNavbar.js";
+import DemoNavbar from "components/Navbars/DemoNavbar";
 import SimpleFooter from "components/Footers/SimpleFooter.js";
 
 import beep1 from "./beep.mp3"; // Import beep sounds
