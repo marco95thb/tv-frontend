@@ -2,6 +2,7 @@ import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Hook for navigation
+import { jwtDecode } from 'jwt-decode';
 
 // reactstrap components
 import {
@@ -37,6 +38,8 @@ const Register = () => {
   const [emailError, setEmailError] = useState('');
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false); // Track signup success
+  const [googleError, setGoogleError] = useState("");
+
 
   // useNavigate hook for programmatic navigation
   const navigate = useNavigate();
@@ -117,6 +120,39 @@ const Register = () => {
     }
   };
 
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      // Decode the credential response
+      const decoded = jwtDecode(credentialResponse.credential);
+      const { email, name: fullName } = decoded; // Extract email and full name
+      
+      // Send extracted data to your backend
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/users/google-signin`, {
+        fullName,
+        email,
+      });
+
+      // Handle successful login: store JWT token and proceed
+      const { token } = response.data;
+
+      // If login is successful, store the JWT token in localStorage
+      localStorage.setItem("token", response.data.token);
+
+      // Redirect user to the homepage or another route
+      navigate("/");
+
+      // Redirect user or perform post-login action here
+
+    } catch (error) {
+      console.error("Error during Google sign-in:", error);
+    }
+  };
+
+  const handleGoogleFailure = () => {
+    setGoogleError("Google Sign In Failed");
+  };
+
+
   return (
     <>
       <SignupNavbar />
@@ -140,13 +176,11 @@ const Register = () => {
                     <div className="text-muted text-center mb-3">
                       <small>Sign up with</small>
                     </div>
-                    <div className="text-center">
-                      <GoogleOAuthProvider clientId={process.env.REACT_APP_CLIENT_ID}>
-                        <GoogleLogin
-                          onSuccess={handleCredentialResponse}
-                          onError={(error) => console.log(error)}
-                        />
-                      </GoogleOAuthProvider>
+                    <div className="btn-wrapper text-center ml-5">
+                    <GoogleLogin
+                      onSuccess={handleGoogleSuccess}
+                      onError={handleGoogleFailure}
+                    />
                     </div>
                   </CardHeader>
                   <CardBody className="px-lg-5 py-lg-5">

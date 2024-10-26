@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { GoogleLogin } from '@react-oauth/google';
 import { useNavigate } from "react-router-dom"; // For navigation after login
+import { jwtDecode } from "jwt-decode";
 import {
   Button,
   Card,
@@ -27,6 +29,7 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false); // State to handle loading state
   const [emailError, setEmailError] = useState(""); // Email validation error state
   const [passwordError, setPasswordError] = useState(""); // Password validation error state
+  const [googleError, setGoogleError] = useState("");
   const navigate = useNavigate(); // Hook to navigate after login
 
   // Function to validate email
@@ -91,6 +94,38 @@ const Login = () => {
     }
   };
 
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      // Decode the credential response
+      const decoded = jwtDecode(credentialResponse.credential);
+      const { email, name: fullName } = decoded; // Extract email and full name
+      
+      // Send extracted data to your backend
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/users/google-signin`, {
+        fullName,
+        email,
+      });
+
+      // Handle successful login: store JWT token and proceed
+      const { token } = response.data;
+
+      // If login is successful, store the JWT token in localStorage
+      localStorage.setItem("token", response.data.token);
+
+      // Redirect user to the homepage or another route
+      navigate("/");
+
+      // Redirect user or perform post-login action here
+
+    } catch (error) {
+      console.error("Error during Google sign-in:", error);
+    }
+  };
+
+  const handleGoogleFailure = () => {
+    setGoogleError("Google Sign In Failed");
+  };
+
   // Check if email and password are filled before enabling the button
   const isFormValid = email && password && !isLoading;
 
@@ -117,22 +152,13 @@ const Login = () => {
                     <div className="text-muted text-center mb-3">
                       <small>Sign in with</small>
                     </div>
-                    <div className="btn-wrapper text-center">
-                      <Button
-                        className="btn-neutral btn-icon ml-1"
-                        color="default"
-                        href="#pablo"
-                        onClick={(e) => e.preventDefault()}
-                      >
-                        <span className="btn-inner--icon mr-1">
-                          <img
-                            alt="..."
-                            src={require("assets/img/icons/common/google.svg").default}
-                          />
-                        </span>
-                        <span className="btn-inner--text">Google</span>
-                      </Button>
+                    <div className="btn-wrapper text-center ml-5">
+                    <GoogleLogin
+                      onSuccess={handleGoogleSuccess}
+                      onError={handleGoogleFailure}
+                    />
                     </div>
+                    {googleError && <Alert color="danger">{googleError}</Alert>}
                   </CardHeader>
                   <CardBody className="px-lg-5 py-lg-5">
                     <div className="text-center text-muted mb-4">

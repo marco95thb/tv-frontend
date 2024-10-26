@@ -10,13 +10,14 @@ import Index from "components/Index/Index";
 import Login from "components/LogIn-SignUp/Login";
 import Register from "components/LogIn-SignUp/Register";
 import AdminIndex from "components/Index/AdminIndex";
-
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import PrivateRoute from "components/Private Routes/PrivateRoute";
 import PrivateAdminRoute from "components/Private Routes/PrivateAdminRoute";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
+  <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
   <BrowserRouter>
     <Routes>
       {/* Public routes */}
@@ -33,4 +34,6 @@ root.render(
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   </BrowserRouter>
+  </GoogleOAuthProvider>
 );
+

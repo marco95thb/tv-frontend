@@ -4,15 +4,15 @@ import axios from "axios";
 import DemoNavbar from "components/Navbars/DemoNavbar";
 import SimpleFooter from "components/Footers/SimpleFooter.js";
 
-import beep1 from "./beep.mp3"; // Import beep sounds
-import beep2 from "./beep.mp3"; // Import beep sounds
-import beep3 from "./beep.mp3"; // Import beep sounds
-import beep4 from "./beep.mp3"; // Import beep sounds
-import beep5 from "./beep.mp3"; // Import beep sounds
-import beep6 from "./beep.mp3"; // Import beep sounds
-import beep7 from "./beep.mp3"; // Import beep sounds
-import beep8 from "./beep.mp3"; // Import beep sounds
-import beep9 from "./beep.mp3"; // Import beep sounds
+import beep1 from "./beep.mp3"; 
+import beep2 from "./beep.mp3"; 
+import beep3 from "./beep.mp3"; 
+import beep4 from "./beep.mp3"; 
+import beep5 from "./beep.mp3"; 
+import beep6 from "./beep.mp3"; 
+import beep7 from "./beep.mp3"; 
+import beep8 from "./beep.mp3"; 
+import beep9 from "./beep.mp3"; 
 
 
 const Index = () => {
@@ -172,7 +172,7 @@ const Index = () => {
         newRoomNumber,
         newTvNumber
       })
-      const response = await axios.post(
+      await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/orders/change-room`,
         {
           orderId: modalOrderId,
@@ -460,8 +460,6 @@ const Index = () => {
                     </thead>
                     <tbody>
                       {orders.map((order, index) => {
-                        const isLastRoomNumber = (i) => i === order.roomNumber.length - 1;
-
                         return (
                           <React.Fragment key={index}>
                             {/* Display the latest room and tv number with dropdown icon */}
