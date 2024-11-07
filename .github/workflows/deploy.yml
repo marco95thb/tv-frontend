@@ -1,0 +1,38 @@
+name: Deploy Frontend
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Log in to Docker Hub
+        env:
+          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+          DOCKER_HUB_ACCESS_TOKEN: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+        run: |
+          echo $DOCKER_HUB_ACCESS_TOKEN | docker login -u $DOCKER_HUB_USERNAME --password-stdin
+
+      - name: Pull and Deploy on EC2
+        env:
+          EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+          EC2_INSTANCE: ${{ secrets.EC2_INSTANCE }}
+          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+        run: |
+          # Decode the SSH key and save it as a temporary file
+          echo "$EC2_SSH_KEY" | base64 --decode > ec2_key.pem
+          chmod 600 ec2_key.pem
+
+          # Run the SSH command to pull the latest Docker image and restart the frontend service
+          ssh -i ec2_key.pem -o StrictHostKeyChecking=no $EC2_INSTANCE \
+            "docker pull $DOCKER_HUB_USERNAME/tv-service-frontend:latest && docker-compose up -d frontend"
+
+      - name: Clean up SSH key
+        run: rm ec2_key.pem
