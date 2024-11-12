@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Container, Row, Col, Form, FormGroup, Input, Label, Button, Table, Alert, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import DemoNavbar from "components/Navbars/DemoNavbar";
 import SimpleFooter from "components/Footers/SimpleFooter.js";
@@ -33,6 +34,8 @@ const Index = () => {
   const [modalErrorMessage, setModalErrorMessage] = useState(""); // Error message for the modal
   const [modalSuccessMessage, setModalSuccessMessage] = useState(""); // Success message for the modal
   const [showOtpModal, setShowOtpModal] = useState(false); // For showing the OTP modal
+
+  const navigate = useNavigate(); // Define navigate
 
   // Fetch the hourly rate on component mount
   useEffect(() => {
@@ -288,7 +291,7 @@ const Index = () => {
                         className="btn-icon mb-3 mb-sm-0"
                         color="default"
                         size="lg"
-                        onClick={toggleRemoteModal}
+                        onClick={() => navigate("/remote")} // Navigate to /remote on click
                       >
                         <span className="btn-inner--icon mr-1">
                           <i className="fa fa-tv" />
@@ -314,44 +317,6 @@ const Index = () => {
             </div>
           </section>
         </div>
-
-        {/* Remote Modal */}
-        <Modal isOpen={showRemoteModal} toggle={toggleRemoteModal}>
-          <ModalHeader toggle={toggleRemoteModal}>Remote</ModalHeader>
-          <ModalBody>
-            {/* Rectangle container with curved edges */}
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                padding: "20px",
-                borderRadius: "15px", // Curved edges for rectangle
-                backgroundColor: "#f8f9fa", // Light background color
-                border: "1px solid #ddd"
-              }}
-            >
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(3, auto)", // 3 buttons per row
-                  gap: "10px" // Space between buttons
-                }}
-              >
-                {[...Array(9)].map((_, index) => (
-                  <Button
-                    key={index}
-                    color="primary"
-                    onClick={() => playBeep(index)}
-                    style={{ margin: "5px", width: "60px", height: "60px" }}
-                  >
-                    {index + 1}
-                  </Button>
-                ))}
-              </div>
-            </div>
-          </ModalBody>
-        </Modal>
 
         
         {/* Cart-like Feature */}

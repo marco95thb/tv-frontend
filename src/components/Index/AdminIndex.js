@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Container, Row, Col, Table, Button, FormGroup, Input, Alert,Form, Modal, ModalBody, ModalFooter, ModalHeader, Label } from "reactstrap";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import DemoNavbar from "components/Navbars/DemoNavbar.js";
 import SimpleFooter from "components/Footers/SimpleFooter.js";
@@ -57,6 +58,8 @@ const AdminIndex = () => {
   const [selectedRoom, setSelectedRoom] = useState("");
   const [selectedTV, setSelectedTV] = useState("");
   const [filteredRooms, setFilteredRooms] = useState([]);
+
+  const navigate = useNavigate(); // Define navigate
 
   const scrollToOrders = () => {
     ordersSectionRef.current.scrollIntoView({ behavior: "smooth" });
@@ -527,8 +530,8 @@ const AdminIndex = () => {
                         className="btn-icon mb-3 mb-sm-0 mt-3"
                         color="default"
                         size="lg"
-                        onClick={toggleRemoteModal}
-                      >
+                        onClick={() => navigate("/remote")} // Navigate to /remote on click
+                        >
                         <span className="btn-inner--icon mr-1">
                           <i className="fa fa-tv" />
                         </span>
@@ -553,44 +556,6 @@ const AdminIndex = () => {
             </div>
           </section>
         </div>
-
-        {/* Remote Modal */}
-        <Modal isOpen={showRemoteModal} toggle={toggleRemoteModal}>
-          <ModalHeader toggle={toggleRemoteModal}>Remote</ModalHeader>
-          <ModalBody>
-            {/* Rectangle container with curved edges */}
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                padding: "20px",
-                borderRadius: "15px", // Curved edges for rectangle
-                backgroundColor: "#f8f9fa", // Light background color
-                border: "1px solid #ddd"
-              }}
-            >
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(3, auto)", // 3 buttons per row
-                  gap: "10px" // Space between buttons
-                }}
-              >
-                {[...Array(9)].map((_, index) => (
-                  <Button
-                    key={index}
-                    color="primary"
-                    onClick={() => playBeep(index)}
-                    style={{ margin: "5px", width: "60px", height: "60px" }}
-                  >
-                    {index + 1}
-                  </Button>
-                ))}
-              </div>
-            </div>
-          </ModalBody>
-        </Modal>
 
 
         {/* Modal for Changing Hourly Rate */}
