@@ -172,7 +172,7 @@ const Index = () => {
         newRoomNumber,
         newTvNumber
       })
-      await axios.post(
+      const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/orders/change-room`,
         {
           orderId: modalOrderId,
@@ -192,10 +192,13 @@ const Index = () => {
       // Success handling
       setModalSuccessMessage("Room number changed successfully!");
 
-      // Update the orders list
+      const updatedOrder = response.data.order;
+
+
+      // Update orders state
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
-          order._id === modalOrderId ? { ...order, roomNumber: [...order.roomNumber, newRoomNumber] } : order
+          order._id === modalOrderId ? updatedOrder : order
         )
       );
 
