@@ -39,6 +39,10 @@ const Register = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false); // Track signup success
   const [googleError, setGoogleError] = useState("");
+  const [passwordError, setPasswordError] = useState(''); // New state for password error
+  const [loading, setLoading] = useState(false); // Loading state for submit button
+
+
 
 
   // useNavigate hook for programmatic navigation
@@ -47,9 +51,9 @@ const Register = () => {
   // Handle input changes
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-
     if (e.target.name === 'password') {
       handlePasswordStrength(e.target.value);
+      setPasswordError(''); // Clear password error on change
     }
   };
 
@@ -58,7 +62,7 @@ const Register = () => {
     let strength = 'weak';
     if (password.length >= 8) {
       strength = 'strong';
-    } else if (password.length >= 5) {
+    } else if (password.length >= 6) {
       strength = 'medium';
     }
     setPasswordStrength(strength);
@@ -80,7 +84,15 @@ const Register = () => {
     e.preventDefault();
     const { fullName, email, phoneNumber, password } = formData;
 
+    // Check if password is at least 6 characters long
+    if (password.length < 6) {
+      setPasswordError('Password must be at least 6 characters long.');
+      return;
+    }
+
     try {
+      setLoading(true); // Start loading state
+
       // Clear email validation error
       setEmailError('');
       setError(null); // Clear any previous errors
@@ -103,13 +115,13 @@ const Register = () => {
       // Set success to true to show the banner
       setSuccess(true);
 
-      // Navigate to home page after a delay of 3 seconds
-      setTimeout(() => {
-        navigate('/');
-      }, 3000);
+      // Redirect immediately upon successful signup
+      navigate('/');
 
     } catch (error) {
       console.error('Signup error:', error.response?.data);
+
+      setLoading(false); // Stop loading state if there's an error
 
       // Handle email already exists error
       if (error.response && error.response.status === 400) {
@@ -270,6 +282,11 @@ const Register = () => {
                             required
                           />
                         </InputGroup>
+                        {passwordError && (
+                          <div className="text-danger mt-2">
+                            <small>{passwordError}</small>
+                          </div>
+                        )}
                       </FormGroup>
                       <div className="text-muted font-italic">
                         <small>
@@ -306,9 +323,14 @@ const Register = () => {
                         </Col>
                       </Row>
                       <div className="text-center">
-                        <Button className="mt-4" color="primary" type="submit">
-                          Create account
-                        </Button>
+                      <Button
+                        className="mt-4"
+                        color="primary"
+                        type="submit"
+                        disabled={loading} // Disable while loading
+                      >
+                        {loading ? 'Signing Up...' : 'Create account'}
+                      </Button>
                       </div>
                     </Form>
                   </CardBody>
