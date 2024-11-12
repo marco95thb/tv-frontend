@@ -13,6 +13,7 @@ import AdminIndex from "components/Index/AdminIndex";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import PrivateRoute from "components/Private Routes/PrivateRoute";
 import PrivateAdminRoute from "components/Private Routes/PrivateAdminRoute";
+import Remote from "components/Index/Remote";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -23,6 +24,7 @@ root.render(
       {/* Public routes */}
       <Route path="/login-page" exact element={<Login />} />
       <Route path="/register-page" exact element={<Register />} />
+      <Route path="/remote" excat element={<Remote />} /> 
 
       {/* Private routes */}
       <Route path="/" exact element={<PrivateRoute element={Index} />} />
