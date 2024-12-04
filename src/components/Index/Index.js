@@ -339,31 +339,23 @@ const Index = () => {
                     />
                   </FormGroup>
 
-                  {/* Room Number and TV Number in the same row */}
+                  {/* TV Number */}
                   <Row>
-                    <Col md="6">
-                      <FormGroup>
-                        <Label for="roomNumber">Room Number</Label>
-                        <Input
-                          type="number"
-                          id="roomNumber"
-                          value={roomNumber}
-                          onChange={handleRoomChange}
-                          placeholder="Enter room number"
-                          min="0"
-                        />
-                      </FormGroup>
-                    </Col>
-                    <Col md="6">
+                    <Col md="12">
                       <FormGroup>
                         <Label for="tvNumber">TV Number</Label>
                         <Input
-                          type="number"
+                          type="text"
                           id="tvNumber"
                           value={tvNumber}
-                          onChange={(e) => setTvNumber(e.target.value)}
-                          placeholder="Enter TV number"
-                          min="0"
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            if (/^\d{0,4}$/.test(value)) { // Allows only up to 4 digits
+                              setTvNumber(value);
+                            }
+                          }}
+                          placeholder="Enter 4-digit TV number"
+                          maxLength="4" // Ensures input is capped at 4 characters
                         />
                       </FormGroup>
                     </Col>
