@@ -15,27 +15,34 @@ import PrivateRoute from "components/Private Routes/PrivateRoute";
 import PrivateAdminRoute from "components/Private Routes/PrivateAdminRoute";
 import Remote from "components/Index/Remote";
 
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
+
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_TEST_KEY);
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
-  <BrowserRouter>
-    <Routes>
-      {/* Public routes */}
-      <Route path="/login-page" exact element={<Login />} />
-      <Route path="/register-page" exact element={<Register />} />
-      <Route path="/remote" excat element={<Remote />} /> 
+    <BrowserRouter>
+      {/* Wrap the Elements provider around components that need Stripe */}
+      <Elements stripe={stripePromise}>
+        <Routes>
+          {/* Public routes */}
+          <Route path="/login-page" exact element={<Login />} />
+          <Route path="/register-page" exact element={<Register />} />
+          <Route path="/remote" excat element={<Remote />} /> 
 
-      {/* Private routes */}
-      <Route path="/" exact element={<PrivateRoute element={Index} />} />
-      
-      {/* Private route for admin */}
-      <Route path="/admin" element={<PrivateAdminRoute element={AdminIndex} />} />
+          {/* Private routes */}
+          <Route path="/" exact element={<PrivateRoute element={Index} />} />
 
-      {/* Redirect unknown routes to home */}
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
-  </BrowserRouter>
+          {/* Private route for admin */}
+          <Route path="/admin" element={<PrivateAdminRoute element={AdminIndex} />} />
+
+          {/* Redirect unknown routes to home */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Elements>
+    </BrowserRouter>
   </GoogleOAuthProvider>
 );
-

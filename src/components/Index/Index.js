@@ -18,7 +18,6 @@ import beep9 from "./beep.mp3";
 
 const Index = () => {
   const [hours, setHours] = useState(0);
-  const [roomNumber, setRoomNumber] = useState("");
   const [tvNumber, setTvNumber] = useState("");
   const [newTvNumber, setNewTvNumber] = useState("");
   const [orders, setOrders] = useState([]);
@@ -63,9 +62,6 @@ const Index = () => {
     if (value >= 0) setHours(value);
   };
 
-  const handleRoomChange = (e) => {
-    setRoomNumber(e.target.value);
-  };
 
   const subtotal = hours * hourlyRate;
   const jwtToken = localStorage.getItem("token"); // Get JWT token from localStorage
@@ -104,18 +100,17 @@ const Index = () => {
     }
   };
 
-  const handleProceedToBuy = async () => {
-    setIsLoading(true); // Start loading state
-    setSuccessMessage("");
-    setErrorMessage("");
+const handleProceedToBuy = async () => {
+  setIsLoading(true); // Start loading state
+  setSuccessMessage("");
+  setErrorMessage("");
 
-    try {
+  try {
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/orders/buy-tv-time`,
         {
           timeBought: hours,
-          roomNumber: roomNumber,
-          tvNumber: tvNumber
+          tvNumber: tvNumber,
         },
         {
           headers: {
@@ -127,21 +122,21 @@ const Index = () => {
 
       // Success handling
       const newOrder = response.data;
-      setSuccessMessage("Order placed successfully! Your OTP has been sent via email.");
-      setOrders((prevOrders) => [...prevOrders, newOrder]); // Update the orders with the new order
+      setSuccessMessage("Order placed successfully! Your OTP has been sent via email. If you can't find it, check the spam folder");
+      setOrders((prevOrders) => [newOrder, ...prevOrders]); // Update the orders with the new order
 
       // Reset form
       setHours(0);
-      setRoomNumber("");
-    } catch (error) {
-      console.error(error.response ? error.response.data : error.message);
-      setErrorMessage(
+      setTvNumber("");
+  } catch (error) {
+    console.error(error.response ? error.response.data : error.message);
+    setErrorMessage(
         error.response && error.response.data ? error.response.data.msg : "Failed to place order. Please try again."
-      );
-    } finally {
-      setIsLoading(false); // End loading state
-    }
-  };
+    );
+  } finally {
+    setIsLoading(false); // End loading state
+  }
+};
 
   // Create refs for cart and orders sections
   const cartSectionRef = useRef(null);
@@ -160,7 +155,7 @@ const Index = () => {
     setModalOrderId(orderId);
     // Reset modal state to default when "Change Room" is clicked
     setOtp("");  // Clear OTP input
-    setNewRoomNumber("");  // Clear new room number input
+    setNewTvNumber("");  // Clear new room number input
     setModalErrorMessage("");  // Clear any previous error message
     setModalSuccessMessage("");  // Clear the success message to show the Submit button
     setShowOtpModal(true);  // Show the OTP modal
@@ -172,7 +167,6 @@ const Index = () => {
       console.log({
         modalOrderId,
         otp,
-        newRoomNumber,
         newTvNumber
       })
       const response = await axios.post(
@@ -180,8 +174,7 @@ const Index = () => {
         {
           orderId: modalOrderId,
           otp: Number(otp),  // Convert to number
-          newRoomNumber: Number(newRoomNumber),  // Convert to number
-          newTvNumber: Number(newTvNumber)
+          newTvNumber: (newTvNumber)
         },
         {
           headers: {
@@ -361,6 +354,7 @@ const Index = () => {
                     </Col>
                   </Row>
 
+
                   {/* Display subtotal and Buy button */}
                   <div className="text-center">
                     <p>Cost per hour: <strong>€{hourlyRate}</strong></p>
@@ -368,7 +362,7 @@ const Index = () => {
                     {successMessage && <Alert color="success">{successMessage}</Alert>}
                     <Button
                       color="primary"
-                      disabled={hours === 0 || roomNumber === "" || tvNumber === "" || isLoading}
+                      disabled={hours === 0 || tvNumber.length !== 4 || isLoading}
                       onClick={handleProceedToBuy}
                     >
                       {isLoading ? "Placing Order..." : "Proceed to Buy"}
@@ -399,79 +393,86 @@ const Index = () => {
                   <h6 className="text-center">No orders placed yet.</h6>
                 ) : (
                   <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
-                        <Table
-                    responsive
-                    className="table-bordered table-opacity"
-                    style={{
-                      backgroundColor: 'rgba(255, 255, 255, 0.60)',
-                      borderRadius: '10px',
-                    }}
-                  >
-                    <thead>
-                      <tr>
-                        <th>Click to expand previous room/tv</th>
-                        <th>Time Bought (Hours)</th>
-                        <th>Total Cost</th>
-                        <th>Room Number</th>
-                        <th>TV Number</th>
-                        <th>Order Date</th>
-                        <th>Change Room</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {orders.map((order, index) => {
-                        return (
-                          <React.Fragment key={index}>
-                            {/* Display the latest room and tv number with dropdown icon */}
-                            <tr>
-                              <td>{' '}
-                                {order.roomNumber.length > 1 && (
+                    <Table
+                      responsive
+                      className="table-bordered table-opacity"
+                      style={{
+                        backgroundColor: 'rgba(255, 255, 255, 0.60)',
+                        borderRadius: '10px',
+                      }}
+                    >
+                      <thead>
+                        <tr>
+                          <th>Click to expand previous TV</th>
+                          <th>Time Bought (Hours)</th>
+                          <th>Total Cost</th>
+                          <th>TV Number</th>
+                          <th>Order Date</th>
+                          <th>Change TV</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {orders.map((order, index) => {
+                          return (
+                            <React.Fragment key={index}>
+                              {/* Display the latest TV number with dropdown icon */}
+                              <tr>
+                                <td>
+                                  {order.tvNumber.length > 1 && (
+                                    <Button
+                                      className="btn-icon mb-3 mb-sm-0"
+                                      color="primary"
+                                      size="sm" // Using 'sm' for smaller size
+                                      onClick={() => toggleExpand(index)}
+                                      style={{
+                                        padding: '0 10px',
+                                        marginLeft: '25px',
+                                        marginTop: '10px',
+                                      }} // Adjust padding and margin as needed
+                                    >
+                                      <span className="btn-inner--icon m-2">
+                                        <i
+                                          className={
+                                            expandedOrders.includes(index)
+                                              ? 'fa fa-chevron-up'
+                                              : 'fa fa-chevron-down'
+                                          }
+                                        />
+                                      </span>
+                                    </Button>
+                                  )}
+                                </td>
+                                <td>{order.timeBought}</td>
+                                <td>${order.totalCost}</td>
+                                <td>{order.tvNumber[0]}</td>
+                                <td>{formatDate(order.orderDate)}</td>
+                                <td>
                                   <Button
-                                  className="btn-icon mb-3 mb-sm-0"
-                                  color="primary"
-                                  size="sm" // Using 'sm' for smaller size
-                                  onClick={() => toggleExpand(index)}
-                                  style={{ padding: '0 10px', marginLeft: '25px', marginTop: '10px' }} // You can adjust padding and margin as needed
-                                >
-                                  <span className="btn-inner--icon m-2">
-                                    <i className={expandedOrders.includes(index) ? 'fa fa-chevron-up' : 'fa fa-chevron-down'} />
-                                  </span>
-                                </Button>
-                                )}</td>
-                              <td>{order.timeBought}</td>
-                              <td>${order.totalCost}</td>
-                              <td>
-                                {order.roomNumber[0]}
-                              </td>
-                              <td>{order.tvNumber[0]}</td>
-                              <td>{formatDate(order.orderDate)}</td>
-                              <td>
-                                <Button color="primary" onClick={() => handleChangeRoom(order._id)}>
-                                  Change Room
-                                </Button>
-                              </td>
-                            </tr>
+                                    color="primary"
+                                    onClick={() => handleChangeRoom(order._id)}
+                                  >
+                                    Change TV
+                                  </Button>
+                                </td>
+                              </tr>
 
-                            {/* Conditionally show previous room and TV numbers */}
-                            {expandedOrders.includes(index) &&
-                              order.roomNumber.slice(1).map((room, i) => (
-                                <tr key={`${index}-${i}`} className="previous-entries">
-                                  <td></td>
-                                  <td></td> {/* Empty cell for Time Bought */}
-                                  <td></td> {/* Empty cell for Total Cost */}
-                                  <td>{order.roomNumber[i + 1]}</td>
-                                  <td>{order.tvNumber[i + 1]}</td>
-                                  <td></td> {/* Empty cell for Order Date */}
-                                  <td>
-                                    Previous Room & TV
-                                  </td>
-                                </tr>
-                              ))}
-                          </React.Fragment>
-                        );
-                      })}
-                    </tbody>
-                  </Table>
+                              {/* Conditionally show previous TV numbers */}
+                              {expandedOrders.includes(index) &&
+                                order.tvNumber.slice(1).map((tv, i) => (
+                                  <tr key={`${index}-${i}`} className="previous-entries">
+                                    <td></td>
+                                    <td></td> {/* Empty cell for Time Bought */}
+                                    <td></td> {/* Empty cell for Total Cost */}
+                                    <td>{tv}</td>
+                                    <td></td> {/* Empty cell for Order Date */}
+                                    <td>Previous TV</td>
+                                  </tr>
+                                ))}
+                            </React.Fragment>
+                          );
+                        })}
+                      </tbody>
+                    </Table>
                   </div>
                 )}
               </Col>
@@ -495,16 +496,7 @@ const Index = () => {
                     disabled={modalSuccessMessage ? true : false} // Disable input after success
                   />
                 </FormGroup>
-                <FormGroup>
-                  <Label for="newRoomNumber">New Room Number</Label>
-                  <Input
-                    type="text"
-                    id="newRoomNumber"
-                    value={newRoomNumber}
-                    onChange={(e) => setNewRoomNumber(e.target.value)}
-                    disabled={modalSuccessMessage ? true : false} // Disable input after success
-                  />
-                </FormGroup>
+                
                 <FormGroup>
                   <Label for="newTvNumber">New TV Number</Label>
                   <Input
