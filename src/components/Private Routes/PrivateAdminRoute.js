@@ -1,8 +1,20 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import {jwtDecode} from "jwt-decode";
+import {jwtDecode} from "jwt-decode"; // Ensure this is installed: npm install jwt-decode
 
-// Helper function to check if the user is an admin
+// Helper function to check if the token is expired
+const isTokenExpired = (token) => {
+  try {
+    const decodedToken = jwtDecode(token);
+    const currentTime = Date.now() / 1000; // Current time in seconds
+    return decodedToken.exp < currentTime; // Token is expired if exp is in the past
+  } catch (error) {
+    console.error("Error decoding token", error);
+    return true; // Treat invalid tokens as expired
+  }
+};
+
+// Helper function to check if the user is an authenticated admin
 const isAuthenticatedAdmin = () => {
   const token = localStorage.getItem("token");
 
@@ -10,8 +22,15 @@ const isAuthenticatedAdmin = () => {
 
   try {
     const decodedToken = jwtDecode(token); // Decode the JWT token
-    const isAdmin = decodedToken.isAdmin; // Check for isAdmin field in the decoded token
-    return isAdmin === true; // Return true only if isAdmin is true
+
+    // Check for isAdmin field and token expiration
+    const isAdmin = decodedToken.isAdmin;
+    if (isTokenExpired(token)) {
+      console.log("Token is expired");
+      return false;
+    }
+
+    return isAdmin === true; // Return true only if isAdmin is true and token is valid
   } catch (error) {
     console.error("Invalid token");
     return false; // Return false if token is invalid or there's any issue

@@ -3,7 +3,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Hook for navigation
 import { jwtDecode } from 'jwt-decode';
-
+import { useTranslation } from 'react-i18next';
 // reactstrap components
 import {
   Button,
@@ -27,6 +27,8 @@ import SignupNavbar from 'components/Navbars/SignupNavbar';
 import SimpleFooter from "components/Footers/SimpleFooter.js";
 
 const Register = () => {
+  const { t } = useTranslation(); // Initialize useTranslation
+
   // State for form inputs, validation errors, and success message
   const [formData, setFormData] = useState({
     fullName: '',
@@ -167,7 +169,7 @@ const Register = () => {
 
   return (
     <>
-      <SignupNavbar />
+      <SignupNavbar/>
       <main>
         <section className="section section-shaped section-lg">
           <div className="shape shape-style-1 bg-gradient-default">
@@ -186,27 +188,27 @@ const Register = () => {
                 <Card className="bg-secondary shadow border-0">
                   <CardHeader className="bg-white pb-5">
                     <div className="text-muted text-center mb-3">
-                      <small>Sign up with</small>
+                      <small>{t("signUpWith")}</small>
                     </div>
                     <div className="btn-wrapper text-center ml-5">
-                    <GoogleLogin
-                      onSuccess={handleGoogleSuccess}
-                      onError={handleGoogleFailure}
-                    />
+                      <GoogleLogin
+                        onSuccess={handleGoogleSuccess}
+                        onError={handleGoogleFailure}
+                      />
                     </div>
                   </CardHeader>
                   <CardBody className="px-lg-5 py-lg-5">
                     {success && (
                       <Alert color="success" fade>
-                        Signup successful! Redirecting...
+                        {t("signupSuccessMessage")}
                       </Alert>
                     )}
                     <div className="text-center text-muted mb-4">
-                      <small>Or sign up with credentials</small>
+                      <small>{t("orSignUpWithCredentials")}</small>
                     </div>
                     {error && (
                       <div className="text-danger text-center mb-3">
-                        <small>{error}</small>
+                        <small>{t("errorOccurred")}</small>
                       </div>
                     )}
                     <Form role="form" onSubmit={onSubmit}>
@@ -218,7 +220,7 @@ const Register = () => {
                             </InputGroupText>
                           </InputGroupAddon>
                           <Input
-                            placeholder="Full Name"
+                            placeholder={t("fullNamePlaceholder")}
                             type="text"
                             name="fullName"
                             value={formData.fullName}
@@ -235,7 +237,7 @@ const Register = () => {
                             </InputGroupText>
                           </InputGroupAddon>
                           <Input
-                            placeholder="Email"
+                            placeholder={t("emailPlaceholder")}
                             type="email"
                             name="email"
                             value={formData.email}
@@ -245,7 +247,7 @@ const Register = () => {
                         </InputGroup>
                         {emailError && (
                           <div className="text-danger">
-                            <small>{emailError}</small>
+                            <small>{t("emailValidationError")}</small>
                           </div>
                         )}
                       </FormGroup>
@@ -257,7 +259,7 @@ const Register = () => {
                             </InputGroupText>
                           </InputGroupAddon>
                           <Input
-                            placeholder="Phone Number"
+                            placeholder={t("phoneNumberPlaceholder")}
                             type="text"
                             name="phoneNumber"
                             value={formData.phoneNumber}
@@ -274,7 +276,7 @@ const Register = () => {
                             </InputGroupText>
                           </InputGroupAddon>
                           <Input
-                            placeholder="Password"
+                            placeholder={t("passwordPlaceholder")}
                             type="password"
                             name="password"
                             value={formData.password}
@@ -284,14 +286,20 @@ const Register = () => {
                         </InputGroup>
                         {passwordError && (
                           <div className="text-danger mt-2">
-                            <small>{passwordError}</small>
+                            <small>{t("passwordValidationError")}</small>
                           </div>
                         )}
                       </FormGroup>
                       <div className="text-muted font-italic">
                         <small>
-                          password strength:{" "}
-                          <span className={passwordStrength === 'strong' ? "text-success font-weight-700" : "text-warning font-weight-700"}>
+                          {t("passwordStrength")}:{" "}
+                          <span
+                            className={
+                              passwordStrength === "strong"
+                                ? "text-success font-weight-700"
+                                : "text-warning font-weight-700"
+                            }
+                          >
                             {passwordStrength}
                           </span>
                         </small>
@@ -310,12 +318,12 @@ const Register = () => {
                               htmlFor="customCheckRegister"
                             >
                               <span>
-                                I agree with the{" "}
+                                {t("privacyPolicyAgreement")}{" "}
                                 <a
                                   href="#pablo"
                                   onClick={(e) => e.preventDefault()}
                                 >
-                                  Privacy Policy
+                                  {t("privacyPolicy")}
                                 </a>
                               </span>
                             </label>
@@ -323,14 +331,14 @@ const Register = () => {
                         </Col>
                       </Row>
                       <div className="text-center">
-                      <Button
-                        className="mt-4"
-                        color="primary"
-                        type="submit"
-                        disabled={loading} // Disable while loading
-                      >
-                        {loading ? 'Signing Up...' : 'Create account'}
-                      </Button>
+                        <Button
+                          className="mt-4"
+                          color="primary"
+                          type="submit"
+                          disabled={loading}
+                        >
+                          {loading ? t("signingUp") : t("createAccountButton")}
+                        </Button>
                       </div>
                     </Form>
                   </CardBody>
@@ -340,7 +348,6 @@ const Register = () => {
           </Container>
         </section>
       </main>
-      <SimpleFooter />
     </>
   );
 };

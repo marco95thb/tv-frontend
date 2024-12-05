@@ -10,12 +10,28 @@ import {
   Container,
   Row,
   Col,
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
 } from "reactstrap";
+import { useTranslation } from "react-i18next";
 
 const SignupNavbar = () => {
+  const { t, i18n } = useTranslation(); // Initialize useTranslation
   const [collapseClasses, setCollapseClasses] = useState("");
   const [collapseOpen, setCollapseOpen] = useState(false);
   const navigate = useNavigate(); // useNavigate hook for navigation
+  const [dropdownOpen, setDropdownOpen] = React.useState(false);
+
+
+  // Function to toggle the language dropdown
+  const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
+
+  // Function to change the language
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng); // Update the current language
+  };
 
   useEffect(() => {
     const headroom = new Headroom(document.getElementById("navbar-main"));
@@ -61,8 +77,24 @@ const SignupNavbar = () => {
                   <span className="btn-inner--icon">
                     <i className="fa fa-sign-in mr-2" />
                   </span>
-                  <span className="nav-link-inner--text ml-1">Sign In</span>
+                  <span className="nav-link-inner--text ml-1">{t("signIn")}</span>
                 </Button>
+
+                <Dropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
+                  <DropdownToggle caret color="github">
+                  <span className="btn-inner--icon">
+                    <i className="fa fa-language mr-2" />
+                  </span>{t('language')} {/* Display "Language" */}
+                  </DropdownToggle>
+                  <DropdownMenu>
+                    <DropdownItem onClick={() => changeLanguage('it')}>
+                      Italiano
+                    </DropdownItem>
+                    <DropdownItem onClick={() => changeLanguage('en')}>
+                      English
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
               </NavItem>
             </Nav>
           </Container>

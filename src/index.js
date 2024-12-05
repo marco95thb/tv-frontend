@@ -18,31 +18,36 @@ import Remote from "components/Index/Remote";
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 
+import { I18nextProvider } from "react-i18next";
+import i18n from "i18n";
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_TEST_KEY);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
-    <BrowserRouter>
-      {/* Wrap the Elements provider around components that need Stripe */}
-      <Elements stripe={stripePromise}>
-        <Routes>
-          {/* Public routes */}
-          <Route path="/login-page" exact element={<Login />} />
-          <Route path="/register-page" exact element={<Register />} />
-          <Route path="/remote" excat element={<Remote />} /> 
+      <I18nextProvider i18n={i18n}>
+        <BrowserRouter>
+        {/* Wrap the Elements provider around components that need Stripe */}
+        <Elements stripe={stripePromise}>
+          <Routes>
+            {/* Public routes */}
+            <Route path="/login-page" exact element={<Login />} />
+            <Route path="/register-page" exact element={<Register />} />
+            <Route path="/remote" excat element={<Remote />} /> 
 
-          {/* Private routes */}
-          <Route path="/" exact element={<PrivateRoute element={Index} />} />
+            {/* Private routes */}
+            <Route path="/" exact element={<PrivateRoute element={Index} />} />
 
-          {/* Private route for admin */}
-          <Route path="/admin" element={<PrivateAdminRoute element={AdminIndex} />} />
+            {/* Private route for admin */}
+            <Route path="/admin" element={<PrivateAdminRoute element={AdminIndex} />} />
 
-          {/* Redirect unknown routes to home */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </Elements>
-    </BrowserRouter>
+            {/* Redirect unknown routes to home */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Elements>
+      </BrowserRouter>
+
+      </I18nextProvider>
   </GoogleOAuthProvider>
 );

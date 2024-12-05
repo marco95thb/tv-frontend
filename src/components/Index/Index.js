@@ -14,9 +14,11 @@ import beep6 from "./beep.mp3";
 import beep7 from "./beep.mp3"; 
 import beep8 from "./beep.mp3"; 
 import beep9 from "./beep.mp3"; 
-
+import { useTranslation } from "react-i18next"; // Import useTranslation
 
 const Index = () => {
+  const { t } = useTranslation(); // Initialize useTranslation
+
   const [hours, setHours] = useState(0);
   const [tvNumber, setTvNumber] = useState("");
   const [newTvNumber, setNewTvNumber] = useState("");
@@ -122,7 +124,7 @@ const handleProceedToBuy = async () => {
 
       // Success handling
       const newOrder = response.data;
-      setSuccessMessage("Order placed successfully! Your OTP has been sent via email. If you can't find it, check the spam folder");
+      setSuccessMessage(t("orderPlacedSuccess"));
       setOrders((prevOrders) => [newOrder, ...prevOrders]); // Update the orders with the new order
 
       // Reset form
@@ -131,7 +133,8 @@ const handleProceedToBuy = async () => {
   } catch (error) {
     console.error(error.response ? error.response.data : error.message);
     setErrorMessage(
-        error.response && error.response.data ? error.response.data.msg : "Failed to place order. Please try again."
+        error.response && error.response.data ? error.response.data.msg : t("orderPlacedError")
+
     );
   } finally {
     setIsLoading(false); // End loading state
@@ -186,7 +189,7 @@ const handleProceedToBuy = async () => {
 
       setModalErrorMessage(""); 
       // Success handling
-      setModalSuccessMessage("Room number changed successfully!");
+      setModalSuccessMessage(t("roomChangeSuccess"));
 
       const updatedOrder = response.data.order;
 
@@ -201,7 +204,7 @@ const handleProceedToBuy = async () => {
       
     } catch (error) {
       setModalErrorMessage(
-        error.response && error.response.data ? error.response.data.msg : "OTP verification failed."
+        error.response && error.response.data ? error.response.data.msg           : t("otpVerificationError")
       );
     }
   };
@@ -255,11 +258,11 @@ const handleProceedToBuy = async () => {
                       style={{ width: "200px" }}
                     />
                     <p className="lead text-white">
-                      Have a comfortable stay and stay entertained with smart TV in your room.
+                      {t("welcome")}
                     </p>
                     <div className="btn-wrapper mt-5">
                       <Button
-                        className="btn-white btn-icon mb-3 mb-sm-0"
+                        className="btn-white btn-icon mb-3 mb-sm-0 mb-lg-3"
                         color="default"
                         size="lg"
                         onClick={scrollToCart}
@@ -267,10 +270,10 @@ const handleProceedToBuy = async () => {
                         <span className="btn-inner--icon mr-1">
                           <i className="fa fa-shopping-cart" />
                         </span>
-                        <span className="btn-inner--text">Buy TV Time</span>
-                      </Button>{" "}
+                        <span className="btn-inner--text">  {t("buyTvTime")} </span>
+                      </Button>{"    "}
                       <Button
-                        className="btn-icon mb-3 mb-sm-0"
+                        className="btn-icon mb-3 mb-sm-0 mb-lg-3"
                         color="github"
                         size="lg"
                         onClick={scrollToOrders}
@@ -278,10 +281,10 @@ const handleProceedToBuy = async () => {
                         <span className="btn-inner--icon mr-1">
                           <i className="fa fa-list" />
                         </span>
-                        <span className="btn-inner--text">My Orders</span>
-                      </Button>
+                        <span className="btn-inner--text">  {t("myOrders")}  </span>
+                      </Button>{"    "}
                       <Button
-                        className="btn-icon mb-3 mb-sm-0"
+                        className="btn-icon mb-3 mb-sm-0 mb-lg-3"
                         color="default"
                         size="lg"
                         onClick={() => navigate("/remote")} // Navigate to /remote on click
@@ -289,7 +292,7 @@ const handleProceedToBuy = async () => {
                         <span className="btn-inner--icon mr-1">
                           <i className="fa fa-tv" />
                         </span>
-                        <span className="btn-inner--text">Remote</span>
+                        <span className="btn-inner--text">{t("remote")}</span>
                       </Button>
                     </div>
                   </Col>
@@ -317,17 +320,17 @@ const handleProceedToBuy = async () => {
           <Container>
             <Row className="justify-content-center">
               <Col lg="6">
-                <h3 className="text-center">Buy TV Time</h3>
+                <h3 className="text-center">{t("buyTvTime")}</h3>
                 <Form>
                   {/* Hours Input Field */}
                   <FormGroup>
-                    <Label for="hours">Enter Hours of TV Time</Label>
+                    <Label for="hours">{t("enterHours")}</Label>
                     <Input
                       type="number"
                       id="hours"
                       value={hours}
                       onChange={handleHoursChange}
-                      placeholder="Enter number of hours"
+                      placeholder={t("enterNumHours")}
                       min="0"
                     />
                   </FormGroup>
@@ -336,7 +339,7 @@ const handleProceedToBuy = async () => {
                   <Row>
                     <Col md="12">
                       <FormGroup>
-                        <Label for="tvNumber">TV Number</Label>
+                        <Label for="tvNumber">{t("tvNumber")}</Label>
                         <Input
                           type="text"
                           id="tvNumber"
@@ -347,7 +350,7 @@ const handleProceedToBuy = async () => {
                               setTvNumber(value);
                             }
                           }}
-                          placeholder="Enter 4-digit TV number"
+                          placeholder={t("enter4DigitNum")}
                           maxLength="4" // Ensures input is capped at 4 characters
                         />
                       </FormGroup>
@@ -357,15 +360,15 @@ const handleProceedToBuy = async () => {
 
                   {/* Display subtotal and Buy button */}
                   <div className="text-center">
-                    <p>Cost per hour: <strong>€{hourlyRate}</strong></p>
-                    <p>Subtotal: <strong>€{subtotal}</strong></p>
+                    <p>{t("costPerHour")}<strong>€{hourlyRate}</strong></p>
+                    <p>{t("subtotal")}<strong>€{subtotal}</strong></p>
                     {successMessage && <Alert color="success">{successMessage}</Alert>}
                     <Button
                       color="primary"
                       disabled={hours === 0 || tvNumber.length !== 4 || isLoading}
                       onClick={handleProceedToBuy}
                     >
-                      {isLoading ? "Placing Order..." : "Proceed to Buy"}
+                      {isLoading ? `${t("placingOrder")}` : `${t("proceedToBuy")}`}
                     </Button>
                   </div>
                 </Form>
@@ -388,9 +391,9 @@ const handleProceedToBuy = async () => {
           <Container>
             <Row className="justify-content-center">
               <Col lg="9">
-                <h3 className="text-center">Your Orders</h3>
+                <h3 className="text-center">{t("yourOrders")}</h3>
                 {orders.length === 0 ? (
-                  <h6 className="text-center">No orders placed yet.</h6>
+                  <h6 className="text-center">{t("noOrders")}</h6>
                 ) : (
                   <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
                     <Table
@@ -403,12 +406,12 @@ const handleProceedToBuy = async () => {
                     >
                       <thead>
                         <tr>
-                          <th>Click to expand previous TV</th>
-                          <th>Time Bought (Hours)</th>
-                          <th>Total Cost</th>
-                          <th>TV Number</th>
-                          <th>Order Date</th>
-                          <th>Change TV</th>
+                          <th>{t("clickToExpand")}</th>
+                          <th>{t("timeBought")}</th>
+                          <th>{t("totalCost")}</th>
+                          <th>{t("tvNumber")}</th>
+                          <th>{t("orderDate")}</th>
+                          <th>{t("changeTv")}</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -451,7 +454,7 @@ const handleProceedToBuy = async () => {
                                     color="primary"
                                     onClick={() => handleChangeRoom(order._id)}
                                   >
-                                    Change TV
+                                    {t("changeTv")}
                                   </Button>
                                 </td>
                               </tr>
@@ -465,7 +468,7 @@ const handleProceedToBuy = async () => {
                                     <td></td> {/* Empty cell for Total Cost */}
                                     <td>{tv}</td>
                                     <td></td> {/* Empty cell for Order Date */}
-                                    <td>Previous TV</td>
+                                    <td>{t("previousTV")}</td>
                                   </tr>
                                 ))}
                             </React.Fragment>
@@ -482,28 +485,39 @@ const handleProceedToBuy = async () => {
           {/* OTP Modal for Changing Room */}
           <Modal isOpen={showOtpModal} toggle={() => setShowOtpModal(!showOtpModal)}>
             <ModalHeader toggle={() => setShowOtpModal(!showOtpModal)}>
-              Enter OTP you received when placing the order
+              {t("enterOTP")}
             </ModalHeader>
             <ModalBody>
               <Form>
                 <FormGroup>
-                  <Label for="otp">OTP received in email</Label>
+                  <Label for="otp">{t("otpReceived")}</Label>
                   <Input
                     type="text"
                     id="otp"
                     value={otp}
-                    onChange={(e) => setOtp(e.target.value)}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (/^\d{0,6}$/.test(value)) { // Allows only up to 4 digits
+                        setOtp(value);
+                      }
+                    }}                    
+                    placeholder={t("enter6DigitOtp")}
                     disabled={modalSuccessMessage ? true : false} // Disable input after success
                   />
                 </FormGroup>
                 
                 <FormGroup>
-                  <Label for="newTvNumber">New TV Number</Label>
+                  <Label for="newTvNumber">{t("newTvNum")}</Label>
                   <Input
                     type="text"
                     id="newTvNumber"
                     value={newTvNumber}
-                    onChange={(e) => setNewTvNumber(e.target.value)}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (/^\d{0,4}$/.test(value)) { // Allows only up to 4 digits
+                        setNewTvNumber(value);
+                      }
+                    }}                    placeholder={t("enter4DigitNum")}
                     disabled={modalSuccessMessage ? true : false} // Disable input after success
                   />
                 </FormGroup>
@@ -513,12 +527,14 @@ const handleProceedToBuy = async () => {
             </ModalBody>
             <ModalFooter>
               {!modalSuccessMessage && (
-                <Button color="primary" onClick={handleOtpSubmit}>
-                  Submit
+                <Button color="primary" onClick={handleOtpSubmit}
+                disabled={newTvNumber.length !== 4 || otp.length != 6} // Enable only if TV number length is 4
+                >
+                  {t("Submit")}
                 </Button>
               )}
               <Button color="secondary" onClick={() => setShowOtpModal(false)}>
-                {modalSuccessMessage ? 'Close' : 'Cancel'}
+                {modalSuccessMessage ? `${t("close")}` : `${t("cancel")}`}
               </Button>
             </ModalFooter>
           </Modal>

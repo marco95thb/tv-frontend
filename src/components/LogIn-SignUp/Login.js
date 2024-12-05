@@ -3,6 +3,7 @@ import axios from "axios";
 import { GoogleLogin } from '@react-oauth/google';
 import { useNavigate } from "react-router-dom"; // For navigation after login
 import { jwtDecode } from "jwt-decode";
+import { useTranslation } from "react-i18next";
 import {
   Button,
   Card,
@@ -23,6 +24,8 @@ import LoginNavbar from "components/Navbars/LoginNavbar";
 import SimpleFooter from "components/Footers/SimpleFooter.js";
 
 const Login = () => {
+  const { t } = useTranslation(); // Initialize useTranslation
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState(""); // State to handle error messages
@@ -140,7 +143,7 @@ const Login = () => {
 
   return (
     <>
-      <LoginNavbar />
+      <LoginNavbar/>
       <main>
         <section className="section section-shaped section-lg">
           <div className="shape shape-style-1 bg-gradient-default">
@@ -159,19 +162,19 @@ const Login = () => {
                 <Card className="bg-secondary shadow border-0">
                   <CardHeader className="bg-white pb-5">
                     <div className="text-muted text-center mb-3">
-                      <small>Sign in with</small>
+                      <small>{t("signInWith")}</small>
                     </div>
                     <div className="btn-wrapper text-center ml-5">
-                    <GoogleLogin
-                      onSuccess={handleGoogleSuccess}
-                      onError={handleGoogleFailure}
-                    />
+                      <GoogleLogin
+                        onSuccess={handleGoogleSuccess}
+                        onError={handleGoogleFailure}
+                      />
                     </div>
-                    {googleError && <Alert color="danger">{googleError}</Alert>}
+                    {googleError && <Alert color="danger">{t("googleSignInError")}</Alert>}
                   </CardHeader>
                   <CardBody className="px-lg-5 py-lg-5">
                     <div className="text-center text-muted mb-4">
-                      <small>Or sign in with credentials</small>
+                      <small>{t("orSignInWithCredentials")}</small>
                     </div>
                     <Form role="form">
                       <FormGroup className="mb-3">
@@ -182,13 +185,13 @@ const Login = () => {
                             </InputGroupText>
                           </InputGroupAddon>
                           <Input
-                            placeholder="Email"
+                            placeholder={t("emailPlaceholder")}
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                           />
                         </InputGroup>
-                        {emailError && <Alert color="danger">{emailError}</Alert>} {/* Email validation error */}
+                        {emailError && <Alert color="danger">{t("emailValidationError")}</Alert>}
                       </FormGroup>
                       <FormGroup>
                         <InputGroup className="input-group-alternative">
@@ -198,27 +201,25 @@ const Login = () => {
                             </InputGroupText>
                           </InputGroupAddon>
                           <Input
-                            placeholder="Password"
+                            placeholder={t("passwordPlaceholder")}
                             type="password"
                             autoComplete="off"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                           />
                         </InputGroup>
-                        {passwordError && <Alert color="danger">{passwordError}</Alert>} {/* Password validation error */}
+                        {passwordError && <Alert color="danger">{t("passwordValidationError")}</Alert>}
                       </FormGroup>
-                      {/* Error message for backend response */}
-                      {errorMessage && <Alert color="danger">{errorMessage}</Alert>}
-                      
+                      {errorMessage && <Alert color="danger">{t("backendError")}</Alert>}
                       <div className="text-center">
                         <Button
                           className="my-4"
                           color="primary"
                           type="button"
                           onClick={handleLogin}
-                          disabled={!isFormValid} // Disable button if form is invalid
+                          disabled={!isFormValid}
                         >
-                          {isLoading ? "Signing in..." : "Sign in"}
+                          {isLoading ? t("signingIn") : t("signInButton")}
                         </Button>
                       </div>
                     </Form>
@@ -227,17 +228,15 @@ const Login = () => {
                 <Row className="mt-3">
                   <Col xs="6">
                     <a className="text-light" href="#pablo" onClick={(e) => e.preventDefault()}>
-                      <small>Forgot password?</small>
+                      <small>{t("forgotPassword")}</small>
                     </a>
                   </Col>
-                  
                 </Row>
               </Col>
             </Row>
           </Container>
         </section>
       </main>
-      <SimpleFooter />
     </>
   );
 };
