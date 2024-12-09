@@ -32,19 +32,18 @@ root.render(
         <Elements stripe={stripePromise}>
           <Routes>
             {/* Public routes */}
-            <Route path="/" exact element={<Index />} />
             <Route path="/login-page" exact element={<Login />} />
             <Route path="/register-page" exact element={<Register />} />
             <Route path="/remote" excat element={<Remote />} /> 
 
             {/* Private routes */}
-            {/* <Route path="/" exact element={<PrivateRoute element={Index} />} /> */}
+            <Route path="/" exact element={<PrivateRoute element={Index} />} />
 
             {/* Private route for admin */}
             <Route path="/admin" element={<PrivateAdminRoute element={AdminIndex} />} />
 
             {/* Redirect unknown routes to home */}
-            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </Elements>
       </BrowserRouter>
