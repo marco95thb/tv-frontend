@@ -1,6 +1,6 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-
+ 
 // Define translations for English and Italian
 const resources = {
   en: {
@@ -78,11 +78,8 @@ const resources = {
       viewAllOrders: "View All Orders",
       changeHourlyRate: "Change Hourly Rate",
       viewAllUsers: "View All Users",
-      changeHourlyRate: "Change Hourly Rate",
       newHourlyRate: "New Hourly Rate",
       hourlyRateChangeSuccess: "Hourly rate changed successfully!",
-      close: "Close",
-      cancel: "Cancel",
       allUsers: "All Users",
       searchUsersPlaceholder: "Search users by name, email, or phone number",
       loadingUsers: "Loading users...",
@@ -95,17 +92,10 @@ const resources = {
       noOrdersFound: "No orders found.",
       expandPreviousTv: "Click to expand previous TV",
       userEmail: "User Email",
-      timeBought: "Time Bought (Hours)",
-      totalCost: "Total Cost",
-      tvNumber: "TV Number",
-      orderDate: "Order Date",
-      changeTv: "Change TV",
       changeTvNumber: "Change TV Number",
       newTvNumber: "New TV Number",
-      manageTvs: "Manage TVs",
       addTv: "Add TV",
       enterTvNumberPlaceholder: "Enter TV Number",
-      tvNumber: "TV Number",
       state: "State",
     },
   },
@@ -203,7 +193,6 @@ const resources = {
         "enterTvNumberPlaceholder": "Inserisci il numero della TV",
         "addTv": "Aggiungi la TV",
         "state": "Stato",
-        "changeTv": "Cambia TV",
       },
   },
 };

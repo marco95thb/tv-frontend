@@ -6,23 +6,12 @@ import DemoNavbar from "components/Navbars/DemoNavbar.js";
 import SimpleFooter from "components/Footers/SimpleFooter.js";
 import { useTranslation } from "react-i18next";
 
-import beep1 from "./beep.mp3"; // Import beep sounds
-import beep2 from "./beep.mp3"; // Import beep sounds
-import beep3 from "./beep.mp3"; // Import beep sounds
-import beep4 from "./beep.mp3"; // Import beep sounds
-import beep5 from "./beep.mp3"; // Import beep sounds
-import beep6 from "./beep.mp3"; // Import beep sounds
-import beep7 from "./beep.mp3"; // Import beep sounds
-import beep8 from "./beep.mp3"; // Import beep sounds
-import beep9 from "./beep.mp3"; // Import beep sounds
-
 const AdminIndex = () => {
 
   const { t } = useTranslation(); // Initialize useTranslation
   const [orders, setOrders] = useState([]);
   const [filteredOrders, setFilteredOrders] = useState([]);
   const [emailFilter, setEmailFilter] = useState("");
-  const [roomFilter, setRoomFilter] = useState("");
   const [tvFilter, setTvFilter] = useState("");
   const [users, setUsers] = useState([]);
   const [usersLoading, setUsersLoading] = useState(true);
@@ -43,12 +32,9 @@ const AdminIndex = () => {
   const [rateSuccessMessage, setRateSuccessMessage] = useState(false);  // To hide submit button on success
 
   // TV Management State
-  const [showAddRoomModal, setShowAddRoomModal] = useState(false);
   const [showAddTVModal, setShowAddTVModal] = useState(false);
   const [newAddTvNumber, setNewAddTvNumber] = useState('');
-  const [addRoomSuccess, setAddRoomSuccess] = useState('');
   const [addTVSuccess, setAddTVSuccess] = useState('');
-  const [addRoomError, setAddRoomError] = useState('');
   const [addTVError, setAddTVError] = useState('');
   const ordersSectionRef = useRef(null);
   const userSectionRef = useRef(null);
@@ -161,7 +147,7 @@ const AdminIndex = () => {
     };
 
     applyFilters();
-  }, [emailFilter, roomFilter, tvFilter, orders]);
+  }, [emailFilter, tvFilter, orders]);
 
 
   // Open modal for changing room/TV number
@@ -383,22 +369,7 @@ const toggleTVState = async (tvNumber, currentState) => {
   } catch (error) {
     console.error("Failed to toggle TV state", error.message);
   }
-};
-
-  const [showRemoteModal, setShowRemoteModal] = useState(false); // Modal state for remote
-  const beepSounds = [beep1, beep2, beep3, beep4, beep5, beep6, beep7, beep8, beep9]; // Array of beep sounds
-
-  // Function to toggle the remote modal visibility
-  const toggleRemoteModal = () => {
-    setShowRemoteModal(!showRemoteModal);
-  };
-
-  // Function to play beep sound based on button number
-  const playBeep = (index) => {
-    const audio = new Audio(beepSounds[index]);
-    audio.play();
-  };
-
+}; 
 
   return (
     <>

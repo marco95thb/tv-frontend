@@ -5,15 +5,6 @@ import axios from "axios";
 import DemoNavbar from "components/Navbars/DemoNavbar";
 import SimpleFooter from "components/Footers/SimpleFooter.js";
 
-import beep1 from "./beep.mp3"; 
-import beep2 from "./beep.mp3"; 
-import beep3 from "./beep.mp3"; 
-import beep4 from "./beep.mp3"; 
-import beep5 from "./beep.mp3"; 
-import beep6 from "./beep.mp3"; 
-import beep7 from "./beep.mp3"; 
-import beep8 from "./beep.mp3"; 
-import beep9 from "./beep.mp3"; 
 import { useTranslation } from "react-i18next"; // Import useTranslation
 
 const Index = () => {
@@ -27,11 +18,10 @@ const Index = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false); // For showing loading state
-  const [loadingOrders, setLoadingOrders] = useState(true); // For loading state of orders
+  const [loadingOrders, setLoadingOrders] = useState("");
 
   const [modalOrderId, setModalOrderId] = useState(null); // To track the order for which OTP is entered
   const [otp, setOtp] = useState(""); // OTP input
-  const [newRoomNumber, setNewRoomNumber] = useState(""); // New room number for change
   const [modalErrorMessage, setModalErrorMessage] = useState(""); // Error message for the modal
   const [modalSuccessMessage, setModalSuccessMessage] = useState(""); // Success message for the modal
   const [showOtpModal, setShowOtpModal] = useState(false); // For showing the OTP modal
@@ -213,20 +203,7 @@ const handleProceedToBuy = async () => {
     const date = new Date(dateString);
     return date.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
   };
-
-  const [showRemoteModal, setShowRemoteModal] = useState(false); // Modal state for remote
-  const beepSounds = [beep1, beep2, beep3, beep4, beep5, beep6, beep7, beep8, beep9]; // Array of beep sounds
-
-  // Function to toggle the remote modal visibility
-  const toggleRemoteModal = () => {
-    setShowRemoteModal(!showRemoteModal);
-  };
-
-  // Function to play beep sound based on button number
-  const playBeep = (index) => {
-    const audio = new Audio(beepSounds[index]);
-    audio.play();
-  };
+  
 
   return (
     <>
@@ -528,7 +505,7 @@ const handleProceedToBuy = async () => {
             <ModalFooter>
               {!modalSuccessMessage && (
                 <Button color="primary" onClick={handleOtpSubmit}
-                disabled={newTvNumber.length !== 4 || otp.length != 6} // Enable only if TV number length is 4
+                disabled={newTvNumber.length !== 4 || otp.length !== 6} // Enable only if TV number length is 4
                 >
                   {t("Submit")}
                 </Button>
