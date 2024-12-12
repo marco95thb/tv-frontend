@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Row, Col, Button } from 'reactstrap';
-import RemoteNavbar from '../Navbars/RemoteNavbar'
+import RemoteNavbar from '../Navbars/RemoteNavbar';
 import SimpleFooter from '../Footers/SimpleFooter';
 
 // Importing sound files
@@ -92,7 +92,7 @@ const Remote = () => {
           </section>
         </div>
       </main>
-      <SimpleFooter />
+     <SimpleFooter />
     </>
   );
 }

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import Headroom from "headroom.js";
 import {
   NavbarBrand,
@@ -25,6 +24,9 @@ const RemoteNavbar = () => {
   const onExited = () => {
     setCollapseClasses("");
   };
+
+  console.log("Navbar Check:")
+  console.log(Navbar); // Should not be undefined
 
   return (
     <>
