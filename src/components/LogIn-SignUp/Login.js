@@ -20,7 +20,7 @@ import {
   Col,
   Alert,
 } from "reactstrap";
-import LoginNavbar from "src/components/Navbars/LoginNavbar";
+import LoginNavbar from '../Navbars/LoginNavbar'
 
 const Login = () => {
   const { t } = useTranslation(); // Initialize useTranslation

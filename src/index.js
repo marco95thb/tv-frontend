@@ -2,18 +2,18 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 
-import "src/assets/vendor/nucleo/css/nucleo.css";
-import "src/assets/vendor/font-awesome/css/font-awesome.min.css";
-import "src/assets/scss/argon-design-system-react.scss?v1.1.0";
+import "./assets/vendor/nucleo/css/nucleo.css";
+import "./assets/vendor/font-awesome/css/font-awesome.min.css";
+import "./assets/scss/argon-design-system-react.scss?v1.1.0";
 
-import Index from "src/components/Index/Index";
-import Login from "src/components/LogIn-SignUp/Login";
-import Register from "src/components/LogIn-SignUp/Register";
-import AdminIndex from "src/components/Index/AdminIndex";
+import Index from "./components/Index/Index";
+import Login from "./components/LogIn-SignUp/Login";
+import Register from "./components/LogIn-SignUp/Register";
+import AdminIndex from "./components/Index/AdminIndex";
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import PrivateRoute from "src/components/Private Routes/PrivateRoute";
-import PrivateAdminRoute from "src/components/Private Routes/PrivateAdminRoute";
-import Remote from "src/components/Index/Remote";
+import PrivateRoute from "./components/Private Routes/PrivateRoute";
+import PrivateAdminRoute from "./components/Private Routes/PrivateAdminRoute";
+import Remote from "./components/Index/Remote";
 
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';

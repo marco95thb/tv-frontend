@@ -23,7 +23,7 @@ import {
 } from "reactstrap";
 
 // core components
-import SignupNavbar from 'src/components/Navbars/SignupNavbar';
+import SignupNavbar from '../Navbars/SignupNavbar';
 
 const Register = () => {
   const { t } = useTranslation(); // Initialize useTranslation

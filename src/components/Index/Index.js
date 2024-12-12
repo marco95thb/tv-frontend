@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { Container, Row, Col, Form, FormGroup, Input, Label, Button, Table, Alert, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import DemoNavbar from "src/components/Navbars/DemoNavbar";
-import SimpleFooter from "src/components/Footers/SimpleFooter.js";
+import DemoNavbar from "../Navbars/DemoNavbar";
+import SimpleFooter from "../Footers/SimpleFooter";
 
 import { useTranslation } from "react-i18next"; // Import useTranslation
 
@@ -231,7 +231,7 @@ const handleProceedToBuy = async () => {
                     <img
                       alt="..."
                       className="img-fluid"
-                      src={require("src/assets/img/brand/argon-react-white.png")}
+                      src={require("../../assets/img/brand/argon-react-white.png")}
                       style={{ width: "200px" }}
                     />
                     <p className="lead text-white">

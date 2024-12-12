@@ -56,7 +56,7 @@ const DemoNavbar = () => {
             <NavbarBrand className="mr-lg-5" to="/" tag={Link}>
               <img
                 alt="..."
-                src={require("src/assets/img/brand/argon-react-white.png")}
+                src={require("../../assets/img/brand/argon-react-white.png")}
                 style={{ width: '70px', height: 'auto' }}
               />
             </NavbarBrand>
