@@ -69,9 +69,6 @@ import PrivateRoute from "./components/Private Routes/PrivateRoute";
 import PrivateAdminRoute from "./components/Private Routes/PrivateAdminRoute";
 import Remote from "./components/Index/Remote";
 
-import { loadStripe } from '@stripe/stripe-js';
-import { Elements } from '@stripe/react-stripe-js';
-
 import { I18nextProvider } from "react-i18next";
 import i18n from "./i18n";
 // const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_TEST_KEY);
@@ -82,18 +79,18 @@ root.render(
   <BrowserRouter>
     <Routes>
       {/* Public routes */}
-      <Route path="/login-page" exact element={<Login />} />
-      <Route path="/register-page" exact element={<Register />} />
+      {/* <Route path="/login-page" exact element={<Login />} /> */}
+      {/* <Route path="/register-page" exact element={<Register />} /> */}
       <Route path="/remote" excat element={<Remote />} /> 
 
       {/* Private routes */}
-      <Route path="/" exact element={<PrivateRoute element={Index} />} />
+      {/* <Route path="/" exact element={<PrivateRoute element={Index} />} /> */}
 
       {/* Private route for admin */}
-      <Route path="/admin" element={<PrivateAdminRoute element={AdminIndex} />} />
+      {/* <Route path="/admin" element={<PrivateAdminRoute element={AdminIndex} />} /> */}
 
       {/* Redirect unknown routes to home */}
-      <Route path="*" element={<Navigate to="/login" replace />} />
+      {/* <Route path="*" element={<Navigate to="/login" replace />} /> */}
     </Routes>
   </BrowserRouter>
 );
