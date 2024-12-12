@@ -164,10 +164,10 @@ const Login = () => {
                       <small>{t("signInWith")}</small>
                     </div>
                     <div className="btn-wrapper text-center ml-5">
-                      <GoogleLogin
+                      {/* <GoogleLogin
                         onSuccess={handleGoogleSuccess}
                         onError={handleGoogleFailure}
-                      />
+                      /> */}
                     </div>
                     {googleError && <Alert color="danger">{t("googleSignInError")}</Alert>}
                   </CardHeader>
