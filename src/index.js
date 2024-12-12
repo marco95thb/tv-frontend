@@ -76,21 +76,22 @@ import i18n from "./i18n";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
-  <BrowserRouter>
-    <Routes>
-      {/* Public routes */}
-      {/* <Route path="/login-page" exact element={<Login />} /> */}
-      {/* <Route path="/register-page" exact element={<Register />} /> */}
-      <Route path="/remote" excat element={<Remote />} /> 
+  <Remote/>
+  // <BrowserRouter>
+  //   <Routes>
+  //     {/* Public routes */}
+  //     {/* <Route path="/login-page" exact element={<Login />} /> */}
+  //     {/* <Route path="/register-page" exact element={<Register />} /> */}
+  //     {/* <Route path="/remote" excat element={<Remote />} />  */}
 
-      {/* Private routes */}
-      {/* <Route path="/" exact element={<PrivateRoute element={Index} />} /> */}
+  //     {/* Private routes */}
+  //     {/* <Route path="/" exact element={<PrivateRoute element={Index} />} /> */}
 
-      {/* Private route for admin */}
-      {/* <Route path="/admin" element={<PrivateAdminRoute element={AdminIndex} />} /> */}
+  //     {/* Private route for admin */}
+  //     {/* <Route path="/admin" element={<PrivateAdminRoute element={AdminIndex} />} /> */}
 
-      {/* Redirect unknown routes to home */}
-      {/* <Route path="*" element={<Navigate to="/login" replace />} /> */}
-    </Routes>
-  </BrowserRouter>
+  //     {/* Redirect unknown routes to home */}
+  //     {/* <Route path="*" element={<Navigate to="/login" replace />} /> */}
+  //   </Routes>
+  // </BrowserRouter>
 );
