@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { Container, Row, Col, Table, Button, FormGroup, Input, Alert,Form, Modal, ModalBody, ModalFooter, ModalHeader, Label } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import DemoNavbar from "components/Navbars/DemoNavbar.js";
-import SimpleFooter from "components/Footers/SimpleFooter.js";
+import DemoNavbar from "src/components/Navbars/DemoNavbar.js";
+import SimpleFooter from "src/components/Footers/SimpleFooter.js";
 import { useTranslation } from "react-i18next";
 
 const AdminIndex = () => {
@@ -397,7 +397,7 @@ const toggleTVState = async (tvNumber, currentState) => {
                     <img
                       alt="..."
                       className="img-fluid"
-                      src={require("assets/img/brand/argon-react-white.png")}
+                      src={require("src/assets/img/brand/argon-react-white.png")}
                       style={{ width: "200px" }}
                     />
                     <h2 className="lead text-white">

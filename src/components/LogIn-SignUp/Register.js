@@ -23,8 +23,7 @@ import {
 } from "reactstrap";
 
 // core components
-import SignupNavbar from 'components/Navbars/SignupNavbar';
-import SimpleFooter from "components/Footers/SimpleFooter.js";
+import SignupNavbar from 'src/components/Navbars/SignupNavbar';
 
 const Register = () => {
   const { t } = useTranslation(); // Initialize useTranslation

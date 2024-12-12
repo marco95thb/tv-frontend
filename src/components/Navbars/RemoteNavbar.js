@@ -37,7 +37,7 @@ const RemoteNavbar = () => {
             <NavbarBrand className="mr-lg-5">
               <img
                 alt="..."
-                src={require("assets/img/brand/argon-react-white.png")}
+                src={require("src/assets/img/brand/argon-react-white.png")}
                 style={{ width: '70px', height: 'auto' }} // Adjust the size here
               />
             </NavbarBrand>

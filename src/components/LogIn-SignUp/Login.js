@@ -20,8 +20,7 @@ import {
   Col,
   Alert,
 } from "reactstrap";
-import LoginNavbar from "components/Navbars/LoginNavbar";
-import SimpleFooter from "components/Footers/SimpleFooter.js";
+import LoginNavbar from "src/components/Navbars/LoginNavbar";
 
 const Login = () => {
   const { t } = useTranslation(); // Initialize useTranslation

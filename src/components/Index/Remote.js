@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Row, Col, Button } from 'reactstrap';
-import RemoteNavbar from "components/Navbars/RemoteNavbar";
-import SimpleFooter from 'components/Footers/SimpleFooter';
+import RemoteNavbar from "src/components/Navbars/RemoteNavbar";
+import SimpleFooter from 'src/components/Footers/SimpleFooter';
 
 // Importing sound files
 import beep1 from './beep.mp3';
