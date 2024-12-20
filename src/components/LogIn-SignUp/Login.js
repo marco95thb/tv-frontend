@@ -228,11 +228,7 @@ const Login = () => {
                   <Col xs="6">
                     <a
                       className="text-light"
-                      href="#pablo"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        navigate('/privacy-policy'); // Navigate to the privacy-policy route
-                      }}
+                      href="https://www.attivatv.it/privacy-policy"
                     >
                       <small>{t("privacyPolicy")}</small>
                     </a>
