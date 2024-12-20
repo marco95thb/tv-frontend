@@ -8,7 +8,7 @@ import SimpleFooter from "../Footers/SimpleFooter";
 import { useTranslation } from "react-i18next"; // Import useTranslation
 
 const Index = () => {
-  const { t } = useTranslation(); // Initialize useTranslation
+  const { t, i18n } = useTranslation();
 
   const [hours, setHours] = useState(0);
   const [tvNumber, setTvNumber] = useState("");
@@ -99,7 +99,7 @@ const handleProceedToBuy = async () => {
 
   try {
       const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/api/orders/buy-tv-time`,
+        `${process.env.REACT_APP_BASE_URL}/api/orders/create-checkout-session`,
         {
           timeBought: hours,
           tvNumber: tvNumber,
@@ -112,24 +112,42 @@ const handleProceedToBuy = async () => {
         }
       );
 
-      // Success handling
-      const newOrder = response.data;
-      setSuccessMessage(t("orderPlacedSuccess"));
-      setOrders((prevOrders) => [newOrder, ...prevOrders]); // Update the orders with the new order
-
-      // Reset form
-      setHours(0);
-      setTvNumber("");
+      // Redirect to Stripe Checkout
+    const { checkoutUrl } = response.data; // Ensure the server responds with a `checkoutUrl`
+    if (checkoutUrl) {
+      window.location.href = checkoutUrl; // Redirect to the Stripe Checkout page
+    } else {
+      throw new Error("Checkout URL not received");
+    }
   } catch (error) {
     console.error(error.response ? error.response.data : error.message);
     setErrorMessage(
-        error.response && error.response.data ? error.response.data.msg : t("orderPlacedError")
-
+      error.response && error.response.data
+        ? error.response.data.msg
+        : t("orderPlacedError")
     );
   } finally {
     setIsLoading(false); // End loading state
   }
 };
+
+useEffect(() => {
+  const query = new URLSearchParams(window.location.search);
+
+  if (query.get("success")) {
+    setSuccessMessage(t("orderPlacedSuccess"));
+
+    // Reset form
+    setHours(0);
+    setTvNumber("");
+  } else if (query.get("canceled")) {
+    setErrorMessage(t("orderPlacedError"));
+  }
+
+  // Clear query parameters after handling
+  //window.history.replaceState({}, document.title, "/");
+}, [t, i18n.language]); 
+
 
   // Create refs for cart and orders sections
   const cartSectionRef = useRef(null);

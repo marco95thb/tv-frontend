@@ -53,37 +53,3 @@ root.render(
       </I18nextProvider>
   </GoogleOAuthProvider>
 );
-
-// import React from "react";
-// import ReactDOM from "react-dom/client";
-
-// import "./assets/vendor/nucleo/css/nucleo.css";
-// import "./assets/vendor/font-awesome/css/font-awesome.min.css";
-// import "./assets/scss/argon-design-system-react.scss?v1.1.0";
-
-// import Remote from "./components/Index/Remote";
-
-// // const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_TEST_KEY);
-
-// const root = ReactDOM.createRoot(document.getElementById("root"));
-
-// root.render(
-//   <Remote/>
-//   // <BrowserRouter>
-//   //   <Routes>
-//   //     {/* Public routes */}
-//   //     {/* <Route path="/login-page" exact element={<Login />} /> */}
-//   //     {/* <Route path="/register-page" exact element={<Register />} /> */}
-//   //     {/* <Route path="/remote" exact element={<Remote />} />  */}
-
-//   //     {/* Private routes */}
-//   //     {/* <Route path="/" exact element={<PrivateRoute element={Index} />} /> */}
-
-//   //     {/* Private route for admin */}
-//   //     {/* <Route path="/admin" element={<PrivateAdminRoute element={AdminIndex} />} /> */}
-
-//   //     {/* Redirect unknown routes to home */}
-//   //     {/* <Route path="*" element={<Navigate to="/login" replace />} /> */}
-//   //   </Routes>
-//   // </BrowserRouter>
-// );
