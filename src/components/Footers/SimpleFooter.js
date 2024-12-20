@@ -32,6 +32,11 @@ const SimpleFooter = () => {
           </Col>
           <Col md="6">
             <Nav className="nav-footer justify-content-end">
+            <NavItem>
+                <NavLink href="https://www.attivatv.it/privacy-policy" rel="noopener noreferrer">
+                  Privacy Policy
+                </NavLink>
+              </NavItem>
               <NavItem>
                 <NavLink href="https://github.com/Moeez-Muslim" target="_blank" rel="noopener noreferrer">
                   Creative Tim
