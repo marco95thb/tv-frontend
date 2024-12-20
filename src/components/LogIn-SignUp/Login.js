@@ -226,8 +226,15 @@ const Login = () => {
                 </Card>
                 <Row className="mt-3">
                   <Col xs="6">
-                    <a className="text-light" href="#pablo" onClick={(e) => e.preventDefault()}>
-                      <small>{t("forgotPassword")}</small>
+                    <a
+                      className="text-light"
+                      href="#pablo"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        navigate('/privacy-policy'); // Navigate to the privacy-policy route
+                      }}
+                    >
+                      <small>{t("privacyPolicy")}</small>
                     </a>
                   </Col>
                 </Row>

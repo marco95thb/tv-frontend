@@ -14,6 +14,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import PrivateRoute from "./components/Private Routes/PrivateRoute";
 import PrivateAdminRoute from "./components/Private Routes/PrivateAdminRoute";
 import Remote from "./components/Index/Remote";
+import PrivacyPolicy from "./components/LogIn-SignUp/PrivayPolicy";
 
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
@@ -35,6 +36,7 @@ root.render(
             <Route path="/login-page" exact element={<Login />} />
             <Route path="/register-page" exact element={<Register />} />
             <Route path="/remote" exact element={<Remote />} /> 
+            <Route path="/privacy-policy" exact element={<PrivacyPolicy />} /> 
 
             {/* Private routes */}
             <Route path="/" exact element={<PrivateRoute element={Index} />} />
