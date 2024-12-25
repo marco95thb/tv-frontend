@@ -84,7 +84,6 @@ const Login = () => {
 
       // Decode the token to check if the user is an admin
       const decodedToken = jwtDecode(response.data.token);
-      console.log(decodedToken)
 
       // Check if the token contains `isAdmin: true` and navigate accordingly
       if (decodedToken.isAdmin) {
@@ -123,10 +122,15 @@ const Login = () => {
       // If login is successful, store the JWT token in localStorage
       localStorage.setItem("token", response.data.token);
 
-      // Redirect user to the homepage or another route
-      navigate("/");
+      // Decode the token to check if the user is an admin
+      const decodedToken = jwtDecode(response.data.token);
 
-      // Redirect user or perform post-login action here
+      // Check if the token contains `isAdmin: true` and navigate accordingly
+      if (decodedToken.isAdmin) {
+        navigate("/admin"); // Navigate to /admin if user is an admin
+      } else {
+        navigate("/"); // Navigate to home if user is not an admin
+      }
 
     } catch (error) {
       console.error("Error during Google sign-in:", error);
