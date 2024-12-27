@@ -173,6 +173,9 @@ const Login = () => {
                         onError={handleGoogleFailure}
                       />
                     </div>
+                    <div className="text-center mt-3">
+                      <small>{t("purchaseCredits")}</small>
+                    </div>
                     {googleError && <Alert color="danger">{t("googleSignInError")}</Alert>}
                   </CardHeader>
                   <CardBody className="px-lg-5 py-lg-5">
