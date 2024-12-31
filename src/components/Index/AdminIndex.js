@@ -28,6 +28,7 @@ const AdminIndex = () => {
   // State for handling hourly rate change
   const [showRateModal, setShowRateModal] = useState(false);
   const [newHourlyRate, setNewHourlyRate] = useState('');
+  const [thresholds, setThresholds] = useState([]);
   const [rateErrorMessage, setRateErrorMessage] = useState('');
   const [rateSuccessMessage, setRateSuccessMessage] = useState(false);  // To hide submit button on success
 
@@ -209,6 +210,63 @@ const AdminIndex = () => {
     setRateSuccessMessage(false);  // Reset on opening modal
     setShowRateModal(true);
   };
+
+  // Fetch thresholds from backend when modal opens
+  useEffect(() => {
+    const fetchThresholds = async () => {
+      setRateErrorMessage('');
+      setRateSuccessMessage(false);
+
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/rates/rate`, {
+          headers: { 'x-auth-token': token },
+        });
+        setThresholds(response.data.thresholds); // Set thresholds from backend
+      } catch (error) {
+        setRateErrorMessage('Failed to load thresholds.');
+      } finally {
+      }
+    };
+
+    if (showRateModal) {
+      fetchThresholds(); // Fetch data when modal opens
+    }
+  }, [showRateModal]);
+
+  // Add new threshold
+  const addThreshold = () => {
+    setThresholds([...thresholds, { days: '', price: '' }]);
+  };
+
+  // Remove threshold
+  const removeThreshold = (index) => {
+    const updated = thresholds.filter((_, i) => i !== index);
+    setThresholds(updated);
+  };
+
+  // Handle input changes
+  const handleInputChange = (index, field, value) => {
+    const updated = thresholds.map((t, i) =>
+      i === index ? { ...t, [field]: value } : t
+    );
+    setThresholds(updated);
+  };
+
+  // Submit updated thresholds
+  const handleThresholdSubmit = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      await axios.post(`${process.env.REACT_APP_BASE_URL}/api/admin/change-thresholds`, 
+        { thresholds },
+        { headers: { 'x-auth-token': token } }
+      );
+      setRateSuccessMessage(true);
+    } catch (error) {
+      setRateErrorMessage("Failed to update thresholds.");
+    }
+  };
+
 
   // Handle submit for hourly rate change
   const handleRateSubmit = async () => {
@@ -486,7 +544,7 @@ const toggleTVState = async (tvNumber, currentState) => {
         </div>
 
 
-        {/* Modal for Changing Hourly Rate */}
+        {/* Modal for Changing Hourly Rate
         <Modal isOpen={showRateModal} toggle={() => setShowRateModal(!showRateModal)}>
           <ModalHeader toggle={() => setShowRateModal(!showRateModal)}>
           {t("changeHourlyRate")}
@@ -517,7 +575,65 @@ const toggleTVState = async (tvNumber, currentState) => {
             {rateSuccessMessage ? t("close") : t("cancel")} 
             </Button>
           </ModalFooter>
-        </Modal>
+        </Modal> */}
+
+          <Modal isOpen={showRateModal} toggle={() => setShowRateModal(!showRateModal)}>
+            <ModalHeader toggle={() => setShowRateModal(!showRateModal)}>
+              {t("changeHourlyRate")}
+            </ModalHeader>
+            <ModalBody>
+              <Table>
+                <thead>
+                  <tr>
+                    <th>{t("days")}</th>
+                    <th>{t("price")}</th>
+                    <th>{t("actions")}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {thresholds.map((threshold, index) => (
+                    <tr key={index}>
+                      <td>
+                        <Input
+                          type="number"
+                          value={threshold.days}
+                          min={0}
+                          onChange={(e) => handleInputChange(index, 'days', e.target.value)}
+                        />
+                      </td>
+                      <td>
+                        <Input
+                          type="number"
+                          min={0}
+                          value={threshold.price}
+                          onChange={(e) => handleInputChange(index, 'price', e.target.value)}
+                        />
+                      </td>
+                      <td>
+                        <Button color="danger" onClick={() => removeThreshold(index)}>
+                          {t("remove")}
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+              <Button color="primary" onClick={addThreshold} disabled={rateSuccessMessage} className="mb-3" // Add margin-bottom of 3 units
+              >
+                {t("addThreshold")}
+              </Button>
+              {rateErrorMessage && <Alert mt-2 color="danger">{rateErrorMessage}</Alert>}
+              {rateSuccessMessage && <Alert mt-2 color="success">{t("hourlyRateChangeSuccess")}</Alert>}
+            </ModalBody>
+            <ModalFooter>
+              <Button color="primary" onClick={handleThresholdSubmit} disabled={rateSuccessMessage}>
+                {t("submit")}
+              </Button>
+              <Button color="secondary" onClick={() => setShowRateModal(false)}>
+                {t("close")}
+              </Button>
+            </ModalFooter>
+          </Modal>
 
 
           {/* All Users Section */}

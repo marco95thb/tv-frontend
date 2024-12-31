@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Container, Row, Col, Form, FormGroup, Input, Label, Button, Table, Alert, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import { Container, Row, Col, Form, FormGroup, Input, Label, Button, Alert, Modal, ModalHeader, ModalBody, ModalFooter, Table } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import DemoNavbar from "../Navbars/DemoNavbar";
@@ -13,6 +13,8 @@ const Index = () => {
   const [hours, setHours] = useState(0);
   const [tvNumber, setTvNumber] = useState("");
   const [newTvNumber, setNewTvNumber] = useState("");
+  const [subtotal, setSubtotal] = useState(0);
+  const [thresholds, setThresholds] = useState([]);
   const [orders, setOrders] = useState([]);
   const [hourlyRate, setHourlyRate] = useState(10); // Default hourly rate
   const [successMessage, setSuccessMessage] = useState("");
@@ -28,34 +30,61 @@ const Index = () => {
 
   const navigate = useNavigate(); // Define navigate
 
-  // Fetch the hourly rate on component mount
+  // Fetch thresholds when the component loads
   useEffect(() => {
-    const fetchHourlyRate = async () => {
+    const fetchThresholds = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/rates/rate`, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        setHourlyRate(response.data.hourlyRate); // Update the hourly rate with fetched data
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/rates/rate`);
+        setThresholds(response.data.thresholds);
       } catch (error) {
-        setErrorMessage(
-          error.response && error.response.data ? error.response.data.msg : "Error fetching hourly rate."
-        );
+        setErrorMessage('Failed to load rates.');
       }
     };
 
-    fetchHourlyRate();
+    fetchThresholds();
   }, []);
 
+  // Handle hours change and calculate subtotal
   const handleHoursChange = (e) => {
-    const value = e.target.value;
-    if (value >= 0) setHours(value);
+    const value = parseInt(e.target.value, 10);
+    setHours(value > 0 ? value : 0);
+    calculateSubtotal(value);
   };
 
+  const calculateSubtotal = (days) => {
+    if (!thresholds.length || days <= 0) {
+      setSubtotal(0); // Set subtotal to 0 if thresholds are not available or days are invalid
+      return;
+    }
+  
+    let price = 0;
+  
+    // Sort thresholds to ensure they are ordered correctly
+    const sortedThresholds = thresholds.sort((a, b) => a.days - b.days);
+  
+    // Find the applicable rate based on thresholds
+    for (const threshold of sortedThresholds) {
+      if (days <= threshold.days) {
+        price = threshold.price;
+        break;
+      }
+    }
+  
+    // If no matching threshold is found, use the last threshold's price
+    if (!price) {
+      price = sortedThresholds[sortedThresholds.length - 1].price;
+    }
+  
+    // Calculate subtotal based on the applicable price and hours
+    setSubtotal(price * days);
+  };
+  
 
-  const subtotal = hours * hourlyRate;
+  // Calculate subtotal dynamically based on hours and thresholds
+  useEffect(() => {
+    calculateSubtotal(hours); // Recalculate subtotal whenever hours or thresholds change
+  }, [hours, thresholds]);
+
   const jwtToken = localStorage.getItem("token"); // Get JWT token from localStorage
 
   // Fetch orders on component mount
@@ -316,6 +345,30 @@ useEffect(() => {
             <Row className="justify-content-center">
               <Col lg="6">
                 <h3 className="text-center">{t("buyTvTime")}</h3>
+
+                {/* Rates Table */}
+                <Table striped>
+                  <thead>
+                    <tr>
+                      <th>{t("days")}</th>
+                      <th>{t("pricePerDay")}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {thresholds.map((threshold, index) => {
+                      const minDays = index === 0 ? 0 : thresholds[index - 1].days + 1;
+                      const maxDays = threshold.days;
+                      return (
+                        <tr key={index}>
+                          <td>
+                            {minDays}-{maxDays}
+                          </td>
+                          <td>€{threshold.price}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </Table>
                 <Form>
                   {/* Hours Input Field */}
                   <FormGroup>
@@ -355,7 +408,6 @@ useEffect(() => {
 
                   {/* Display subtotal and Buy button */}
                   <div className="text-center">
-                    <p>{t("costPerHour")}<strong>€{hourlyRate}</strong></p>
                     <p>{t("subtotal")}<strong>€{subtotal}</strong></p>
                     {successMessage && <Alert color="success">{successMessage}</Alert>}
                     <Button
