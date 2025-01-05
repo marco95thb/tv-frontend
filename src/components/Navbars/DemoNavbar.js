@@ -68,7 +68,6 @@ const DemoNavbar = () => {
     const token = localStorage.getItem("token");
     if (token) {
       const decodedToken = jwtDecode(token);
-      console.log(decodedToken);
       setUserName(decodedToken.fullName || "User"); // Set username
       
       // Check if the user is an admin
@@ -103,14 +102,15 @@ const DemoNavbar = () => {
           {/* Collapsible content */}
           <Collapse isOpen={isOpen} navbar>
             {/* LEFT side nav: Home link */}
-            <Nav className="mr-auto" navbar>
+            <Nav className="ml-auto mt-2" navbar>
               <NavItem>
                 <NavLink
                   tag={Link}
                   to="/"
                   className="h3 font-weight-bold"
-                  style={{ fontSize: "1rem", fontWeight: "bold", textTransform: "uppercase" }}
+                  style={{ fontWeight: "bold", textTransform: "uppercase" }}
                 >
+                   <i className="fa fa-home mr-2" />
                   Home
                 </NavLink>
               </NavItem>
@@ -122,16 +122,17 @@ const DemoNavbar = () => {
                     tag={Link}
                     to="/admin"
                     className="h3 font-weight-bold"
-                    style={{ fontSize: "1rem", fontWeight: "bold", textTransform: "uppercase" }}
+                    style={{ fontWeight: "bold", textTransform: "uppercase" }}
                   >
+                     <i className="fa fa-gear mr-2" />
                     Admin
                   </NavLink>
                 </NavItem>
               )}
-            </Nav>
+            {/* </Nav> */}
 
             {/* RIGHT side nav: Language + Username */}
-            <Nav className="ml-auto" navbar>
+            {/* <Nav className="ml-auto" navbar> */}
               {/* Language Dropdown */}
               <NavItem>
                 <Dropdown
@@ -139,7 +140,7 @@ const DemoNavbar = () => {
                   inNavbar
                   isOpen={languageDropdownOpen}
                   toggle={toggleLanguageDropdown}
-                  style={{ fontSize: "1rem", fontWeight: "bold", textTransform: "uppercase" }}
+                  style={{ fontWeight: "bold", textTransform: "uppercase" }}
                 >
                   <DropdownToggle nav caret className="h3 font-weight-bold" >
                     <i className="fa fa-language mr-2" />
@@ -163,7 +164,7 @@ const DemoNavbar = () => {
                   inNavbar
                   isOpen={logoutDropdownOpen}
                   toggle={toggleLogoutDropdown}
-                  style={{ fontSize: "1rem", fontWeight: "bold", textTransform: "uppercase" }}
+                  style={{fontWeight: "bold", textTransform: "uppercase" }}
 
                 >
                   <DropdownToggle nav caret className="h5 font-weight-bold">
