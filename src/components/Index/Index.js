@@ -152,9 +152,7 @@ const handleProceedToBuy = async () => {
   } catch (error) {
     console.error(error.response ? error.response.data : error.message);
     setErrorMessage(
-      error.response && error.response.data
-        ? error.response.data.msg
-        : t("orderPlacedError")
+      error.response ? error.response.data : error.message, t("orderPlacedError")
     );
   } finally {
     setIsLoading(false); // End loading state
@@ -411,6 +409,7 @@ useEffect(() => {
                   <div className="text-center">
                     <p>{t("subtotal")}<strong>€{subtotal}</strong></p>
                     {successMessage && <Alert color="success">{successMessage}</Alert>}
+                    {errorMessage && <Alert color="danger">{errorMessage}</Alert>}
                     <Button
                       color="primary"
                       disabled={hours === 0 || tvNumber.length !== 4 || isLoading}
