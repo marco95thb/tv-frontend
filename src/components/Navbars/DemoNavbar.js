@@ -1,40 +1,60 @@
-import React, { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Headroom from "headroom.js";
 import {
-  Button,
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
   NavbarBrand,
   Navbar,
   NavItem,
   Nav,
   Container,
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
+  Collapse,
+  NavbarToggler,
+  NavLink,
 } from "reactstrap";
-import { useTranslation } from "react-i18next"; // Import useTranslation
+import { useTranslation } from "react-i18next";
+// If you are actually using jwt-decode as an npm package,
+// you should import it like this:
+// import jwtDecode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 const DemoNavbar = () => {
-  const navigate = useNavigate(); // Initialize useNavigate
-  const { t, i18n } = useTranslation(); // Initialize useTranslation
-  const [dropdownOpen, setDropdownOpen] = React.useState(false);
+  const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
 
-  // Function to toggle the language dropdown
-  const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
+  // State for isAdmin flag
+  const [isAdmin, setIsAdmin] = useState(false);
 
-  // Function to change the language
+  // Dropdown states
+  const [languageDropdownOpen, setLanguageDropdownOpen] = useState(false);
+  const [logoutDropdownOpen, setLogoutDropdownOpen] = useState(false);
+
+  // Toggle dropdowns
+  const toggleLanguageDropdown = () =>
+    setLanguageDropdownOpen(!languageDropdownOpen);
+  const toggleLogoutDropdown = () =>
+    setLogoutDropdownOpen(!logoutDropdownOpen);
+
+  // Collapse state
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleNavbar = () => setIsOpen(!isOpen);
+
+  // User info state
+  const [userName, setUserName] = useState("");
+
+  // Change language
   const changeLanguage = (lng) => {
-    i18n.changeLanguage(lng); // Update the current language
+    i18n.changeLanguage(lng);
+    setIsOpen(false);
   };
 
-  // Function to handle logout
+  // Handle logout
   const handleLogout = () => {
-    // Clear JWT token from localStorage
     localStorage.removeItem("token");
-
-    // Navigate to the login page
-    navigate('/login-page');
+    navigate("/login-page");
   };
 
   useEffect(() => {
@@ -42,61 +62,127 @@ const DemoNavbar = () => {
     headroom.init();
 
     // Set default language to Italian
-    i18n.changeLanguage('it');
+    i18n.changeLanguage("it");
+
+    // Extract user info from JWT token
+    const token = localStorage.getItem("token");
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      console.log(decodedToken);
+      setUserName(decodedToken.fullName || "User"); // Set username
+      
+      // Check if the user is an admin
+      setIsAdmin(decodedToken.isAdmin || false); // Set isAdmin flag
+    }
   }, [i18n]);
 
   return (
-    <>
-      <header className="header-global">
-        <Navbar
-          className="navbar-main navbar-transparent navbar-light headroom"
-          id="navbar-main"
-        >
-          <Container>
-            <NavbarBrand className="mr-lg-5" to="/" tag={Link}>
-              <img
-                alt="..."
-                src={require("../../assets/img/brand/argon-react-white.png")}
-                style={{ width: '70px', height: 'auto' }}
-              />
-            </NavbarBrand>
+    <header className="header-global">
+      <Navbar
+        className="navbar-main navbar-transparent headroom navbar-light"
+        expand="lg"
+        id="navbar-main"
+        style={{ color: "black" }} // keeps navbar transparent
+      >
+        <Container>
+          {/* Brand on the far-left */}
+          <NavbarBrand to="/" tag={Link}>
+            <img
+              alt="..."
+              src={require("../../assets/img/brand/argon-react-white.png")}
+              style={{ width: "50px", height: "auto" }}
+            />
+          </NavbarBrand>
 
+          {/* Toggler for small screens */}
+          <NavbarToggler onClick={toggleNavbar} style={{ zIndex: 2000 }}>
+            <i className="fa fa-bars" style={{ color: "#c7bebd", fontSize: "1.5rem" }}></i>
+          </NavbarToggler>
 
-            <Nav className="align-items-lg-center ml-lg-auto" navbar>
-              {/* Logout Button */}
-              <NavItem className="ml-lg-4">
-                <Button
-                  className="btn-neutral btn-icon"
-                  color="default"
-                  onClick={handleLogout} // Trigger logout
+            
+          {/* Collapsible content */}
+          <Collapse isOpen={isOpen} navbar>
+            {/* LEFT side nav: Home link */}
+            <Nav className="mr-auto" navbar>
+              <NavItem>
+                <NavLink
+                  tag={Link}
+                  to="/"
+                  className="h3 font-weight-bold"
+                  style={{ fontSize: "1rem", fontWeight: "bold", textTransform: "uppercase" }}
                 >
-                  <span className="btn-inner--icon">
-                    <i className="fa fa-sign-out mr-2" />
-                  </span>
-                  <span className="nav-link-inner--text ml-1">{t('logout')}</span> 
-                </Button>
-                
-                <Dropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
-                  <DropdownToggle caret color="github">
-                  <span className="btn-inner--icon">
+                  Home
+                </NavLink>
+              </NavItem>
+            
+
+              {isAdmin && (
+                <NavItem>
+                  <NavLink
+                    tag={Link}
+                    to="/admin"
+                    className="h3 font-weight-bold"
+                    style={{ fontSize: "1rem", fontWeight: "bold", textTransform: "uppercase" }}
+                  >
+                    Admin
+                  </NavLink>
+                </NavItem>
+              )}
+            </Nav>
+
+            {/* RIGHT side nav: Language + Username */}
+            <Nav className="ml-auto" navbar>
+              {/* Language Dropdown */}
+              <NavItem>
+                <Dropdown
+                  nav
+                  inNavbar
+                  isOpen={languageDropdownOpen}
+                  toggle={toggleLanguageDropdown}
+                  style={{ fontSize: "1rem", fontWeight: "bold", textTransform: "uppercase" }}
+                >
+                  <DropdownToggle nav caret className="h3 font-weight-bold" >
                     <i className="fa fa-language mr-2" />
-                  </span>{t('language')} {/* Display "Language" */}
+                    Language
                   </DropdownToggle>
-                  <DropdownMenu>
-                    <DropdownItem onClick={() => changeLanguage('it')}>
+                  <DropdownMenu right>
+                    <DropdownItem onClick={() => changeLanguage("it")}>
                       Italiano
                     </DropdownItem>
-                    <DropdownItem onClick={() => changeLanguage('en')}>
+                    <DropdownItem onClick={() => changeLanguage("en")}>
                       English
                     </DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
               </NavItem>
+
+              {/* User Dropdown */}
+              <NavItem>
+                <Dropdown
+                  nav
+                  inNavbar
+                  isOpen={logoutDropdownOpen}
+                  toggle={toggleLogoutDropdown}
+                  style={{ fontSize: "1rem", fontWeight: "bold", textTransform: "uppercase" }}
+
+                >
+                  <DropdownToggle nav caret className="h5 font-weight-bold">
+                    <i className="fa fa-user mr-2" />
+                    {userName}
+                  </DropdownToggle>
+                  <DropdownMenu right>
+                    <DropdownItem onClick={handleLogout}>
+                      <i className="fa fa-sign-out mr-2" />
+                      {t("logout")}
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              </NavItem>
             </Nav>
-          </Container>
-        </Navbar>
-      </header>
-    </>
+          </Collapse>
+        </Container>
+      </Navbar>
+    </header>
   );
 };
 

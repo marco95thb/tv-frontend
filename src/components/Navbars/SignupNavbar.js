@@ -2,105 +2,132 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Headroom from "headroom.js";
 import {
-  Button,
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
   NavbarBrand,
   Navbar,
   NavItem,
   Nav,
   Container,
-  Row,
-  Col,
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
+  Collapse,
+  NavbarToggler,
+  NavLink,
 } from "reactstrap";
 import { useTranslation } from "react-i18next";
 
 const SignupNavbar = () => {
-  const { t, i18n } = useTranslation(); // Initialize useTranslation
-  const [collapseClasses, setCollapseClasses] = useState("");
-  const [collapseOpen, setCollapseOpen] = useState(false);
-  const navigate = useNavigate(); // useNavigate hook for navigation
-  const [dropdownOpen, setDropdownOpen] = React.useState(false);
+  const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
 
+  // Dropdown states
+  const [languageDropdownOpen, setLanguageDropdownOpen] = useState(false);
 
-  // Function to toggle the language dropdown
-  const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
+  // Toggle dropdown
+  const toggleLanguageDropdown = () =>
+    setLanguageDropdownOpen(!languageDropdownOpen);
 
-  // Function to change the language
+  // Collapse state
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleNavbar = () => setIsOpen(!isOpen);
+
+  // Change language
   const changeLanguage = (lng) => {
-    i18n.changeLanguage(lng); // Update the current language
+    i18n.changeLanguage(lng);
+    setIsOpen(false);
+  };
+
+  const handleSignIn = () => {
+    navigate("/login-page");
   };
 
   useEffect(() => {
     const headroom = new Headroom(document.getElementById("navbar-main"));
     headroom.init();
-  }, []);
 
-  const onExiting = () => {
-    setCollapseClasses("collapsing-out");
-  };
-
-  const onExited = () => {
-    setCollapseClasses("");
-  };
-
-  const handleSignIn = () => {
-    // Navigate to the login page using useNavigate hook
-    navigate("/login-page");
-  };
+    // Set default language to Italian
+    i18n.changeLanguage("it");
+  }, [i18n]);
 
   return (
-    <>
-      <header className="header-global">
-        <Navbar
-          className="navbar-main navbar-transparent navbar-light headroom"
-          id="navbar-main"
-        >
-          <Container>
-            <NavbarBrand className="mr-lg-5">
-              <img
-                alt="..."
-                src={require("../../assets/img/brand/argon-react-white.png")}
-                style={{ width: '70px', height: 'auto' }} // Adjust the size here
-              />
-            </NavbarBrand>
+    <header className="header-global">
+      <Navbar
+        className="navbar-main navbar-transparent headroom navbar-light"
+        expand="lg"
+        id="navbar-main"
+        style={{ color: "black" }} // keeps navbar transparent
+      >
+        <Container>
+          {/* Brand on the far-left */}
+          <NavbarBrand to="/" tag={Link}>
+            <img
+              alt="..."
+              src={require("../../assets/img/brand/argon-react-white.png")}
+              style={{ width: "50px", height: "auto" }}
+            />
+          </NavbarBrand>
 
-            <Nav className="align-items-lg-center ml-lg-auto" navbar>
-              <NavItem className="ml-lg-4">
-                <Button
-                  className="btn-neutral btn-icon"
-                  color="default"
-                  onClick={handleSignIn} // Navigate to login page on click
+          {/* Toggler for small screens */}
+          <NavbarToggler onClick={toggleNavbar} style={{ zIndex: 2000 }}>
+            <i
+              className="fa fa-bars"
+              style={{ color: "#c7bebd", fontSize: "1.5rem" }}
+            ></i>
+          </NavbarToggler>
+
+          {/* Collapsible content */}
+          <Collapse isOpen={isOpen} navbar>
+            {/* RIGHT side nav */}
+            <Nav className="ml-auto" navbar>
+              {/* Language Dropdown */}
+              <NavItem>
+                <Dropdown
+                  nav
+                  inNavbar
+                  isOpen={languageDropdownOpen}
+                  toggle={toggleLanguageDropdown}
+                  style={{
+                    fontSize: "1rem",
+                    fontWeight: "bold",
+                    textTransform: "uppercase",
+                  }}
                 >
-                  <span className="btn-inner--icon">
-                    <i className="fa fa-sign-in mr-2" />
-                  </span>
-                  <span className="nav-link-inner--text ml-1">{t("signIn")}</span>
-                </Button>
-
-                <Dropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
-                  <DropdownToggle caret color="github">
-                  <span className="btn-inner--icon">
+                  <DropdownToggle
+                    nav
+                    caret
+                    className="h3 font-weight-bold"
+                  >
                     <i className="fa fa-language mr-2" />
-                  </span>{t('language')} {/* Display "Language" */}
+                    {t("language")}
                   </DropdownToggle>
-                  <DropdownMenu>
-                    <DropdownItem onClick={() => changeLanguage('it')}>
-                      Italiano
-                    </DropdownItem>
-                    <DropdownItem onClick={() => changeLanguage('en')}>
-                      English
-                    </DropdownItem>
+                  <DropdownMenu right>
+                    <DropdownItem onClick={() => changeLanguage("it")}>Italiano</DropdownItem>
+                    <DropdownItem onClick={() => changeLanguage("en")}>English</DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
               </NavItem>
+
+              {/* Sign In Button */}
+              <NavItem>
+                <NavLink
+                  tag={Link}
+                  to="/login-page"
+                  className="h3 font-weight-bold"
+                  style={{
+                    // fontSize: "1rem",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  <i className="fa fa-sign-in mr-2" />
+                  {t("signIn")}
+                </NavLink>
+              </NavItem>
             </Nav>
-          </Container>
-        </Navbar>
-      </header>
-    </>
+          </Collapse>
+        </Container>
+      </Navbar>
+    </header>
   );
 };
 
