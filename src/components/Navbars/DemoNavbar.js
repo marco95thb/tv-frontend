@@ -102,8 +102,8 @@ const DemoNavbar = () => {
           {/* Collapsible content */}
           <Collapse isOpen={isOpen} navbar>
             {/* LEFT side nav: Home link */}
-            <Nav className="ml-auto mt-2" navbar>
-              <NavItem>
+              <Nav className="ml-auto mt-2" navbar>
+              {isAdmin && (<NavItem>
                 <NavLink
                   tag={Link}
                   to="/"
@@ -114,6 +114,7 @@ const DemoNavbar = () => {
                   Home
                 </NavLink>
               </NavItem>
+              )}
             
 
               {isAdmin && (
