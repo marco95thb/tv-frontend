@@ -45,9 +45,6 @@ const LoginNavbar = () => {
   useEffect(() => {
     const headroom = new Headroom(document.getElementById("navbar-main"));
     headroom.init();
-
-    // Set default language to Italian
-    i18n.changeLanguage("it");
   }, [i18n]);
 
   return (

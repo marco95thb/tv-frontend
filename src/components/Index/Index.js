@@ -132,6 +132,7 @@ const handleProceedToBuy = async () => {
         {
           timeBought: hours,
           tvNumber: tvNumber,
+          language: i18n.language,
         },
         {
           headers: {

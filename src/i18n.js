@@ -278,7 +278,7 @@ i18n
   .use(initReactI18next) // Pass i18n instance to react-i18next
   .init({
     resources, // Translation resources
-    lng: 'it', // Default language
+    lng: 'en', // Default language
     fallbackLng: 'en', // Fallback language
     interpolation: {
       escapeValue: false, // React already escapes by default

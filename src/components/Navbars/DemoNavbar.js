@@ -61,9 +61,6 @@ const DemoNavbar = () => {
     const headroom = new Headroom(document.getElementById("navbar-main"));
     headroom.init();
 
-    // Set default language to Italian
-    i18n.changeLanguage("it");
-
     // Extract user info from JWT token
     const token = localStorage.getItem("token");
     if (token) {

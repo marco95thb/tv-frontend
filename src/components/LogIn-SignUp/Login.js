@@ -167,12 +167,13 @@ const Login = () => {
                     <div className="text-muted text-center mb-3">
                       <small>{t("signInWith")}</small>
                     </div>
-                    <div className="btn-wrapper text-center ml-5">
+                    <div className="d-flex justify-content-center">
                       <GoogleLogin
                         onSuccess={handleGoogleSuccess}
                         onError={handleGoogleFailure}
                       />
                     </div>
+
                     <div className="text-center mt-3">
                       <small>{t("purchaseCredits")}</small>
                     </div>
