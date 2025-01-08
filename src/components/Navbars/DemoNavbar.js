@@ -105,7 +105,7 @@ const DemoNavbar = () => {
               {isAdmin && (<NavItem>
                 <NavLink
                   tag={Link}
-                  to="/"
+                  to="/home"
                   className="h3 font-weight-bold"
                   style={{ fontWeight: "bold", textTransform: "uppercase" }}
                 >
