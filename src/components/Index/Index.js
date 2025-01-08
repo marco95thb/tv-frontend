@@ -34,14 +34,19 @@ const Index = () => {
   const navigate = useNavigate(); // Define navigate
 
   useEffect(() => {
-    /* Initialize Google One Tap Sign-In */
-    window.google.accounts.id.initialize({
-      client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID, // Replace with your client ID
-      callback: handleCredentialResponse,
-    });
-
-    // Show the One Tap prompt
-    window.google.accounts.id.prompt();
+    const token = localStorage.getItem("token");
+  
+    // Check if user is already logged in
+    if (!token) {
+      // Initialize One Tap only if the user is not logged in
+      window.google.accounts.id.initialize({
+        client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+        callback: handleCredentialResponse,
+      });
+  
+      // Show the One Tap prompt
+      window.google.accounts.id.prompt();
+    }
   }, []);
 
   const handleCredentialResponse = async (credentialResponse) => {

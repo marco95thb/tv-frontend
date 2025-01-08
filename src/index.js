@@ -39,13 +39,13 @@ root.render(
             <Route path="/privacy-policy" exact element={<PrivacyPolicy />} /> 
 
             {/* Private routes */}
-            <Route path="/" exact element={<Index />} />
+            <Route path="/home" exact element={<Index />} />
 
             {/* Private route for admin */}
             <Route path="/admin" element={<PrivateAdminRoute element={AdminIndex} />} />
 
             {/* Redirect unknown routes to login-page */}
-            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="*" element={<Navigate to="/home" replace />} />
           </Routes>
         </Elements>
       </BrowserRouter>
