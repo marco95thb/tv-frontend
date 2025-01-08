@@ -35,6 +35,8 @@ const LoginNavbar = () => {
   // Change language
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
+    // Set language preference
+    localStorage.setItem('language', lng); // Store language in local storage
     setIsOpen(false);
   };
 
