@@ -145,11 +145,20 @@ const DemoNavbar = () => {
                     Language
                   </DropdownToggle>
                   <DropdownMenu right>
-                    <DropdownItem onClick={() => changeLanguage("it")}>
-                      Italiano
-                    </DropdownItem>
-                    <DropdownItem onClick={() => changeLanguage("en")}>
+                  <DropdownItem onClick={() => changeLanguage("en")}>
                       English
+                    </DropdownItem>
+                    <DropdownItem onClick={() => changeLanguage("it")}>
+                      Italiana
+                    </DropdownItem>
+                    <DropdownItem onClick={() => changeLanguage("fr")}>
+                      Français
+                    </DropdownItem>
+                    <DropdownItem onClick={() => changeLanguage("es")}>
+                      Español
+                    </DropdownItem>
+                    <DropdownItem onClick={() => changeLanguage("ar")}>
+                    عربي
                     </DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
