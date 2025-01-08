@@ -1108,95 +1108,94 @@ const AdminIndex = () => {
                 {deviceWarning && <Alert color="warning">{deviceWarning}</Alert>}
 
                 {/* Scrollable Table for TVs */}
-<div style={{ maxHeight: "400px", overflowY: "scroll", marginTop: "20px" }}>
-  <Table bordered responsive>
-    <thead>
-      <tr>
-        <th>{t("tvNumber")}</th>
-        <th>{t("state")}</th>
-        <th>{t("remainingDuration")}</th>
-        <th>{t("balance")}</th>
-        <th>{t("setBonus")}</th>
-        <th>{t("setTime")}</th>
-        <th>{t("actions")}</th>
-      </tr>
-    </thead>
-    <tbody>
-      {/* Group TVs by first 2 digits of tvNumber */}
-      {Object.entries(
-        filteredTVs.reduce((groups, tv) => {
-          const groupKey = tv.tvNumber.substring(0, 2); // First 2 digits
-          if (!groups[groupKey]) {
-            groups[groupKey] = [];
-          }
-          groups[groupKey].push(tv);
-          return groups;
-        }, {})
-      ).map(([groupKey, group]) => {
-        // Calculate group balance
-        const groupBalance = group.reduce((sum, tv) => sum + tv.balance, 0);
+                <div style={{ maxHeight: "400px", overflowY: "scroll", marginTop: "20px" }}>
+                  <Table bordered responsive>
+                    <thead>
+                      <tr>
+                        <th>{t("tvNumber")}</th>
+                        <th>{t("state")}</th>
+                        <th>{t("remainingDuration")}</th>
+                        <th>{t("balance")}</th>
+                        <th>{t("setBonus")}</th>
+                        <th>{t("setTime")}</th>
+                        <th>{t("actions")}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {/* Group TVs by first 2 digits of tvNumber */}
+                      {Object.entries(
+                        filteredTVs.reduce((groups, tv) => {
+                          const groupKey = tv.tvNumber.substring(0, 2); // First 2 digits
+                          if (!groups[groupKey]) {
+                            groups[groupKey] = [];
+                          }
+                          groups[groupKey].push(tv);
+                          return groups;
+                        }, {})
+                      ).map(([groupKey, group]) => {
+                        // Calculate group balance
+                        const groupBalance = group.reduce((sum, tv) => sum + tv.balance, 0);
 
-        return group.map((tv, index) => (
-          <tr key={tv._id}>
-            <td>{tv.tvNumber}</td>
-            <td>
-              <Button
-                color={tv.state === "on" ? "success" : "secondary"} // Dynamic button color
-                onClick={() => toggleTVState(tv.tvNumber, tv.state)}
-                disabled={loadingTV === tv.tvNumber || deviceWarning} // Disable button during loading
-              >
-                {loadingTV === tv.tvNumber ? (
-                  <Spinner size="sm" /> // Show spinner during loading
-                ) : (
-                  tv.state === "on" ? "ON" : "OFF" // Display dynamic label
-                )}
-              </Button>
-            </td>
-            <td>{tv.remainingDuration} {t("minutes")}</td>
+                        return group.map((tv, index) => (
+                          <tr key={tv._id}>
+                            <td>{tv.tvNumber}</td>
+                            <td>
+                              <Button
+                                color={tv.state === "on" ? "success" : "secondary"} // Dynamic button color
+                                onClick={() => toggleTVState(tv.tvNumber, tv.state)}
+                                disabled={loadingTV === tv.tvNumber || deviceWarning} // Disable button during loading
+                              >
+                                {loadingTV === tv.tvNumber ? (
+                                  <Spinner size="sm" /> // Show spinner during loading
+                                ) : (
+                                  tv.state === "on" ? "ON" : "OFF" // Display dynamic label
+                                )}
+                              </Button>
+                            </td>
+                            <td>{tv.remainingDuration} {t("minutes")}</td>
 
-            {/* Merged balance cell for the first row in the group */}
-            {index === 0 && (
-              <td rowSpan={group.length}>€{groupBalance}</td> // Merge cells for balance
-            )}
-            
-            {/* Skip balance column for other rows */}
-            {index !== 0 && null}
+                            {/* Merged balance cell for the first row in the group */}
+                            {index === 0 && (
+                              <td rowSpan={group.length}>{groupBalance/100}€</td> // Merge cells for balance
+                            )}
+                            
+                            {/* Skip balance column for other rows */}
+                            {index !== 0 && null}
 
-            {/* Input fields for Bonus and Set Time */}
-            <td>
-              <Input
-                type="number"
-                placeholder={t("setBonus")}
-                value={tv.newBonus || ""}
-                onChange={(e) => handleBonusChange(tv.tvNumber, e.target.value)}
-              />
-            </td>
-            <td>
-              <Input
-                type="number"
-                placeholder={t("setTime")}
-                value={tv.newSetTime || ""}
-                onChange={(e) => handleSetTimeChange(tv.tvNumber, e.target.value)}
-              />
-            </td>
+                            {/* Input fields for Bonus and Set Time */}
+                            <td>
+                              <Input
+                                type="number"
+                                placeholder={t("setBonus")}
+                                value={tv.newBonus || ""}
+                                onChange={(e) => handleBonusChange(tv.tvNumber, e.target.value)}
+                              />
+                            </td>
+                            <td>
+                              <Input
+                                type="number"
+                                placeholder={t("setTime")}
+                                value={tv.newSetTime || ""}
+                                onChange={(e) => handleSetTimeChange(tv.tvNumber, e.target.value)}
+                              />
+                            </td>
 
-            {/* Send Configuration Button */}
-            <td>
-              <Button
-                color="primary"
-                onClick={() => handleSendConfiguration(tv.tvNumber)}
-                disabled={deviceWarning}
-              >
-                {t("sendConfig")}
-              </Button>
-            </td>
-          </tr>
-        ));
-      })}
-    </tbody>
-  </Table>
-</div>
-
+                            {/* Send Configuration Button */}
+                            <td>
+                              <Button
+                                color="primary"
+                                onClick={() => handleSendConfiguration(tv.tvNumber)}
+                                disabled={deviceWarning}
+                              >
+                                {t("sendConfig")}
+                              </Button>
+                            </td>
+                          </tr>
+                        ));
+                      })}
+                    </tbody>
+                  </Table>
+                </div>
               </Col>
             </Row>
           </Container>
