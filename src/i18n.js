@@ -7,7 +7,7 @@ const resources = {
     translation: {
       logout: "Log Out",
       language: "Language",
-      welcome: "Have a comfortable stay and stay entertained with smart TV in your room.",
+      welcome: "Welcome to ATTIVA TV where you can seamlessly purchase tv credits for your stay. Have a comfortable stay and stay entertained with smart TV in your room.",
       buyTvTime: "Buy TV Time",
       myOrders: "My Orders",
       remote: "Remote",
@@ -152,7 +152,7 @@ const resources = {
     translation: {
         "logout": "Disconnettersi",
         "language": "Lingua",
-        "welcome": "Goditi un soggiorno confortevole e intratteniti con la smart TV nella tua stanza.",
+        "welcome": "Benvenuti su ATTIVA TV, dove puoi acquistare facilmente crediti TV per il tuo soggiorno. Goditi un soggiorno confortevole e resta intrattenuto con la Smart TV nella tua stanza.",
         "buyTvTime": "Acquista Tempo TV",
         "myOrders": "I miei ordini",
         "remote": "Telecomando",
@@ -296,7 +296,7 @@ const resources = {
     "translation": {
       "logout": "Se déconnecter",
       "language": "Langue",
-      "welcome": "Passez un séjour confortable et profitez d'une télévision intelligente dans votre chambre.",
+      "welcome": "Bienvenue sur ATTIVA TV, où vous pouvez acheter facilement des crédits TV pour votre séjour. Passez un séjour confortable et profitez de la Smart TV dans votre chambre.",
       "buyTvTime": "Acheter du temps TV",
       "myOrders": "Mes commandes",
       "remote": "Télécommande",
@@ -440,7 +440,7 @@ const resources = {
     "translation": {
       "logout": "Cerrar sesión",
       "language": "Idioma",
-      "welcome": "Tenga una estancia cómoda y manténgase entretenido con la televisión inteligente en su habitación.",
+      "welcome": "Bienvenido a ATTIVA TV, donde puedes comprar fácilmente créditos de TV para tu estancia. Disfruta de una estancia cómoda y mantente entretenido con la Smart TV en tu habitación.",
       "buyTvTime": "Comprar tiempo de TV",
       "myOrders": "Mis pedidos",
       "remote": "Control remoto",
@@ -584,7 +584,7 @@ const resources = {
     "translation": {
       "logout": "تسجيل الخروج",
       "language": "اللغة",
-      "welcome": "نتمنى لك إقامة مريحة وأن تستمتع بمشاهدة التلفزيون الذكي في غرفتك.",
+      "welcome": "مرحبًا بك في ATTIVA TV، حيث يمكنك شراء أرصدة التلفزيون بسهولة لإقامتك. استمتع بإقامة مريحة واستمتع بمشاهدة التلفزيون الذكي في غرفتك.",
       "buyTvTime": "شراء وقت التلفاز",
       "myOrders": "طلباتي",
       "remote": "جهاز التحكم عن بعد",
