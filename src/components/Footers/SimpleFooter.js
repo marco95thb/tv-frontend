@@ -39,21 +39,7 @@ const SimpleFooter = () => {
               </NavItem>
               <NavItem>
                 <NavLink href="https://github.com/Moeez-Muslim" target="_blank" rel="noopener noreferrer">
-                  Creative Tim
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink
-                  href="https://www.creative-tim.com/presentation?ref=adsr-footer"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  About Us
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="https://github.com/Moeez-Muslim" target="_blank" rel="noopener noreferrer">
-                  MIT License
+                  Developer
                 </NavLink>
               </NavItem>
             </Nav>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Container, Row, Col, Table, Button, FormGroup, Input, Alert,Form, Modal, ModalBody, ModalFooter, ModalHeader, Label } from "reactstrap";
+import { Spinner, Container, Row, Col, Table, Button, FormGroup, Input, Alert,Form, Modal, ModalBody, ModalFooter, ModalHeader, Label } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import DemoNavbar from "../Navbars/DemoNavbar.js";
@@ -45,6 +45,9 @@ const AdminIndex = () => {
   const [tvs, setTVs] = useState([]);
   const [selectedTV, setSelectedTV] = useState("");
   const [filteredTVs, setFilteredTVs] = useState([]);
+  const [deviceWarning, setDeviceWarning] = useState('');
+  const [loadingTV, setLoadingTV] = useState(null); // Track which TV is loading
+
 
   const navigate = useNavigate(); // Define navigate
 
@@ -293,60 +296,84 @@ const AdminIndex = () => {
 
   
   const handleAddTV = async () => {
+    // Reset previous errors and success messages
     setAddTVError('');
     setAddTVSuccess('');
   
     // Validate TV number input
     if (!newAddTvNumber) {
-      setAddTVError(t("tvNumberRequiredError")); // Use the translation key
+      setAddTVError(t("tvNumberRequiredError")); // Use translation key
       return;
     }
   
-    if (newAddTvNumber.length !== 4) {
-      setAddTVError("TV number must be exactly 4 digits.");
+    if (newAddTvNumber.length !== 4 || !/^[0-9]{4}$/.test(newAddTvNumber)) {
+      setAddTVError(t("invalidTvNumberError")); // Use translation key for invalid format
       return;
     }
   
-    // Check if the TV number already exists in the local state (optional optimization before API call)
-    const tvExists = tvs.some((tv) => tv.tvNumber === parseInt(newAddTvNumber, 10));
+    // Check if the TV number already exists in the local state
+    const tvExists = tvs.some((tv) => tv.tvNumber === newAddTvNumber);
     if (tvExists) {
-      setAddTVError(t("tvExistsError")); // Use the translation key
+      setAddTVError(t("tvExistsError")); // Use translation key
       return;
     }
   
     try {
+      // API call to add TV
       const token = localStorage.getItem('token');
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/admin/add-tv`, {
-        tvNumber: newAddTvNumber,
-      }, {
-        headers: { 'x-auth-token': token },
-      });
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/api/admin/add-tv`,
+        {
+          tvNumber: newAddTvNumber,
+        },
+        {
+          headers: { 'x-auth-token': token },
+        }
+      );
   
-      const { msg, tv } = response.data;
+      const result = response.data;
   
-      setAddTVSuccess(msg); // Show success message from the server response
+      if (result.success) {
+        // Success: Show message and update TV list
+        setAddTVSuccess(result.message); // Display success message
+        setDeviceWarning(''); // Clear warnings if any
   
-      // Update the TVs state to reflect the added TV
-      setTVs((prevTVs) => [...prevTVs, tv]);
-      setFilteredTVs((prevFilteredTVs) => [...prevFilteredTVs, tv]);
+        // Update local state with new TV
+        setTVs((prevTVs) => [...prevTVs, result.tv]);
+        setFilteredTVs((prevFilteredTVs) => [...prevFilteredTVs, result.tv]);
   
-      // Clear input fields after success
-      setNewAddTvNumber('');
-    } catch (error) {
-      if (error.response && error.response.data && error.response.data.msg) {
-        // Handle specific error messages from the server
-        setAddTVError(error.response.data.msg);
+        // Clear input field after success
+        setNewAddTvNumber('');
       } else {
-        setAddTVError(t("addTvError")); // Use the translation key
+        // Failure: Show warning message
+        setDeviceWarning(
+          "Device not connected. Data might be outdated. You cannot perform any operation. Kindly make sure device is up and connected to server."
+        );
+        setAddTVError(result.message || t("addTvFailed"));
       }
+    } catch (error) {
+      console.error('Error adding TV:', error);
+  
+      // Handle errors from the server or network
+      if (error.response && error.response.data && error.response.data.message) {
+        setAddTVError(error.response.data.message); // Show server-specific error message
+      } else {
+        setAddTVError(t("addTvError")); // Use generic error message
+      }
+  
+      // Set warning in case of failure
+      setDeviceWarning(
+        "Device not connected. Data might be outdated. You cannot perform any operation. Kindly make sure device is up and connected to server."
+      );
     }
   };
   
   
-  
 
-  // Fetch TVs
+  // Fetch TVs and establish WebSocket connection
   useEffect(() => {
+    let socket; // Declare socket outside to maintain reference
+
     const fetchTVs = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -358,7 +385,6 @@ const AdminIndex = () => {
         );
 
         if (response.data.length === 0) {
-          // Handle case where no TVs are found
           console.warn("No TVs found");
           setTVs([]);
           setFilteredTVs([]);
@@ -369,19 +395,76 @@ const AdminIndex = () => {
         }
       } catch (err) {
         if (err.response && err.response.status === 404) {
-          // Handle 404 (No TVs found)
           console.warn(err.response.data.msg || "No TVs found");
           setTVs([]);
           setFilteredTVs([]);
         } else {
-          // Handle other errors
           console.error("Error fetching TVs:", err.message || err.response.data);
         }
       }
     };
 
-    fetchTVs();
+    const connectWebSocket = () => {
+      // Establish WebSocket connection
+      socket = new WebSocket(`${process.env.REACT_APP_SERVER_SOCKET}`);
+
+      socket.onopen = () => {
+        console.log("WebSocket connected");
+      };
+
+      socket.onmessage = (event) => {
+        try {
+          const receivedData = JSON.parse(event.data);
+  
+          // Check if the received message is device connection status
+          if (receivedData.type === "device-status") {
+            if (!receivedData.isDeviceConnected) {
+              // If device is not connected, show warning
+              setDeviceWarning(
+                t("deviceNotConnected")
+              );
+            } else {
+              // If device is connected, clear the warning
+              setDeviceWarning("");
+            }
+          }
+          // If the data is an array (TV information), normalize and process
+          else if (Array.isArray(receivedData)) {
+            setTVs(receivedData);
+            setFilteredTVs(receivedData);
+            setDeviceWarning(""); // Clear warning if data is received
+            setSelectedTV("");
+          } else {
+            console.warn("Invalid data format received:", receivedData);
+          }
+        } catch (err) {
+          console.error("Error processing WebSocket message:", err.message);
+        }
+      };
+  
+
+      socket.onclose = () => {
+        console.warn("WebSocket disconnected. Reconnecting...");
+        // Attempt to reconnect after 5 seconds if disconnected
+        setTimeout(connectWebSocket, 5000);
+      };
+
+      socket.onerror = (error) => {
+        console.error("WebSocket error:", error);
+      };
+    };
+
+    // Fetch TVs and then establish WebSocket connection
+    fetchTVs().then(() => connectWebSocket());
+
+    // Cleanup WebSocket connection on component unmount
+    return () => {
+      if (socket) {
+        socket.close();
+      }
+    };
   }, []);
+
 
 
 
@@ -399,35 +482,152 @@ const AdminIndex = () => {
   };
   
 
-  // Toggle TV state
-const toggleTVState = async (tvNumber, currentState) => {
-  try {
-    const token = localStorage.getItem("token");
-    console.log(tvNumber)
-    const response = await axios.put(
-      `${process.env.REACT_APP_BASE_URL}/api/admin/toggle-tv`,
-      {
-        tvNumber,
-        newState: currentState === "on" ? "off" : "on",
-      },
-      { headers: { "x-auth-token": token } }
-    );
+  const toggleTVState = async (tvNumber, currentState) => {
+    try {
+      setLoadingTV(tvNumber); // Set loading state for this TV
+      const token = localStorage.getItem("token");
+  
+      const response = await axios.put(
+        `${process.env.REACT_APP_BASE_URL}/api/admin/toggle-tv`,
+        {
+          tvNumber,
+          newState: currentState === "on" ? "off" : "on", // Toggle state
+        },
+        { headers: { "x-auth-token": token } }
+      );
+  
+      const result = response.data;
+  
+      if (result.success) {
+        // Success - Update state locally
+        const updatedTVs = tvs.map((tv) =>
+          tv.tvNumber === tvNumber ? { ...tv, state: result.newState } : tv
+        );
+        const updatedFilteredTVs = filteredTVs.map((tv) =>
+          tv.tvNumber === tvNumber ? { ...tv, state: result.newState } : tv
+        );
+  
+        setTVs(updatedTVs);
+        setFilteredTVs(updatedFilteredTVs);
+        setDeviceWarning(""); // Clear warnings
+      } else {
+        // Failure - Set warning
+        setDeviceWarning(
+          "Failed to update state. Device not connected. You cannot perform any operations until device sends updated data. Kindly make sure device is up and connected to server."
+        );
+      }
+    } catch (error) {
+      console.error("Failed to toggle TV state:", error.message);
+      setDeviceWarning(
+        "Something went wrong at the server side."
+      );
+      alert("Failed to toggle TV state.");
+    } finally {
+      setLoadingTV(null); // Clear loading state
+    }
+  };
+   
 
-    // Update local state after toggle
-    const updatedTVs = tvs.map((tv) =>
-      tv.tvNumber === tvNumber ? { ...tv, state: response.data.newState } : tv
+  // Handles bonus input change
+  const handleBonusChange = (tvNumber, value) => {
+    const updatedTVs = filteredTVs.map((tv) => 
+      tv.tvNumber === tvNumber ? { ...tv, newBonus: value } : tv
     );
+    setFilteredTVs(updatedTVs);
+  };
 
-    const updatedFilteredTVs = filteredTVs.map((tv) =>
-      tv.tvNumber === tvNumber ? { ...tv, state: response.data.newState } : tv
+  // Handles set time input change
+  const handleSetTimeChange = (tvNumber, value) => {
+    const updatedTVs = filteredTVs.map((tv) => 
+      tv.tvNumber === tvNumber ? { ...tv, newSetTime: value } : tv
     );
+    setFilteredTVs(updatedTVs);
+  };
 
-    setTVs(updatedTVs);
-    setFilteredTVs(updatedFilteredTVs);
-  } catch (error) {
-    console.error("Failed to toggle TV state", error.message);
-  }
-}; 
+  // Handles sending configuration to the backend
+  const handleSendConfiguration = async (tvNumber) => {
+    const tv = filteredTVs.find((t) => t.tvNumber === tvNumber);
+
+    // Prepare configuration payload
+    const config = {
+      tv_number: tvNumber,
+      force: 0, // Assuming default force value is 0
+      bonus: parseFloat(tv.newBonus || 0),
+      set_time: parseInt(tv.newSetTime || 0),
+    };
+
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/admin/send-configuration`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': token, // Add authentication token
+        },
+        body: JSON.stringify(config),
+      });
+
+      const result = await response.json(); // Parse JSON response
+
+      if (result.success) {
+        alert(t("configSuccess")); // Configuration sent successfully
+        setDeviceWarning(""); // Clear any previous warnings
+      } else {
+        // Handle failure and set warning
+        setDeviceWarning(
+          t("failedToSendConfig")
+        );
+      }
+    } catch (error) {
+      console.error('Error sending configuration:', error);
+      alert(t("configError"));
+      setDeviceWarning(
+        t("failedToSendConfig")
+      );
+    }
+  };
+
+  // Handles activating all TVs
+  const handleActivateAll = async () => {
+    // Calculate the total sum of remaining minutes
+    const totalRemainingMinutes = tvs.reduce((sum, tv) => sum + (tv.remainingDuration || 0), 0);
+
+    // Prepare payload
+    const config = {
+      activate_all: totalRemainingMinutes, // Send the sum to the backend
+    };
+
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/admin/activate-all`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': token, // Add authentication token
+        },
+        body: JSON.stringify(config),
+      });
+
+      const result = await response.json(); // Parse JSON response
+
+      if (result.success) {
+        alert(t("activateAllSuccess")); // Success alert
+        setDeviceWarning(""); // Clear warnings if successful
+      } else {
+        // Handle failure and set warning
+        setDeviceWarning(
+          t("failedToSendConfig")
+        );
+      }
+    } catch (error) {
+      console.error('Error activating all TVs:', error);
+      alert(t("activateAllError"));
+      setDeviceWarning(
+        t("failedToSendConfig")
+      );
+    }
+  };
+
 
   return (
     <>
@@ -870,8 +1070,8 @@ const toggleTVState = async (tvNumber, currentState) => {
         <section className="section" ref={tvSectionRef}>
           <Container>
             <Row className="justify-content-center">
-              <Col lg="8">
-              <h3 className="text-center">{t("manageTvs")}</h3>
+              <Col lg="12">
+                <h3 className="text-center">{t("manageTvs")}</h3>
                 <div className="text-center mt-4">
                   <Button
                     color="primary"
@@ -880,9 +1080,21 @@ const toggleTVState = async (tvNumber, currentState) => {
                       setAddTVError('');
                       setAddTVSuccess('');
                     }}
-                  >{t("addTv")}
+                    disabled={deviceWarning}
+                  >
+                    {t("addTv")}
                   </Button>
+
+                  <Button
+                    color="primary"
+                    onClick={handleActivateAll}
+                    disabled={deviceWarning}
+                  >
+                    {t("activateAll")}
+                  </Button>
+
                 </div>
+
 
                 {/* Input field for filtering */}
                 <FormGroup className="mt-4">
@@ -893,14 +1105,20 @@ const toggleTVState = async (tvNumber, currentState) => {
                     onChange={handleTVFilterChange}
                   />
                 </FormGroup>
+                {deviceWarning && <Alert color="warning">{deviceWarning}</Alert>}
 
                 {/* Scrollable Table for TVs */}
                 <div style={{ maxHeight: "400px", overflowY: "scroll", marginTop: "20px" }}>
                   <Table bordered responsive>
                     <thead>
                       <tr>
-                      <th>{t("tvNumber")}</th>
-                      <th>{t("state")}</th>
+                        <th>{t("tvNumber")}</th>
+                        <th>{t("state")}</th>
+                        <th>{t("remainingDuration")}</th>
+                        <th>{t("balance")}</th>
+                        <th>{t("setBonus")}</th>
+                        <th>{t("setTime")}</th>
+                        <th>{t("actions")}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -908,11 +1126,48 @@ const toggleTVState = async (tvNumber, currentState) => {
                         <tr key={tv._id}>
                           <td>{tv.tvNumber}</td>
                           <td>
+                          <Button
+                            color={tv.state === "on" ? "success" : "secondary"} // Dynamic button color
+                            onClick={() => toggleTVState(tv.tvNumber, tv.state)}
+                            disabled={loadingTV === tv.tvNumber || deviceWarning} // Disable button during loading
+                          >
+                            {loadingTV === tv.tvNumber ? (
+                              <Spinner size="sm" /> // Show spinner during loading
+                            ) : (
+                              tv.state === "on" ? "ON" : "OFF" // Display dynamic label
+                            )}
+                          </Button>
+
+                          </td>
+                          <td>{tv.remainingDuration} {t("minutes")}</td>
+                          <td>€{tv.balance}</td>
+
+                          {/* Input fields for Bonus and Set Time */}
+                          <td>
+                            <Input
+                              type="number"
+                              placeholder={t("setBonus")}
+                              value={tv.newBonus || ""}
+                              onChange={(e) => handleBonusChange(tv.tvNumber, e.target.value)}
+                            />
+                          </td>
+                          <td>
+                            <Input
+                              type="number"
+                              placeholder={t("setTime")}
+                              value={tv.newSetTime || ""}
+                              onChange={(e) => handleSetTimeChange(tv.tvNumber, e.target.value)}
+                            />
+                          </td>
+
+                          {/* Send Configuration Button */}
+                          <td>
                             <Button
-                              color={tv.state === "on" ? "success" : "secondary"}
-                              onClick={() => toggleTVState(tv.tvNumber, tv.state)}
+                              color="primary"
+                              onClick={() => handleSendConfiguration(tv.tvNumber)}
+                              disabled={deviceWarning}
                             >
-                              {tv.state === "on" ? "ON" : "OFF"}
+                              {t("sendConfig")}
                             </Button>
                           </td>
                         </tr>
@@ -924,6 +1179,7 @@ const toggleTVState = async (tvNumber, currentState) => {
             </Row>
           </Container>
         </section>
+
 
 
       {/* Modal for Adding TV */}
