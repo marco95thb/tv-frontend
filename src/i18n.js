@@ -142,8 +142,9 @@ const resources = {
       setTime: "Set Time",
       sendConfig: "Send Configuration",
       failedToSendConfig: "Failed to send configuration. Device not connected. You cannot perform any operation until device sends updated data. Kindly make sure device is up and connected to server.",
-      deviceNotConnected: "Device not connected. Data might be outdated. You cannot perform any operation. Kindly make sure device is up and connected to server",
+      deviceNotConnected: "Device not connected. Data might be outdated. You cannot perform any operation until device sends updated data. Kindly make sure device is up and connected to server",
       configSuccess: "Configuration sent successfully",
+      activateAllSuccess: "Sum of remaining minutes sent successfully"
     },
   },
   it: {
@@ -285,8 +286,10 @@ const resources = {
         setTime: "Imposta ora",
         sendConfig: "Invia configurazione",
         failedToSendConfig: "Impossibile inviare la configurazione. Dispositivo non connesso. Non è possibile eseguire alcuna operazione finché il dispositivo non invia i dati aggiornati. Assicurati che il dispositivo sia attivo e connesso al server.",
-        deviceNotConnected: "Dispositivo non connesso. I dati potrebbero essere obsoleti. Non è possibile eseguire alcuna operazione. Assicurati che il dispositivo sia attivo e connesso al server",
+        deviceNotConnected: "Dispositivo non connesso. I dati potrebbero essere obsoleti. Non è possibile eseguire alcuna operazione finché il dispositivo non invia i dati aggiornati. Assicurati che il dispositivo sia attivo e connesso al server",
         configSuccess: "Configurazione inviata con successo",
+        activateAllSuccess: "Somma dei minuti rimanenti inviati con successo"
+
       },
   },
 };
