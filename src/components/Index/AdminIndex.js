@@ -24,6 +24,7 @@ const AdminIndex = () => {
   const [newTvNumber, setNewTvNumber] = useState('');
   const [modalErrorMessage, setModalErrorMessage] = useState('');
   const [modalSuccessMessage, setModalSuccessMessage] = useState(''); // Success message for the modal
+  const [loading, setLoading] = useState(false);
 
   // State for handling hourly rate change
   const [showRateModal, setShowRateModal] = useState(false);
@@ -163,40 +164,66 @@ const AdminIndex = () => {
     setShowRoomModal(true);
   };
 
-  // Handle changing the room and TV number for an order
   const handleRoomSubmit = async () => {
     if (!newTvNumber) {
       setModalErrorMessage(t("provideTvNumberError"));
       return;
     }
 
+    setLoading(true); // Start loading
+    setModalErrorMessage(""); // Clear errors
+    setModalSuccessMessage(""); // Clear success messages
+
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/admin/change-room`, {
-        orderId: currentOrderId,
-        newTvNumber,
-      }, {
-        headers: {
-          'x-auth-token': token,
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/api/admin/change-room`,
+        {
+          orderId: currentOrderId,
+          newTvNumber,
         },
-      });
-
-      const updatedOrder = response.data.order;
-
-      setModalErrorMessage(""); 
-      // Success handling
-      setModalSuccessMessage(t("tvChangeSuccess"));
-      
-      // Update orders state
-      setOrders((prevOrders) =>
-        prevOrders.map((order) =>
-          order._id === currentOrderId ? updatedOrder : order
-        )
+        {
+          headers: {
+            'x-auth-token': token,
+          },
+        }
       );
+
+      const result = response.data;
+
+      if (result.success) {
+        // Success handling
+        setModalSuccessMessage(t("tvChangeSuccess"));
+        setModalErrorMessage(""); // Clear errors
+
+        const updatedOrder = result.order;
+
+        // Update orders state
+        setOrders((prevOrders) =>
+          prevOrders.map((order) =>
+            order._id === currentOrderId ? updatedOrder : order
+          )
+        );
+      } else {
+        // Handle failure due to device connection
+        setModalErrorMessage(
+          result.message || "Device not connected. Ensure the device is up and connected to server."
+        );
+      }
     } catch (error) {
-      setModalErrorMessage(t("tvChangeError")); // Use the translation key    
+      console.error("Failed to change room:", error.message);
+
+      // Error handling
+      setModalErrorMessage(
+        error.response && error.response.data
+          ? error.response.data.message
+          : t("tvChangeError")
+      );
+    } finally {
+      setLoading(false); // End loading
     }
   };
+
 
   const toggleExpand = (index) => {
     if (expandedOrders.includes(index)) {
@@ -299,15 +326,18 @@ const AdminIndex = () => {
     // Reset previous errors and success messages
     setAddTVError('');
     setAddTVSuccess('');
+    setLoading(true);
   
     // Validate TV number input
     if (!newAddTvNumber) {
       setAddTVError(t("tvNumberRequiredError")); // Use translation key
+      setLoading(false);
       return;
     }
   
     if (newAddTvNumber.length !== 4 || !/^[0-9]{4}$/.test(newAddTvNumber)) {
       setAddTVError(t("invalidTvNumberError")); // Use translation key for invalid format
+      setLoading(false);
       return;
     }
   
@@ -315,6 +345,7 @@ const AdminIndex = () => {
     const tvExists = tvs.some((tv) => tv.tvNumber === newAddTvNumber);
     if (tvExists) {
       setAddTVError(t("tvExistsError")); // Use translation key
+      setLoading(false);
       return;
     }
   
@@ -344,12 +375,14 @@ const AdminIndex = () => {
   
         // Clear input field after success
         setNewAddTvNumber('');
+        setLoading(false);
       } else {
         // Failure: Show warning message
         setDeviceWarning(
           "Device not connected. Data might be outdated. You cannot perform any operation. Kindly make sure device is up and connected to server."
         );
         setAddTVError(result.message || t("addTvFailed"));
+        setLoading(false);
       }
     } catch (error) {
       console.error('Error adding TV:', error);
@@ -365,6 +398,7 @@ const AdminIndex = () => {
       setDeviceWarning(
         "Device not connected. Data might be outdated. You cannot perform any operation. Kindly make sure device is up and connected to server."
       );
+      setLoading(false);
     }
   };
   
@@ -1052,10 +1086,16 @@ const AdminIndex = () => {
                 <Button
                   color="primary"
                   onClick={handleRoomSubmit}
-                  disabled={newTvNumber.length !== 4} // Enable only if TV number length is 4
+                  disabled={
+                    loading || newTvNumber.length !== 4// Disable when loading or input invalid
+                  }
                 >
-                  {t("submit")}
-                </Button>
+                  {loading ? (
+                    <Spinner size="sm" /> // Show spinner when loading
+                  ) : (
+                    t("Submit") // Default label
+                  )}
+                </Button>  
               )}
               <Button color="secondary" onClick={() => setShowRoomModal(false)}>
               {modalSuccessMessage ? t("close") : t("cancel")} 
@@ -1231,9 +1271,13 @@ const AdminIndex = () => {
             <Button
               color="primary"
               onClick={handleAddTV}
-              disabled={newAddTvNumber.length !== 4} // Enable only if TV number is 4 digits
+              disabled={loading || newAddTvNumber.length !== 4} // Enable only if TV number is 4 digits
             >
-              {t("submit")}
+              {loading ? (
+                <Spinner size="sm" /> // Show spinner when loading
+              ) : (
+                t("Submit") // Default label
+              )}
             </Button>
           )}
           <Button color="secondary" onClick={() => setShowAddTVModal(false)}>

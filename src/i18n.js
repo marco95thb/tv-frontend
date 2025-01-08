@@ -144,7 +144,8 @@ const resources = {
       failedToSendConfig: "Failed to send configuration. Device not connected. You cannot perform any operation until device sends updated data. Kindly make sure device is up and connected to server.",
       deviceNotConnected: "Device not connected. Data might be outdated. You cannot perform any operation until device sends updated data. Kindly make sure device is up and connected to server",
       configSuccess: "Configuration sent successfully",
-      activateAllSuccess: "Sum of remaining minutes sent successfully"
+      activateAllSuccess: "Sum of remaining minutes sent successfully",
+      contactAdmin: "Device not connected. Kindly contact administrator."
     },
   },
   it: {

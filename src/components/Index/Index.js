@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Container, Row, Col, Form, FormGroup, Input, Label, Button, Alert, Modal, ModalHeader, ModalBody, ModalFooter, Table } from "reactstrap";
+import { Spinner, Container, Row, Col, Form, FormGroup, Input, Label, Button, Alert, Modal, ModalHeader, ModalBody, ModalFooter, Table } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import DemoNavbar from "../Navbars/DemoNavbar";
@@ -21,6 +21,8 @@ const Index = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false); // For showing loading state
   const [loadingOrders, setLoadingOrders] = useState("");
+  const [loading, setLoading] = useState(false); // Loading state for button
+
 
   const [modalOrderId, setModalOrderId] = useState(null); // To track the order for which OTP is entered
   const [otp, setOtp] = useState(""); // OTP input
@@ -201,19 +203,23 @@ useEffect(() => {
   };
 
   const handleOtpSubmit = async () => {
-
+    setLoading(true); // Start loading
+    setModalErrorMessage(""); // Clear previous errors
+    setModalSuccessMessage(""); // Clear previous success messages
+  
     try {
       console.log({
         modalOrderId,
         otp,
-        newTvNumber
-      })
+        newTvNumber,
+      });
+  
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/orders/change-room`,
         {
           orderId: modalOrderId,
-          otp: Number(otp),  // Convert to number
-          newTvNumber: (newTvNumber)
+          otp: Number(otp), // Ensure OTP is a number
+          newTvNumber,
         },
         {
           headers: {
@@ -222,28 +228,43 @@ useEffect(() => {
           },
         }
       );
-
-      setModalErrorMessage(""); 
-      // Success handling
-      setModalSuccessMessage(t("roomChangeSuccess"));
-
-      const updatedOrder = response.data.order;
-
-
-      // Update orders state
-      setOrders((prevOrders) =>
-        prevOrders.map((order) =>
-          order._id === modalOrderId ? updatedOrder : order
-        )
-      );
-
-      
+  
+      const result = response.data;
+  
+      if (result.success) {
+        // Success handling
+        setModalSuccessMessage(t("roomChangeSuccess"));
+        setModalErrorMessage(""); // Clear error message
+  
+        const updatedOrder = result.order;
+  
+        // Update orders state
+        setOrders((prevOrders) =>
+          prevOrders.map((order) =>
+            order._id === modalOrderId ? updatedOrder : order
+          )
+        );
+      } else {
+        // Handle API failure with device connection check
+        setModalErrorMessage(
+          result.message ||
+            t("contactAdmin")
+        );
+      }
     } catch (error) {
+      console.error("Failed to change room:", error.message);
+  
+      // Handle error responses
       setModalErrorMessage(
-        error.response && error.response.data ? error.response.data.msg           : t("otpVerificationError")
+        error.response && error.response.data
+          ? error.response.data.message
+          : t("otpVerificationError")
       );
+    } finally {
+      setLoading(false); // End loading
     }
   };
+  
   
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -574,11 +595,19 @@ useEffect(() => {
             </ModalBody>
             <ModalFooter>
               {!modalSuccessMessage && (
-                <Button color="primary" onClick={handleOtpSubmit}
-                disabled={newTvNumber.length !== 4 || otp.length !== 6} // Enable only if TV number length is 4
-                >
-                  {t("Submit")}
-                </Button>
+                <Button
+                color="primary"
+                onClick={handleOtpSubmit}
+                disabled={
+                  loading || newTvNumber.length !== 4 || otp.length !== 6 // Disable when loading or input invalid
+                }
+              >
+                {loading ? (
+                  <Spinner size="sm" /> // Show spinner when loading
+                ) : (
+                  t("Submit") // Default label
+                )}
+              </Button>              
               )}
               <Button color="secondary" onClick={() => setShowOtpModal(false)}>
                 {modalSuccessMessage ? `${t("close")}` : `${t("cancel")}`}
