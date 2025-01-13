@@ -586,7 +586,7 @@ const AdminIndex = () => {
     const config = {
       tv_number: tvNumber,
       force: parseInt(tv.state === "on" ? 1 : 0),
-      bonus: parseFloat(tv.newBonus || 0),
+      bonus: parseFloat((tv.newBonus * 100) || 0),
       set_time: parseInt(tv.newSetTime || 0),
     };
 
