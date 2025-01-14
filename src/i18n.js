@@ -145,7 +145,8 @@ const resources = {
       deviceNotConnected: "Device not connected. Data might be outdated. You cannot perform any operation until device sends updated data. Kindly make sure device is up and connected to server",
       configSuccess: "Configuration sent successfully",
       activateAllSuccess: "Sum of remaining minutes sent successfully",
-      contactAdmin: "Device not connected. Kindly contact administrator."
+      contactAdmin: "Device not connected. Kindly contact administrator.",
+      totalBalance: "Total Balance"
     },
   },
   it: {
@@ -289,7 +290,8 @@ const resources = {
         failedToSendConfig: "Impossibile inviare la configurazione. Dispositivo non connesso. Non è possibile eseguire alcuna operazione finché il dispositivo non invia i dati aggiornati. Assicurati che il dispositivo sia attivo e connesso al server.",
         deviceNotConnected: "Dispositivo non connesso. I dati potrebbero essere obsoleti. Non è possibile eseguire alcuna operazione finché il dispositivo non invia i dati aggiornati. Assicurati che il dispositivo sia attivo e connesso al server",
         configSuccess: "Configurazione inviata con successo",
-        activateAllSuccess: "Somma dei minuti rimanenti inviati con successo"
+        activateAllSuccess: "Somma dei minuti rimanenti inviati con successo",
+        totalBalance: "Saldo Totale"
       },
   },
   "fr": {
@@ -433,7 +435,8 @@ const resources = {
       "failedToSendConfig": "Échec de l'envoi de la configuration. L'appareil n'est pas connecté. Vous ne pouvez pas effectuer d'opération tant que l'appareil ne renvoie pas de données à jour. Veuillez vérifier que l'appareil est sous tension et connecté au serveur.",
       "deviceNotConnected": "L'appareil n'est pas connecté. Les données pourraient être obsolètes. Vous ne pouvez pas effectuer d'opération tant que l'appareil ne renvoie pas de données à jour. Veuillez vérifier que l'appareil est sous tension et connecté au serveur.",
       "configSuccess": "Configuration envoyée avec succès",
-      "activateAllSuccess": "Le total des minutes restantes a été envoyé avec succès"
+      "activateAllSuccess": "Le total des minutes restantes a été envoyé avec succès",
+      totalBalance: "Solde Total"
     }
   },
   "es": {
@@ -577,7 +580,8 @@ const resources = {
       "failedToSendConfig": "Error al enviar la configuración. El dispositivo no está conectado. No puede realizar ninguna operación hasta que el dispositivo envíe datos actualizados. Asegúrese de que el dispositivo esté encendido y conectado al servidor.",
       "deviceNotConnected": "El dispositivo no está conectado. Los datos pueden estar desactualizados. No puede realizar ninguna operación hasta que el dispositivo envíe datos actualizados. Asegúrese de que el dispositivo esté encendido y conectado al servidor.",
       "configSuccess": "Configuración enviada con éxito",
-      "activateAllSuccess": "Se envió correctamente la suma de los minutos restantes"
+      "activateAllSuccess": "Se envió correctamente la suma de los minutos restantes",
+      totalBalance: "Saldo Total"
     }
   },
   "ar": {
@@ -721,7 +725,8 @@ const resources = {
       "failedToSendConfig": "فشل إرسال الإعدادات. الجهاز غير متصل. لا يمكنك إجراء أي عملية حتى يرسل الجهاز البيانات المحدثة. تأكد من أن الجهاز يعمل ومتصل بالخادم.",
       "deviceNotConnected": "الجهاز غير متصل. قد تكون البيانات قديمة. لا يمكنك إجراء أي عملية حتى يرسل الجهاز البيانات المحدثة. تأكد من أن الجهاز يعمل ومتصل بالخادم.",
       "configSuccess": "تم إرسال الإعدادات بنجاح",
-      "activateAllSuccess": "تم إرسال مجموع الدقائق المتبقية بنجاح"
+      "activateAllSuccess": "تم إرسال مجموع الدقائق المتبقية بنجاح",
+      totalBalance: "الرصيد الإجمالي"
     }
   }
 };
