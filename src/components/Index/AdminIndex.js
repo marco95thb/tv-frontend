@@ -646,7 +646,7 @@ const AdminIndex = () => {
   
       if (result.success) {
         // Success: Show message and update TV list
-        alert(result.message); // Configuration sent successfully
+        alert(t("tvDeleted")); // Configuration sent successfully
         setDeviceWarning(""); // Clear any previous warnings
   
         // Update local state by removing the deleted TV
