@@ -1230,10 +1230,13 @@ const AdminIndex = () => {
                   groups[groupKey].push(tv);
                   return groups;
                 }, {})
-              ).map(([groupKey, group]) => {
-                return group.map((tv) => (
+              ).sort(([groupKeyA], [groupKeyB]) => groupKeyA.localeCompare(groupKeyB)) // Sort groups by group key in ascending order
+              .map(([groupKey, group]) => {
+                return group.sort((a, b) => a.tvNumber.localeCompare(b.tvNumber)) // Sort TVs within each group by tvNumber in ascending order
+                  .map((tv) => (
                   <tr key={tv._id}>
                     <td>{tv.tvNumber}</td>
+
                     <td>
                       <Button
                         color={tv.state === "on" ? "success" : "secondary"} // Dynamic button color
