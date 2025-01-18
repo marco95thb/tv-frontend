@@ -146,7 +146,8 @@ const resources = {
       configSuccess: "Configuration sent successfully",
       activateAllSuccess: "Sum of remaining minutes sent successfully",
       contactAdmin: "Device not connected. Kindly contact administrator.",
-      totalBalance: "Total Balance"
+      totalBalance: "Total Balance",
+      deleteFailure: "Failed to delete tv. Device not connected. You cannot perform any operation until device sends updated data. Kindly make sure device is up and connected to server.",
     },
   },
   it: {
@@ -291,7 +292,8 @@ const resources = {
         deviceNotConnected: "Dispositivo non connesso. I dati potrebbero essere obsoleti. Non è possibile eseguire alcuna operazione finché il dispositivo non invia i dati aggiornati. Assicurati che il dispositivo sia attivo e connesso al server",
         configSuccess: "Configurazione inviata con successo",
         activateAllSuccess: "Somma dei minuti rimanenti inviati con successo",
-        totalBalance: "Saldo Totale"
+        totalBalance: "Saldo Totale",
+        deleteFailure: "Impossibile eliminare la TV. Dispositivo non connesso. Non è possibile eseguire alcuna operazione finché il dispositivo non invia i dati aggiornati. Assicurati che il dispositivo sia attivo e connesso al server.",
       },
   },
   "fr": {
@@ -436,7 +438,8 @@ const resources = {
       "deviceNotConnected": "L'appareil n'est pas connecté. Les données pourraient être obsolètes. Vous ne pouvez pas effectuer d'opération tant que l'appareil ne renvoie pas de données à jour. Veuillez vérifier que l'appareil est sous tension et connecté au serveur.",
       "configSuccess": "Configuration envoyée avec succès",
       "activateAllSuccess": "Le total des minutes restantes a été envoyé avec succès",
-      totalBalance: "Solde Total"
+      totalBalance: "Solde Total",
+      deleteFailure: "Échec de la suppression de la télévision. Appareil non connecté. Vous ne pouvez effectuer aucune opération tant que l'appareil n'envoie pas de données mises à jour. Veuillez vous assurer que l'appareil est opérationnel et connecté au serveur.",
     }
   },
   "es": {
@@ -581,7 +584,8 @@ const resources = {
       "deviceNotConnected": "El dispositivo no está conectado. Los datos pueden estar desactualizados. No puede realizar ninguna operación hasta que el dispositivo envíe datos actualizados. Asegúrese de que el dispositivo esté encendido y conectado al servidor.",
       "configSuccess": "Configuración enviada con éxito",
       "activateAllSuccess": "Se envió correctamente la suma de los minutos restantes",
-      totalBalance: "Saldo Total"
+      totalBalance: "Saldo Total",
+      deleteFailure: "No se pudo eliminar la televisión. Dispositivo no conectado. No puede realizar ninguna operación hasta que el dispositivo envíe datos actualizados. Asegúrese de que el dispositivo esté encendido y conectado al servidor.",
     }
   },
   "ar": {
@@ -726,7 +730,8 @@ const resources = {
       "deviceNotConnected": "الجهاز غير متصل. قد تكون البيانات قديمة. لا يمكنك إجراء أي عملية حتى يرسل الجهاز البيانات المحدثة. تأكد من أن الجهاز يعمل ومتصل بالخادم.",
       "configSuccess": "تم إرسال الإعدادات بنجاح",
       "activateAllSuccess": "تم إرسال مجموع الدقائق المتبقية بنجاح",
-      totalBalance: "الرصيد الإجمالي"
+      totalBalance: "الرصيد الإجمالي",
+      deleteFailure: "فشل في حذف التلفزيون. الجهاز غير متصل. لا يمكنك إجراء أي عملية حتى يرسل الجهاز بيانات محدثة. يرجى التأكد من أن الجهاز متصل بالخادم.",
     }
   }
 };

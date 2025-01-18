@@ -614,12 +614,64 @@ const AdminIndex = () => {
       }
     } catch (error) {
       console.error('Error sending configuration:', error);
-      alert(t("configError"));
+      alert("Failed to send configuration");
       setDeviceWarning(
         t("failedToSendConfig")
       );
     }
   };
+
+  const deleteTV = async (tvNumber) => {
+    try {
+      // Check if TV exists locally before making API call
+      const tvExists = tvs.some((tv) => tv.tvNumber === tvNumber);
+      if (!tvExists) {
+        alert(t("tvDoesNotExist")); // Raise alert if TV does not exist
+        return;
+      }
+
+      setLoading(true);
+  
+      // API call to delete TV
+      const token = localStorage.getItem('token');
+      const response = await axios.delete(
+        `${process.env.REACT_APP_BASE_URL}/api/admin/remove-tv`,
+        {
+          data: { tvNumber },
+          headers: { 'x-auth-token': token },
+        }
+      );
+  
+      const result = response.data;
+  
+      if (result.success) {
+        // Success: Show message and update TV list
+        alert(result.message); // Configuration sent successfully
+        setDeviceWarning(""); // Clear any previous warnings
+  
+        // Update local state by removing the deleted TV
+        setTVs((prevTVs) => prevTVs.filter((tv) => tv.tvNumber !== tvNumber));
+        setFilteredTVs((prevFilteredTVs) => prevFilteredTVs.filter((tv) => tv.tvNumber !== tvNumber));
+        setLoading(false);
+      } else {
+        // Handle failure and set warning
+        setDeviceWarning(
+          t("deleteFailure")
+        );
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error('Error deleting TV:', error);
+      console.error('Error sending configuration:', error);
+      alert("Failed to delete tv");
+      setDeviceWarning(
+        t("deleteFailure")
+      );
+  
+      setLoading(false);
+    }
+  };
+  
 
   // Handles activating all TVs
   const handleActivateAll = async () => {
@@ -1164,6 +1216,7 @@ const AdminIndex = () => {
                 <th>{t("setBonus")}</th>
                 <th>{t("setTime")}</th>
                 <th>{t("actions")}</th>
+                <th></th> {/* Nameless column for delete icon */}
               </tr>
             </thead>
             <tbody>
@@ -1218,6 +1271,15 @@ const AdminIndex = () => {
                         disabled={deviceWarning}
                       >
                         {t("sendConfig")}
+                      </Button>
+                    </td>
+                    <td>
+                      <Button
+                        color="danger"
+                        onClick={() => deleteTV(tv.tvNumber)}
+                        disabled={deviceWarning}
+                      >
+                        <i className="fa fa-trash" />
                       </Button>
                     </td>
                   </tr>
