@@ -545,21 +545,42 @@ const AdminIndex = () => {
         setFilteredTVs(updatedFilteredTVs);
         setDeviceWarning(""); // Clear warnings
       } else {
-        // Failure - Set warning
-        setDeviceWarning(
-          "Failed to update state. Device not connected. You cannot perform any operations until device sends updated data. Kindly make sure device is up and connected to server."
-        );
+        // Failure Handling Based on Error Message
+        if (result.message.includes("Device not connected")) {
+          // Device is offline - Show warning and disable operations
+          setDeviceWarning(
+            "Failed to update state. Device not connected. You cannot perform any operations until the device sends updated data. Kindly make sure the device is up and connected to the server."
+          );
+        } else if (result.message.includes("failed to confirm")) {
+          // Device rejected the toggle - Show error without disabling operations
+          alert("The device rejected the state change. Please try again.");
+        } else if (result.message.includes("confirmation timeout")) {
+          // Device timeout - Show alert without triggering deviceWarning
+          alert("The device did not respond in time. Please try again.");
+        } else if (result.message.includes("Device refused to change the state")) {
+          // Device explicitly refused - Show alert without setting deviceWarning
+          alert("The device refused to change the state. Please try again.");
+        } else {
+          // Generic error handling
+          alert(result.message || "An unknown error occurred.");
+        }
       }
     } catch (error) {
       console.error("Failed to toggle TV state:", error.message);
-      setDeviceWarning(
-        "Something went wrong at the server side."
-      );
-      alert("Failed to toggle TV state.");
+  
+      // Handle timeout errors explicitly
+      if (error.response && error.response.status === 408) {
+        alert("The device did not respond in time. Please try again.");
+      } else {
+        // Generic server error
+        setDeviceWarning("Something went wrong on the server side.");
+        alert("Failed to toggle TV state.");
+      }
     } finally {
       setLoadingTV(null); // Clear loading state
     }
   };
+  
    
 
   // Handles bonus input change
