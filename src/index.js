@@ -16,6 +16,7 @@ import PrivateRoute from "./components/Private Routes/PrivateRoute";
 import PrivateAdminRoute from "./components/Private Routes/PrivateAdminRoute";
 import Remote from "./components/Index/Remote";
 import PrivacyPolicy from "./components/LogIn-SignUp/PrivayPolicy";
+import CookieBanner from "./components/Navbars/CookieBanner";
 
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
@@ -50,6 +51,7 @@ root.render(
             <Route path="*" element={<Navigate to="/home" replace />} />
           </Routes>
         </Elements>
+        <CookieBanner /> {/* ✅ Add Cookie Banner */}
       </BrowserRouter>
 
       </I18nextProvider>
