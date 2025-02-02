@@ -819,7 +819,7 @@ const AdminIndex = () => {
                         </span>
                         <span className="btn-inner--text">{t("viewAllUsers")}</span>
                       </Button>
-                      <Button
+                      {/* <Button
                         className="btn-icon mb-3 mb-sm-0 mt-3"
                         color="default"
                         size="lg"
@@ -829,13 +829,13 @@ const AdminIndex = () => {
                           <i className="fa fa-tv" />
                         </span>
                         <span className="btn-inner--text">{t("remote")}</span>
-                      </Button>
+                      </Button> */}
                     </div>
                   </Col>
                 </Row>
               </div>
             </Container>
-            <div className="separator separator-bottom separator-skew zindex-100">
+            {/* <div className="separator separator-bottom separator-skew zindex-100">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 preserveAspectRatio="none"
@@ -846,7 +846,7 @@ const AdminIndex = () => {
               >
                 <polygon className="fill-white" points="2560 0 2560 100 0 100" />
               </svg>
-            </div>
+            </div> */}
           </section>
         </div>
 

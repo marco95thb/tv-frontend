@@ -80,6 +80,30 @@ const LoginNavbar = () => {
             {/* RIGHT side nav */}
             <Nav className="ml-auto" navbar>
               {/* Language Dropdown */}
+
+              <NavItem>
+                <NavLink
+                  tag={Link}
+                  to="/prices"
+                  className="h3 font-weight-bold"
+                  style={{ fontWeight: "bold", textTransform: "uppercase" }}
+                >
+                    <i className="fa fa-dollar mr-2" />
+                    {t("pricing")}
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink
+                  tag={Link}
+                  to="/information"
+                  className="h3 font-weight-bold"
+                  style={{ fontWeight: "bold", textTransform: "uppercase" }}
+                >
+                    <i className="fa fa-info-circle mr-2" />
+                    {t("instructions")}
+                </NavLink>
+              </NavItem>
+
               <NavItem>
                 <Dropdown
                   nav

@@ -110,7 +110,7 @@ const DemoNavbar = () => {
                   style={{ fontWeight: "bold", textTransform: "uppercase" }}
                 >
                    <i className="fa fa-home mr-2" />
-                  Home
+                   {t("home")}
                 </NavLink>
               </NavItem>
               )}
@@ -125,11 +125,32 @@ const DemoNavbar = () => {
                     style={{ fontWeight: "bold", textTransform: "uppercase" }}
                   >
                      <i className="fa fa-gear mr-2" />
-                    Admin
+                     {t("admin")}
                   </NavLink>
                 </NavItem>
               )}
-            {/* </Nav> */}
+              <NavItem>
+                <NavLink
+                  tag={Link}
+                  to="/prices"
+                  className="h3 font-weight-bold"
+                  style={{ fontWeight: "bold", textTransform: "uppercase" }}
+                >
+                    <i className="fa fa-dollar mr-2" />
+                    {t("pricing")}
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink
+                  tag={Link}
+                  to="/instructions"
+                  className="h3 font-weight-bold"
+                  style={{ fontWeight: "bold", textTransform: "uppercase" }}
+                >
+                    <i className="fa fa-info-circle mr-2" />
+                    {t("instructions")}
+                </NavLink>
+              </NavItem>
 
             {/* RIGHT side nav: Language + Username */}
             {/* <Nav className="ml-auto" navbar> */}

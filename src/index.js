@@ -10,6 +10,7 @@ import Index from "./components/Index/Index";
 import Login from "./components/LogIn-SignUp/Login";
 import Register from "./components/LogIn-SignUp/Register";
 import AdminIndex from "./components/Index/AdminIndex";
+import Prices from "./components/Index/Prices";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import PrivateRoute from "./components/Private Routes/PrivateRoute";
 import PrivateAdminRoute from "./components/Private Routes/PrivateAdminRoute";
@@ -37,6 +38,7 @@ root.render(
             <Route path="/register-page" exact element={<Register />} />
             <Route path="/remote" exact element={<Remote />} /> 
             <Route path="/privacy-policy" exact element={<PrivacyPolicy />} /> 
+            <Route path="/prices" exact element={<Prices />} /> 
 
             {/* Private routes */}
             <Route path="/home" exact element={<Index />} />

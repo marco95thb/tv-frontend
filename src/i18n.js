@@ -148,7 +148,11 @@ const resources = {
       contactAdmin: "Device not connected. Kindly contact administrator.",
       totalBalance: "Total Balance",
       deleteFailure: "Failed to delete tv. Device not connected. You cannot perform any operation until device sends updated data. Kindly make sure device is up and connected to server.",
-      tvDeleted: "TV deleted successfully"
+      tvDeleted: "TV deleted successfully",
+      pricing: "Pricing",
+      instructions: "Instructions",
+      home: "Home",
+      admin: "Admin",
     },
   },
   it: {
@@ -295,7 +299,11 @@ const resources = {
         activateAllSuccess: "Somma dei minuti rimanenti inviati con successo",
         totalBalance: "Saldo Totale",
         deleteFailure: "Impossibile eliminare la TV. Dispositivo non connesso. Non è possibile eseguire alcuna operazione finché il dispositivo non invia i dati aggiornati. Assicurati che il dispositivo sia attivo e connesso al server.",
-        tvDeleted: "TV eliminata correttamente"
+        tvDeleted: "TV eliminata correttamente",
+        pricing: "Prezzi",
+        instructions: "Istruzioni",
+        home: "Casa",
+        admin: "Ammin",
       },
   },
   "fr": {
@@ -442,7 +450,11 @@ const resources = {
       "activateAllSuccess": "Le total des minutes restantes a été envoyé avec succès",
       totalBalance: "Solde Total",
       deleteFailure: "Échec de la suppression de la télévision. Appareil non connecté. Vous ne pouvez effectuer aucune opération tant que l'appareil n'envoie pas de données mises à jour. Veuillez vous assurer que l'appareil est opérationnel et connecté au serveur.",
-      tvDeleted: "TV supprimée avec succès"
+      tvDeleted: "TV supprimée avec succès",
+      pricing: "Tarifs",
+      instructions: "Instructions",
+      home: "Maison",
+      admin: "Administrateur",
     }
   },
   "es": {
@@ -589,7 +601,11 @@ const resources = {
       "activateAllSuccess": "Se envió correctamente la suma de los minutos restantes",
       totalBalance: "Saldo Total",
       deleteFailure: "No se pudo eliminar la televisión. Dispositivo no conectado. No puede realizar ninguna operación hasta que el dispositivo envíe datos actualizados. Asegúrese de que el dispositivo esté encendido y conectado al servidor.",
-      tvDeleted: "TV eliminada exitosamente"
+      tvDeleted: "TV eliminada exitosamente",
+      pricing: "Precios",
+      instructions: "Instrucciones",
+      home: "Hogar",
+      admin: "Administrador",
     }
   },
   "ar": {
@@ -736,7 +752,11 @@ const resources = {
       "activateAllSuccess": "تم إرسال مجموع الدقائق المتبقية بنجاح",
       totalBalance: "الرصيد الإجمالي",
       deleteFailure: "فشل في حذف التلفزيون. الجهاز غير متصل. لا يمكنك إجراء أي عملية حتى يرسل الجهاز بيانات محدثة. يرجى التأكد من أن الجهاز متصل بالخادم.",
-      tvDeleted: "تم حذف التلفزيون بنجاح"
+      tvDeleted: "تم حذف التلفزيون بنجاح",
+      pricing: "التسعير",
+      instructions: "تعليمات",
+      home: "بيت",
+      admin: "مسؤل",
     }
   }
 };
