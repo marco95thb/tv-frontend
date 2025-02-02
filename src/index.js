@@ -17,6 +17,7 @@ import PrivateAdminRoute from "./components/Private Routes/PrivateAdminRoute";
 import Remote from "./components/Index/Remote";
 import PrivacyPolicy from "./components/LogIn-SignUp/PrivayPolicy";
 import CookieBanner from "./components/Navbars/CookieBanner";
+import Instructions from "./components/Index/Instructions";
 
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
@@ -40,6 +41,7 @@ root.render(
             <Route path="/remote" exact element={<Remote />} /> 
             <Route path="/privacy-policy" exact element={<PrivacyPolicy />} /> 
             <Route path="/prices" exact element={<Prices />} /> 
+            <Route path="/instructions" exact element={<Instructions />} /> 
 
             {/* Private routes */}
             <Route path="/home" exact element={<Index />} />

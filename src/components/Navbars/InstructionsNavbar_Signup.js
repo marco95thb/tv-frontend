@@ -45,17 +45,17 @@ const SignupNavbar = () => {
   };
 
   useEffect(() => {
-    const headroom = new Headroom(document.getElementById("navbar-main"));
-    headroom.init();
+    // const headroom = new Headroom(document.getElementById("navbar-main"));
+    // headroom.init();
   }, [i18n]);
 
   return (
     <header className="header-global">
       <Navbar
-        className="navbar-main navbar-transparent headroom navbar-light"
+        className="navbar-main navbar-light"
         expand="lg"
         id="navbar-main"
-        style={{ color: "black" }} // keeps navbar transparent
+        style={{ backgroundColor: "grey", color: "black" }}
       >
         <Container>
           {/* Brand on the far-left */}

@@ -95,7 +95,7 @@ const LoginNavbar = () => {
               <NavItem>
                 <NavLink
                   tag={Link}
-                  to="/information"
+                  to="/instructions"
                   className="h3 font-weight-bold"
                   style={{ fontWeight: "bold", textTransform: "uppercase" }}
                 >
