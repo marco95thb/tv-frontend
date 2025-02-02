@@ -22,7 +22,7 @@ const resources = {
       yourOrders: "Your Orders",
       noOrders: "No orders placed yet.",
       clickToExpand: "Click to expand previous TV",
-      timeBought: "Time Bought (Hours)",
+      timeBought: "Time Bought (Days)",
       totalCost: "Total Cost",
       orderDate: "Order Date",
       changeTv: "Change TV",
@@ -172,6 +172,8 @@ const resources = {
       remoteCost: "The remote control costs €13.00.",
       refundRemote: "If you wish to return it, you can use the remote control return machine located next to the remote control and headphone vending machine. Upon return, the machine will check its functionality, and if it is working, it will accept it and refund the amount of €10.00.",
       takeBack: "Otherwise, after 20 seconds, please take it back.",
+      setTTL: "Set TTL",
+      exportCSV: "Export as CSV"
     },
   },
   it: {
@@ -193,7 +195,7 @@ const resources = {
         "yourOrders": "I tuoi ordini",
         "noOrders": "Nessun ordine effettuato.",
         "clickToExpand": "Clicca per espandere la TV precedente",
-        "timeBought": "Tempo acquistato (ore)",
+        "timeBought": "Tempo acquistato (Giorni)",
         "totalCost": "Costo totale",
         "orderDate": "Data dell'ordine",
         "changeTv": "Cambia TV",
@@ -342,6 +344,8 @@ const resources = {
         remoteCost: "Il telecomando ha un costo di € 13,00.",
         refundRemote: "Se desideri restituirlo puoi utilizzare la macchinetta ritira telecomandi posizionata vicino al distributore di telecomandi e cuffie. Al momento della restituzione, la macchinetta ne controllerà il funzionamento e se risulterà funzionante, lo ritirerà e restituirà la somma di € 10,00.",
         takeBack: "Diversamente, trascorsi 20 secondi, si prega di ritirarlo.",
+        setTTL: "impostare il TTL",
+        exportCSV: "Esporta come CSV"
       },
   },
   "fr": {
@@ -363,7 +367,7 @@ const resources = {
       "yourOrders": "Vos commandes",
       "noOrders": "Aucune commande passée pour le moment.",
       "clickToExpand": "Cliquez pour développer la TV précédente",
-      "timeBought": "Temps acheté (Heures)",
+      "timeBought": "Temps acheté (Jours)",
       "totalCost": "Coût total",
       "orderDate": "Date de la commande",
       "changeTv": "Changer de TV",
@@ -511,7 +515,9 @@ const resources = {
       "entrance1": "Rappelez-vous qu'à <strong>l'Entrée 1</strong>, près du BAR, vous pouvez toujours trouver un <strong>distributeur automatique</strong> de <strong>télécommandes</strong> et de <strong>casques</strong> pour écouter la télévision.",
       "remoteCost": "La télécommande coûte 13,00 €.",
       "refundRemote": "Si vous souhaitez la retourner, vous pouvez utiliser la machine de retour des télécommandes située à côté du distributeur de télécommandes et de casques. Lors du retour, la machine vérifiera son bon fonctionnement et, si elle fonctionne, elle l'acceptera et vous remboursera la somme de 10,00 €.",
-      "takeBack": "Sinon, après 20 secondes, veuillez la récupérer."
+      "takeBack": "Sinon, après 20 secondes, veuillez la récupérer.",
+      setTTL: "définir TTL",
+      exportCSV: "Exporter au format CSV"
     }
   },
   "es": {
@@ -533,7 +539,7 @@ const resources = {
       "yourOrders": "Tus pedidos",
       "noOrders": "Todavía no has realizado ningún pedido.",
       "clickToExpand": "Haz clic para expandir la TV anterior",
-      "timeBought": "Tiempo comprado (horas)",
+      "timeBought": "Tiempo comprado (Días)",
       "totalCost": "Costo total",
       "orderDate": "Fecha del pedido",
       "changeTv": "Cambiar TV",
@@ -681,7 +687,9 @@ const resources = {
       "entrance1": "Recuerda que en la <strong>Entrada 1</strong>, cerca del BAR, siempre puedes encontrar una <strong>máquina expendedora</strong> de <strong>controles remotos</strong> adicionales y <strong>auriculares</strong> para escuchar la televisión.",
       "remoteCost": "El control remoto cuesta 13,00 €.",
       "refundRemote": "Si deseas devolverlo, puedes utilizar la máquina de devolución de controles remotos ubicada junto a la máquina expendedora de controles remotos y auriculares. Al devolverlo, la máquina verificará su funcionamiento y, si funciona, lo aceptará y te reembolsará la suma de 10,00 €.",
-      "takeBack": "De lo contrario, después de 20 segundos, por favor recógelo."
+      "takeBack": "De lo contrario, después de 20 segundos, por favor recógelo.",
+      setTTL: "establecer TTL",
+      exportCSV: "Exportar como CSV"
     }
   },
   "ar": {
@@ -703,7 +711,7 @@ const resources = {
       "yourOrders": "طلباتك",
       "noOrders": "لا توجد طلبات حتى الآن.",
       "clickToExpand": "انقر لعرض التلفاز السابق",
-      "timeBought": "الوقت المشتَرَى (ساعات)",
+      "timeBought": "الوقت المشتَرَى (أيام)",
       "totalCost": "التكلفة الإجمالية",
       "orderDate": "تاريخ الطلب",
       "changeTv": "تغيير التلفاز",
@@ -851,7 +859,9 @@ const resources = {
       "entrance1": "تذكّر أنه عند <strong>المدخل 1</strong>، بالقرب من المقهى، يمكنك دائمًا العثور على <strong>ماكينة بيع ذاتية</strong> لـ <strong>أجهزة التحكم عن بُعد</strong> الإضافية و<strong>سماعات الرأس</strong> للاستماع إلى التلفزيون.",
       "remoteCost": "تكلفة جهاز التحكم عن بُعد هي 13.00 يورو.",
       "refundRemote": "إذا كنت ترغب في إرجاعه، يمكنك استخدام ماكينة استرداد أجهزة التحكم عن بُعد الموجودة بجانب ماكينة بيع أجهزة التحكم وسماعات الرأس. عند الإرجاع، ستتحقق الماكينة من وظيفته، وإذا كان يعمل، ستقبله وتعيد لك مبلغ 10.00 يورو.",
-      "takeBack": "وإلا، بعد 20 ثانية، يرجى استرجاعه."
+      "takeBack": "وإلا، بعد 20 ثانية، يرجى استرجاعه.",
+      setTTL: "ضبط TTL",
+      exportCSV: "تصدير كملف CSV"
     }
   }
 };

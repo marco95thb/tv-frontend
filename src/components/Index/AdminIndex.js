@@ -786,6 +786,50 @@ const AdminIndex = () => {
     }
   };
 
+  const exportDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
+
+  const exportToCSV = () => {
+    const headers = [
+      t("userEmail"),
+      t("timeBought"),
+      t("totalCost"),
+      t("tvNumber"),
+      t("orderDate")
+    ];
+
+    const formatTVNumbers = (tvNumbers) => {
+      return `[${tvNumbers.join('-')}]`;
+    };
+
+    const rows = orders.map(order => [
+      order.userId.email,
+      order.timeBought,
+      `${order.totalCost}`,
+      formatTVNumbers(order.tvNumber),
+      exportDate(order.orderDate)
+    ]);
+
+    const csvContent = [
+      headers.join(","),
+      ...rows.map(row => row.join(","))
+    ].join("\n");
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", "orders.csv");
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <>
@@ -881,7 +925,7 @@ const AdminIndex = () => {
                         <span className="btn-inner--icon mr-1">
                           <i className="fa fa-clock-o" />
                         </span>
-                        <span className="btn-inner--text">{t("Set TTL")}</span>
+                        <span className="btn-inner--text">{t("setTTL")}</span>
                       </Button>
 
                       {/* <Button
@@ -1126,9 +1170,18 @@ const AdminIndex = () => {
             <span />
           </div>
           <Container>
+            <Row className="justify-content-between align-items-center mb-3">
+              <Col>
+                <h3>{t("allOrders")}</h3>
+              </Col>
+              <Col className="d-flex justify-content-end">
+                <Button color="github" onClick={exportToCSV}>
+                  {t("exportCSV")}
+                </Button>
+              </Col>
+            </Row>
             <Row className="justify-content-center">
               <Col lg="12">
-              <h3 className="text-center">{t("allOrders")}</h3>
                 {/* Filters Row */}
                 <Row form className="mb-4">
                   <Col md="6">
