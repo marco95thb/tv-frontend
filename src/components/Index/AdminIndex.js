@@ -49,6 +49,8 @@ const AdminIndex = () => {
   const [deviceWarning, setDeviceWarning] = useState('');
   const [loadingTV, setLoadingTV] = useState(null); // Track which TV is loading
 
+  const [newTTL, setNewTTL] = useState('');
+  const [showTTLModal, setShowTTLModal] = useState(false);
 
   const navigate = useNavigate(); // Define navigate
 
@@ -735,6 +737,55 @@ const AdminIndex = () => {
     }
   };
 
+  // Open modal for changing hourly rate
+  const handleTTLChange = () => {
+    setNewTTL('');
+    setModalErrorMessage('');
+    setModalSuccessMessage('');
+    setShowTTLModal(true);
+  };
+
+  const handleTTLSubmit = async () => {
+    if (!newTTL || newTTL <= 0) {
+      setModalErrorMessage('Please provide a valid TTL in months.');
+      return;
+    }
+
+    setLoading(true);
+    setModalErrorMessage('');
+    setModalSuccessMessage('');
+
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/api/admin/set-time-to-live`,
+        { ttlInMonths: newTTL },
+        {
+          headers: {
+            'x-auth-token': token,
+          },
+        }
+      );
+
+      const result = response.data;
+
+      if (response.status === 200) {
+        setModalSuccessMessage(`TTL successfully set to ${newTTL} month(s).`);
+      } else {
+        setModalErrorMessage(result.message || 'Failed to set TTL. Please try again.');
+      }
+    } catch (error) {
+      console.error('Failed to set TTL:', error.message);
+      setModalErrorMessage(
+        error.response && error.response.data
+          ? error.response.data.message
+          : 'An error occurred while setting TTL.'
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
   return (
     <>
@@ -807,6 +858,7 @@ const AdminIndex = () => {
                         <span className="btn-inner--text">{t("changeHourlyRate")}</span>
                       </Button>
 
+
                       {/* View All Users Button */}
                       <Button
                         className="btn-white btn-icon mb-3 mb-sm-0 mt-3"
@@ -819,6 +871,19 @@ const AdminIndex = () => {
                         </span>
                         <span className="btn-inner--text">{t("viewAllUsers")}</span>
                       </Button>
+
+                      <Button
+                        className="btn-icon mb-3 mb-sm-0 mt-3"
+                        color="default"
+                        size="lg"
+                        onClick={handleTTLChange}  // Open TTL modal
+                      >
+                        <span className="btn-inner--icon mr-1">
+                          <i className="fa fa-clock-o" />
+                        </span>
+                        <span className="btn-inner--text">{t("Set TTL")}</span>
+                      </Button>
+
                       {/* <Button
                         className="btn-icon mb-3 mb-sm-0 mt-3"
                         color="default"
@@ -850,6 +915,48 @@ const AdminIndex = () => {
           </section>
         </div>
 
+        <Modal isOpen={showTTLModal} toggle={() => setShowTTLModal(!showTTLModal)}>
+          <ModalHeader toggle={() => setShowTTLModal(!showTTLModal)}>
+            Change Data Retention Period (TTL)
+          </ModalHeader>
+          <ModalBody>
+            <Form>
+              <FormGroup>
+                <Label for="newTTL">New TTL (in months)</Label>
+                <Input
+                  type="number"
+                  id="newTTL"
+                  value={newTTL}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (/^\d{0,2}$/.test(value)) { // Allows only up to 2 digits
+                      setNewTTL(value);
+                    }
+                  }}
+                  placeholder="Enter TTL in months (e.g., 6)"
+                  disabled={modalSuccessMessage ? true : false}
+                  min="1"
+                />
+              </FormGroup>
+              {modalErrorMessage && <Alert color="danger">{modalErrorMessage}</Alert>}
+              {modalSuccessMessage && <Alert color="success">{modalSuccessMessage}</Alert>}
+            </Form>
+          </ModalBody>
+          <ModalFooter>
+            {!modalSuccessMessage && (
+              <Button
+                color="primary"
+                onClick={handleTTLSubmit}
+                disabled={loading || newTTL.length === 0 || newTTL <= 0}
+              >
+                {loading ? <Spinner size="sm" /> : 'Submit'}
+              </Button>
+            )}
+            <Button color="secondary" onClick={() => setShowTTLModal(false)}>
+              {modalSuccessMessage ? 'Close' : 'Cancel'}
+            </Button>
+          </ModalFooter>
+        </Modal>
 
         {/* Modal for Changing Hourly Rate
         <Modal isOpen={showRateModal} toggle={() => setShowRateModal(!showRateModal)}>
