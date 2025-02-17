@@ -52,6 +52,10 @@ const AdminIndex = () => {
   const [newTTL, setNewTTL] = useState('');
   const [showTTLModal, setShowTTLModal] = useState(false);
 
+  const [groupNumber, setGroupNumber] = useState('');
+  const [minutes, setMinutes] = useState('');
+  const [showActivateAllModal, setShowActivateAllModal] = useState(false);
+
   const navigate = useNavigate(); // Define navigate
 
   const scrollToOrders = () => {
@@ -701,9 +705,10 @@ const AdminIndex = () => {
     // Calculate the total sum of remaining minutes
     const totalRemainingMinutes = tvs.reduce((sum, tv) => sum + (tv.remainingDuration || 0), 0);
 
-    // Prepare payload
     const config = {
-      activate_all: totalRemainingMinutes, // Send the sum to the backend
+      sum_of_minutes: totalRemainingMinutes,
+      group_number: groupNumber,
+      minutes: minutes,
     };
 
     try {
@@ -829,6 +834,18 @@ const AdminIndex = () => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  };
+
+  const handleActivateSubmit = async () => {
+    if (!groupNumber || !minutes) {
+      setError('Please fill in both fields.');
+      return;
+    }
+
+    setLoading(true);
+    await handleActivateAll(groupNumber, minutes);
+    setLoading(false);
+    setShowActivateAllModal(false);
   };
 
   return (
@@ -1367,8 +1384,8 @@ const AdminIndex = () => {
 
             <Button
               color="primary"
-              onClick={handleActivateAll}
-              disabled={deviceWarning}
+              onClick={() => setShowActivateAllModal(true)}
+              //disabled={deviceWarning}
             >
               {t("activateAll")}
             </Button>
@@ -1522,6 +1539,38 @@ const AdminIndex = () => {
         </ModalFooter>
       </Modal>
 
+      <Modal isOpen={showActivateAllModal} toggle={() => setShowActivateAllModal(false)}>
+      <ModalHeader toggle={() => setShowActivateAllModal(false)}>Activate All TVs</ModalHeader>
+      <ModalBody>
+        <FormGroup>
+          <Label for="groupNumber">Specify Group Number</Label>
+          <Input
+            type="text"
+            id="groupNumber"
+            value={groupNumber}
+            onChange={(e) => setGroupNumber(e.target.value)}
+            placeholder="Enter group number"
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label for="minutes">Specify Minutes</Label>
+          <Input
+            type="number"
+            id="minutes"
+            value={minutes}
+            onChange={(e) => setMinutes(e.target.value)}
+            placeholder="Enter minutes"
+          />
+        </FormGroup>
+        {error && <Alert color="danger">{error}</Alert>}
+      </ModalBody>
+      <ModalFooter>
+        <Button color="primary" onClick={handleActivateSubmit} disabled={loading || deviceWarning}>
+          {loading ? <Spinner size="sm" /> : 'Submit'}
+        </Button>
+        <Button color="secondary" onClick={() => setShowActivateAllModal(false)}>Cancel</Button>
+      </ModalFooter>
+    </Modal>
         </main>
       <SimpleFooter />
     </>
