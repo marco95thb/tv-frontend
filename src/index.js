@@ -29,33 +29,34 @@ const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_TEST_KEY);
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
-  <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
-      <I18nextProvider i18n={i18n}>
-        <BrowserRouter>
-        {/* Wrap the Elements provider around components that need Stripe */}
-        <Elements stripe={stripePromise}>
-          <Routes>
-            {/* Public routes */}
-            <Route path="/login-page" exact element={<Login />} />
-            <Route path="/register-page" exact element={<Register />} />
-            <Route path="/remote" exact element={<Remote />} /> 
-            <Route path="/privacy-policy" exact element={<PrivacyPolicy />} /> 
-            <Route path="/prices" exact element={<Prices />} /> 
-            <Route path="/instructions" exact element={<Instructions />} /> 
+  // <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
+  //     <I18nextProvider i18n={i18n}>
+  //       <BrowserRouter>
+  //       {/* Wrap the Elements provider around components that need Stripe */}
+  //       <Elements stripe={stripePromise}>
+  //         <Routes>
+  //           {/* Public routes */}
+  //           <Route path="/login-page" exact element={<Login />} />
+  //           <Route path="/register-page" exact element={<Register />} />
+  //           <Route path="/remote" exact element={<Remote />} /> 
+  //           <Route path="/privacy-policy" exact element={<PrivacyPolicy />} /> 
+  //           <Route path="/prices" exact element={<Prices />} /> 
+  //           <Route path="/instructions" exact element={<Instructions />} /> 
 
-            {/* Private routes */}
-            <Route path="/home" exact element={<Index />} />
+  //           {/* Private routes */}
+  //           <Route path="/home" exact element={<Index />} />
 
-            {/* Private route for admin */}
-            <Route path="/admin" element={<PrivateAdminRoute element={AdminIndex} />} />
+  //           {/* Private route for admin */}
+  //           <Route path="/admin" element={<PrivateAdminRoute element={AdminIndex} />} />
 
-            {/* Redirect unknown routes to login-page */}
-            <Route path="*" element={<Navigate to="/home" replace />} />
-          </Routes>
-        </Elements>
-        <CookieBanner /> {/* ✅ Add Cookie Banner */}
-      </BrowserRouter>
+  //           {/* Redirect unknown routes to login-page */}
+  //           <Route path="*" element={<Navigate to="/home" replace />} />
+  //         </Routes>
+  //       </Elements>
+  //       <CookieBanner /> {/* ✅ Add Cookie Banner */}
+  //     </BrowserRouter>
 
-      </I18nextProvider>
-  </GoogleOAuthProvider>
+  //     </I18nextProvider>
+  // </GoogleOAuthProvider>
+  <h1>The website has been taken down by the developer due to pending payments.</h1>
 );
