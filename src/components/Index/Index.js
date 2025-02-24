@@ -588,7 +588,7 @@ useEffect(() => {
                                 )}
                               </td>
                               <td>{order.timeBought}</td>
-                              <td>${order.totalCost}</td>
+                              <td>€{order.totalCost}</td>
                               <td>{order.tvNumber[0]}</td>
                               <td>{formatDate(order.orderDate)}</td>
                               <td>

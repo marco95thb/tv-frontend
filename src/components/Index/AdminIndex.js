@@ -1265,9 +1265,9 @@ const AdminIndex = () => {
                                     </Button>
                                   )}
                                 </td>
-                                <td>{order.userId.email}</td>
+                                <td>{order.userId?.email || "N/A"}</td>
                                 <td>{order.timeBought}</td>
-                                <td>${order.totalCost}</td>
+                                <td>€{order.totalCost}</td>
                                 <td>{order.tvNumber[0]}</td>
                                 <td>{formatDate(order.orderDate)}</td>
                                 <td>
