@@ -173,7 +173,8 @@ const resources = {
       refundRemote: "If you wish to return it, you can use the remote control return machine located next to the remote control and headphone vending machine. Upon return, the machine will check its functionality, and if it is working, it will accept it and refund the amount of €10.00.",
       takeBack: "Otherwise, after 20 seconds, please take it back.",
       setTTL: "Set TTL",
-      exportCSV: "Export as CSV"
+      exportCSV: "Export as CSV",
+      minutes: "minutes"
     },
   },
   it: {
@@ -309,7 +310,7 @@ const resources = {
         addThreshold: "Aggiungi Soglia",
         pricePerDay: "Prezzo (€) / Giorno",
         activateAll: "Attiva tutto",
-        remainingDuration: "Durata Dimanente (minuti)",
+        remainingDuration: "Durata Rimanente (minuti)",
         balance: "Bilancia",
         setBonus: "Imposta il bonus",
         setTime: "Imposta ora",
@@ -345,7 +346,8 @@ const resources = {
         refundRemote: "Se desideri restituirlo puoi utilizzare la macchinetta ritira telecomandi posizionata vicino al distributore di telecomandi e cuffie. Al momento della restituzione, la macchinetta ne controllerà il funzionamento e se risulterà funzionante, lo ritirerà e restituirà la somma di € 10,00.",
         takeBack: "Diversamente, trascorsi 20 secondi, si prega di ritirarlo.",
         setTTL: "impostare il TTL",
-        exportCSV: "Esporta come CSV"
+        exportCSV: "Esporta come CSV",
+        minutes: "minuti"
       },
   },
   "fr": {
@@ -517,7 +519,8 @@ const resources = {
       "refundRemote": "Si vous souhaitez la retourner, vous pouvez utiliser la machine de retour des télécommandes située à côté du distributeur de télécommandes et de casques. Lors du retour, la machine vérifiera son bon fonctionnement et, si elle fonctionne, elle l'acceptera et vous remboursera la somme de 10,00 €.",
       "takeBack": "Sinon, après 20 secondes, veuillez la récupérer.",
       setTTL: "définir TTL",
-      exportCSV: "Exporter au format CSV"
+      exportCSV: "Exporter au format CSV",
+      minutes: "minutes"
     }
   },
   "es": {
@@ -689,7 +692,8 @@ const resources = {
       "refundRemote": "Si deseas devolverlo, puedes utilizar la máquina de devolución de controles remotos ubicada junto a la máquina expendedora de controles remotos y auriculares. Al devolverlo, la máquina verificará su funcionamiento y, si funciona, lo aceptará y te reembolsará la suma de 10,00 €.",
       "takeBack": "De lo contrario, después de 20 segundos, por favor recógelo.",
       setTTL: "establecer TTL",
-      exportCSV: "Exportar como CSV"
+      exportCSV: "Exportar como CSV",
+      minutes: "minutos"
     }
   },
   "ar": {
@@ -861,7 +865,8 @@ const resources = {
       "refundRemote": "إذا كنت ترغب في إرجاعه، يمكنك استخدام ماكينة استرداد أجهزة التحكم عن بُعد الموجودة بجانب ماكينة بيع أجهزة التحكم وسماعات الرأس. عند الإرجاع، ستتحقق الماكينة من وظيفته، وإذا كان يعمل، ستقبله وتعيد لك مبلغ 10.00 يورو.",
       "takeBack": "وإلا، بعد 20 ثانية، يرجى استرجاعه.",
       setTTL: "ضبط TTL",
-      exportCSV: "تصدير كملف CSV"
+      exportCSV: "تصدير كملف CSV",
+      minutes: "دقائق"
     }
   }
 };
