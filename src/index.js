@@ -53,7 +53,7 @@ root.render(
             <Route path="*" element={<Navigate to="/home" replace />} />
           </Routes>
         </Elements>
-        <CookieBanner /> {/* ✅ Add Cookie Banner */}
+        <CookieBanner /> {/* ✅ Add Cookie Banner  */}
       </BrowserRouter>
 
       </I18nextProvider>
