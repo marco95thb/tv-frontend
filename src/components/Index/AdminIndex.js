@@ -1271,9 +1271,13 @@ const AdminIndex = () => {
                                 <td>{order.tvNumber[0]}</td>
                                 <td>{formatDate(order.orderDate)}</td>
                                 <td>
-                                  <Button color="primary" onClick={() => handleChangeRoom(order._id)}>
-                                  {t("changeTv")}
-                                  </Button>
+                                  {order.userId?.email ? (
+                                    <Button color="primary" onClick={() => handleChangeRoom(order._id)}>
+                                      {t("changeTv")}
+                                    </Button>
+                                  ) : (
+                                    <span>Offline Order</span>
+                                  )}
                                 </td>
                               </tr>
 
