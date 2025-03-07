@@ -136,7 +136,7 @@ const DemoNavbar = () => {
                   className="h3 font-weight-bold"
                   style={{ fontWeight: "bold", textTransform: "uppercase" }}
                 >
-                    <i className="fa fa-dollar mr-2" />
+                    <i className="fa fa-euro mr-2" />
                     {t("pricing")}
                 </NavLink>
               </NavItem>
