@@ -25,7 +25,7 @@ const SimpleFooter = () => {
           <Col md="6">
             <div className="copyright">
               © {new Date().getFullYear()}{" "}
-              <a href="https://github.com/Moeez-Muslim" target="_blank" rel="noopener noreferrer">
+              <a href="https://www.automation-boards.com" target="_blank" rel="noopener noreferrer">
                 attivatv
               </a>
             </div>
@@ -38,7 +38,7 @@ const SimpleFooter = () => {
                 </NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="https://github.com/Moeez-Muslim" target="_blank" rel="noopener noreferrer">
+                <NavLink href="https://www.automation-boards.com" target="_blank" rel="noopener noreferrer">
                   Developer
                 </NavLink>
               </NavItem>
