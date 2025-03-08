@@ -322,7 +322,7 @@ const resources = {
         totalBalance: "Saldo Totale",
         deleteFailure: "Impossibile eliminare la TV. Dispositivo non connesso. Non è possibile eseguire alcuna operazione finché il dispositivo non invia i dati aggiornati. Assicurati che il dispositivo sia attivo e connesso al server.",
         tvDeleted: "TV eliminata correttamente",
-        pricing: "Prezzi",
+        pricing: "Costi",
         instructions: "Istruzioni",
         home: "Home",
         admin: "Ammin",
