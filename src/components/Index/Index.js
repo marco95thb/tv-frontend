@@ -34,20 +34,40 @@ const Index = () => {
   const navigate = useNavigate(); // Define navigate
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-  
-    // Check if user is already logged in
-    if (!token) {
-      // Initialize One Tap only if the user is not logged in
-      window.google.accounts.id.initialize({
-        client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
-        callback: handleCredentialResponse,
+    const loadGoogleScript = () => {
+      return new Promise((resolve) => {
+        const script = document.createElement("script");
+        script.src = "https://accounts.google.com/gsi/client";
+        script.async = true;
+        script.defer = true;
+        script.onload = resolve;
+        document.body.appendChild(script);
       });
+    };
   
-      // Show the One Tap prompt
-      window.google.accounts.id.prompt();
-    }
+    const initializeGoogleOneTap = async () => {
+      await loadGoogleScript();
+  
+      if (!window.google) {
+        console.error("Google API script failed to load.");
+        return;
+      }
+  
+      const token = localStorage.getItem("token");
+  
+      if (!token) {
+        window.google.accounts.id.initialize({
+          client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+          callback: handleCredentialResponse,
+        });
+  
+        window.google.accounts.id.prompt();
+      }
+    };
+  
+    initializeGoogleOneTap();
   }, []);
+  
 
   const handleCredentialResponse = async (credentialResponse) => {
     try {
