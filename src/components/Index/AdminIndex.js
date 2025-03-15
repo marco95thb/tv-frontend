@@ -22,6 +22,7 @@ const AdminIndex = () => {
   const [showRoomModal, setShowRoomModal] = useState(false);
   const [currentOrderId, setCurrentOrderId] = useState(null);
   const [newTvNumber, setNewTvNumber] = useState('');
+  const [newLocation, setNewLocation] = useState('');
   const [modalErrorMessage, setModalErrorMessage] = useState('');
   const [modalSuccessMessage, setModalSuccessMessage] = useState(''); // Success message for the modal
   const [loading, setLoading] = useState(false);
@@ -329,7 +330,11 @@ const AdminIndex = () => {
 
   
   const handleAddTV = async () => {
-    // Reset  previous errors and success messages
+
+  console.log('Current language:', t('language'));
+  console.log('Location translation:', t('location'));
+  console.log('Enter Location translation:', t('enterLocation'));
+    // Reset previous errors and success messages
     setAddTVError('');
     setAddTVSuccess('');
     setLoading(true);
@@ -362,6 +367,7 @@ const AdminIndex = () => {
         `${process.env.REACT_APP_BASE_URL}/api/admin/add-tv`,
         {
           tvNumber: newAddTvNumber,
+          location: newLocation,
         },
         {
           headers: { 'x-auth-token': token },
@@ -1413,6 +1419,7 @@ const AdminIndex = () => {
             <thead>
               <tr>
                 <th>{t("tvNumber")}</th>
+                <th>{t("location")}</th>
                 <th>{t("state")}</th>
                 <th>{t("remainingDuration")}</th>
                 <th>{t("setBonus")}</th>
@@ -1438,6 +1445,7 @@ const AdminIndex = () => {
                   .map((tv) => (
                   <tr key={tv._id}>
                     <td>{tv.tvNumber}</td>
+                    <td>{tv.location}</td>
 
                     <td>
                       <Button
@@ -1519,6 +1527,17 @@ const AdminIndex = () => {
               disabled={addTVSuccess ? true : false} // Disable input after success
               placeholder={t("enter4DigitNum")}
             />
+        </FormGroup>
+  <FormGroup>
+    <Label for="location">{t("location")}</Label>
+    <Input
+      type="text"
+      id="location"
+      value={newLocation}
+      onChange={(e) => setNewLocation(e.target.value)}
+      disabled={addTVSuccess ? true : false}
+      placeholder={t("enter Location")}
+    />
           </FormGroup>
           {addTVError && <Alert color="danger">{addTVError}</Alert>}
           {addTVSuccess && <Alert color="success">{addTVSuccess}</Alert>}

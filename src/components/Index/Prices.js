@@ -84,12 +84,25 @@ const Prices = () => {
                           return (
                             <tr key={index}>
                               <td>{minDays}-{maxDays}</td>
-                              <td>€{threshold.price}</td>
+                              <td>€{threshold.price.toFixed(2)}</td>
                             </tr>
                           );
                         })}
                       </tbody>
                     </Table>
+                    {/* Messaggio di avviso */}
+    <div className="mt-4">
+      <p style={{ 
+        color: 'white', 
+        fontWeight: 'bold',
+        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+        padding: '15px',
+        borderRadius: '10px',
+        margin: '20px 0'
+      }}>
+        {t("attentionMessage")}
+      </p>
+    </div>
                   </Col>
                 </Row>
               </div>

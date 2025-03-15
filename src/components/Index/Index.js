@@ -396,45 +396,63 @@ useEffect(() => {
                     <p className="lead text-white">
                       {t("welcome")}
                     </p>
-                    <div className="btn-wrapper mt-5">
-                      <Button
-                        className="btn-white btn-icon mb-3 mb-sm-0 mb-lg-3"
-                        color="default"
-                        size="lg"
-                        onClick={() => (isLoggedIn ? scrollToCart() : navigate("/login-page"))}
-                      >
-                        <span className="btn-inner--icon mr-1">
-                          <i className="fa fa-shopping-cart" />
-                        </span>
-                        <span className="btn-inner--text">  {t("buyTvTime")} </span>
-                      </Button>{"    "}
-                      <Button
-                        className="btn-icon mb-3 mb-sm-0 mb-lg-3"
-                        color="github"
-                        size="lg"
-                        onClick={() => (isLoggedIn ? scrollToOrders() : navigate("/login-page"))}
-                      >
-                        <span className="btn-inner--icon mr-1">
-                          <i className="fa fa-list" />
-                        </span>
-                        <span className="btn-inner--text">  {t("myOrders")}  </span>
-                      </Button>{"    "}
-                      {/* <Button
-                        className="btn-icon mb-3 mb-sm-0 mb-lg-3"
-                        color="default"
-                        size="lg"
-                        onClick={() => navigate("/remote")} // Navigate to /remote on click
-                      >
-                        <span className="btn-inner--icon mr-1">
-                          <i className="fa fa-tv" />
-                        </span>
-                        <span className="btn-inner--text">{t("remote")}</span>
-                      </Button> */}
-                    </div>
-                  </Col>
-                </Row>
-              </div>
-            </Container>
+                    <div className="btn-wrapper mt-5 d-flex justify-content-center">
+                    <Button
+  className="btn-white btn-icon mx-2"
+  color="default"
+  size="lg"
+  style={{ minWidth: "150px" }}
+  onClick={() => navigate("/prices")}
+>
+  <span className="d-flex align-items-center justify-content-center">
+    <span style={{ marginRight: '5px', lineHeight: '1' }}>€</span>
+    <span>{t("COSTI")}</span>
+  </span>
+</Button>
+
+  <Button
+    className="btn-white btn-icon mx-2"
+    color="default"
+    size="lg"
+    style={{ minWidth: "200px" }}
+    onClick={() => (isLoggedIn ? scrollToCart() : navigate("/login-page"))}
+  >
+    <span className="btn-inner--icon mr-1">
+      <i className="fa fa-shopping-cart" />
+    </span>
+    <span className="btn-inner--text">{t("buyTvTime")}</span>
+  </Button>
+
+  <Button
+    className="btn-icon mx-2"
+    color="github"
+    size="lg"
+    style={{ minWidth: "180px" }}
+    onClick={() => (isLoggedIn ? scrollToOrders() : navigate("/login-page"))}
+  >
+    <span className="btn-inner--icon mr-1">
+      <i className="fa fa-list" />
+    </span>
+    <span className="btn-inner--text">{t("myOrders")}</span>
+  </Button>
+
+  <Button
+    className="btn-white btn-icon mx-2"
+    color="default"
+    size="lg"
+    style={{ minWidth: "180px" }}
+    onClick={() => navigate("/instructions")}
+  >
+    <span className="btn-inner--icon mr-1">
+      <i className="fa fa-book" />
+    </span>
+    <span className="btn-inner--text">{t("ISTRUZIONI")}</span>
+  </Button>
+</div>
+</Col>
+</Row>
+</div>
+</Container>
             {/* <div className="separator separator-bottom separator-skew zindex-100">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -476,9 +494,9 @@ useEffect(() => {
                           <td>
                             {minDays}-{maxDays}
                           </td>
-                          <td>€{threshold.price}</td>
+                          <td>€{threshold.price.toFixed(2)}</td>
                         </tr>
-                      );
+                       );
                     })}
                   </tbody>
                 </Table>
@@ -499,34 +517,32 @@ useEffect(() => {
                   {/* TV Number */}
                   <Row>
                     <Col md="12">
-                      <FormGroup>
-                        <Label for="tvNumber">{t("tvNumber")}</Label>
-                        <Input
-                          type="text"
-                          id="tvNumber"
-                          value={tvNumber}
-                          onChange={(e) => {
-                            const value = e.target.value;
-                            if (/^\d{0,4}$/.test(value)) { // Allows only up to 4 digits
-                              setTvNumber(value);
-                            }
-                          }}
-                          placeholder={t("enter4DigitNum")}
-                          maxLength="4" // Ensures input is capped at 4 characters
-                        />
-                      </FormGroup>
+                    <FormGroup>
+  <Label for="tvNumber">{t("tvNumber")}</Label>
+  <Input
+    type="text"
+    id="tvNumber"
+    value={tvNumber}
+    onChange={(e) => {
+      const value = e.target.value.replace(/[^\d]/g, '').slice(0, 4); // Permetti solo 4 cifre
+      setTvNumber(value); 
+    }}
+    placeholder={t("enter4DigitNum")}
+    maxLength="4" // Limita a 4 caratteri
+  />
+</FormGroup>
                     </Col>
                   </Row>
 
 
                   {/* Display subtotal and Buy button */}
                   <div className="text-center">
-                    <p>{t("subtotal")}<strong>€{subtotal}</strong></p>
+                  <p>{t("subtotal")}<strong>€{subtotal.toFixed(2)}</strong></p>
                     {successMessage && <Alert color="success">{successMessage}</Alert>}
                     {errorMessage && <Alert color="danger">{errorMessage}</Alert>}
                     <Button
                       color="primary"
-                      disabled={hours === 0 || tvNumber.length !== 4 || isLoading}
+                      disabled={hours === 0 || !/^\d{4}/.test(tvNumber) || isLoading}
                       onClick={handleProceedToBuy}
                     >
                       {isLoading ? `${t("placingOrder")}` : `${t("proceedToBuy")}`}
@@ -608,7 +624,7 @@ useEffect(() => {
                                 )}
                               </td>
                               <td>{order.timeBought}</td>
-                              <td>€{order.totalCost}</td>
+                              <td>€{order.totalCost.toFixed(2)}</td>
                               <td>{order.tvNumber[0]}</td>
                               <td>{formatDate(order.orderDate)}</td>
                               <td>
@@ -659,10 +675,10 @@ useEffect(() => {
                   value={otp}
                   onChange={(e) => {
                     const value = e.target.value;
-                    if (/^\d{0,6}$/.test(value)) { // Allows only up to 4 digits
+                    if (/^\d{0,6}$/.test(value)) { // Allows only up to 6 digits
                       setOtp(value);
                     }
-                  }}                    
+                  }}                     
                   placeholder={t("enter6DigitOtp")}
                   disabled={modalSuccessMessage ? true : false} // Disable input after success
                 />

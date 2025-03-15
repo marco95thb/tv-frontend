@@ -20,9 +20,10 @@ const CookieBanner = () => {
     showBanner && (
       <div style={bannerStyle}>
         <p style={{ margin: 0 }}>
-          This website uses cookies to ensure you get the best experience. By
-          continuing to use this site, you consent to our use of cookies.{" "}
-          <a href="/privacy-policy" style={linkStyle}>Learn more</a>
+        Questo sito web utilizza i cookie per garantirti la migliore esperienza. 
+        Continuando a utilizzare questo sito, acconsenti all'uso dei cookie.{" "}
+
+          <a href="/privacy-policy" style={linkStyle}>Scopri di più</a>
         </p>
         <button style={buttonStyle} onClick={handleAccept}>
           Accept

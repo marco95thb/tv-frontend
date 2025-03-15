@@ -7,11 +7,13 @@ const resources = {
     translation: {
       logout: "Log Out",
       language: "Language",
+      COSTI: "PRICING",
+      ISTRUZIONI: "INSTRUCTIONS",
       welcome: "Welcome to ATTIVA TV where you can seamlessly purchase tv credits for your stay. Have a comfortable stay and stay entertained with smart TV in your room.",
       buyTvTime: "Buy TV Time",
       myOrders: "My Orders",
       remote: "Remote",
-      enterHours: "Enter Days of TV Time",
+      enterHours: "Enter Days of TV Time",//Enter Days
       enterNumHours: "Enter number of days",
       tvNumber: "TV Number",
       enter4DigitNum: "Enter 4-digit TV number",
@@ -174,13 +176,18 @@ const resources = {
       takeBack: "Otherwise, after 20 seconds, please take it back.",
       setTTL: "Set TTL",
       exportCSV: "Export as CSV",
-      minutes: "minutes"
+      minutes: "minutes",
+      location: "Location",
+      enterLocation: "Enter Location",
+      attentionMessage: "Warning! Once the purchase is made, it is not possible to request a refund"
     },
   },
   it: {
     translation: {
         "logout": "Disconnettersi",
         "language": "Lingua",
+        "COSTI": "COSTI",
+        "ISTRUZIONI": "ISTRUZIONI",
         "welcome": "Benvenuti su ATTIVA TV, dove puoi acquistare facilmente crediti TV per il tuo soggiorno. Goditi un soggiorno confortevole e resta intrattenuto con la Smart TV nella tua stanza.",
         "buyTvTime": "Acquista Tempo TV",
         "myOrders": "I miei ordini",
@@ -347,13 +354,18 @@ const resources = {
         takeBack: "Diversamente, trascorsi 20 secondi, si prega di ritirarlo.",
         setTTL: "impostare il TTL",
         exportCSV: "Esporta come CSV",
-        minutes: "minuti"
+        minutes: "minuti",
+        location: "Posizione",
+       enterLocation: "Inserisci Posizione",
+        attentionMessage: "Attenzione! Una volta effettuato l'acquisto non è possibile richiedere il rimborso"
       },
   },
   "fr": {
     "translation": {
       "logout": "Se déconnecter",
       "language": "Langue",
+      "COSTI": "TARIFS",
+      "ISTRUZIONI": "INSTRUCTIONS",
       "welcome": "Bienvenue sur ATTIVA TV, où vous pouvez acheter facilement des crédits TV pour votre séjour. Passez un séjour confortable et profitez de la Smart TV dans votre chambre.",
       "buyTvTime": "Acheter du temps TV",
       "myOrders": "Mes commandes",
@@ -520,13 +532,18 @@ const resources = {
       "takeBack": "Sinon, après 20 secondes, veuillez la récupérer.",
       setTTL: "définir TTL",
       exportCSV: "Exporter au format CSV",
-      minutes: "minutes"
+      minutes: "minutes",
+      location: "Emplacement",
+      enterLocation: "Entrez l'emplacement",
+      attentionMessage: "Attention ! Une fois l'achat effectué, il n'est pas possible de demander un remboursement"
     }
   },
   "es": {
     "translation": {
       "logout": "Cerrar sesión",
       "language": "Idioma",
+      "COSTI": "PRECIOS",
+      "ISTRUZIONI": "INSTRUCCIONES",
       "welcome": "Bienvenido a ATTIVA TV, donde puedes comprar fácilmente créditos de TV para tu estancia. Disfruta de una estancia cómoda y mantente entretenido con la Smart TV en tu habitación.",
       "buyTvTime": "Comprar tiempo de TV",
       "myOrders": "Mis pedidos",
@@ -693,13 +710,18 @@ const resources = {
       "takeBack": "De lo contrario, después de 20 segundos, por favor recógelo.",
       setTTL: "establecer TTL",
       exportCSV: "Exportar como CSV",
-      minutes: "minutos"
+      minutes: "minutos",
+      location: "Ubicación",
+      enterLocation: "Ingrese la ubicación",
+      attentionMessage: "¡Atención! Una vez realizada la compra, no es posible solicitar un reembolso"
     }
   },
   "ar": {
     "translation": {
       "logout": "تسجيل الخروج",
       "language": "اللغة",
+      "COSTI": "التكاليف",
+      "ISTRUZIONI": "تعليمات",
       "welcome": "مرحبًا بك في ATTIVA TV، حيث يمكنك شراء أرصدة التلفزيون بسهولة لإقامتك. استمتع بإقامة مريحة واستمتع بمشاهدة التلفزيون الذكي في غرفتك.",
       "buyTvTime": "شراء وقت التلفاز",
       "myOrders": "طلباتي",
@@ -866,7 +888,10 @@ const resources = {
       "takeBack": "وإلا، بعد 20 ثانية، يرجى استرجاعه.",
       setTTL: "ضبط TTL",
       exportCSV: "تصدير كملف CSV",
-      minutes: "دقائق"
+      minutes: "دقائق",
+      location: "الموقع",
+      enterLocation: "أدخل الموقع",
+      attentionMessage: "تنبيه! بمجرد إتمام الشراء، لا يمكن طلب استرداد الأموال"
     }
   }
 };
